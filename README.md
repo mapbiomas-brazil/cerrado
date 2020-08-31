@@ -1,5 +1,4 @@
 <div class="fluid-row" id="header">
-    <img src='./misc/arcplan-logo.jpeg' height='70' width='auto' align='right'>
     <h1 class="title toc-ignore">Cerrado</h1>
     <h4 class="author"><em>Developed by  IPAM - felipe.lenti@ipam.org.br</em></h4>
 </div>
