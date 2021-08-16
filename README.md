@@ -4,7 +4,7 @@
 </div>
 
 # About
-This folder contains the scripts to classify and post-process the Cerrado Biome.
+This folder contains the scripts to classify and post-process the Cerrado Biome..
 
 We recommend that you read the Cerrado Biome Appendix of the Algorithm Theoretical Basis Document (ATBD).
 
