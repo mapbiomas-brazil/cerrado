@@ -6,7 +6,7 @@
 Developed by [Instituto de Pesquisa Ambiental da Amazônia - IPAM](https://ipam.org.br/)<br>
 
 ## About
-This folder contains the scripts to classify and filter the ***Cerrado*** Biome.
+This folder contains the scripts to classify and filter the ***Cerrado*** Biome - Collection 6.0.
 
 For detailed information about the classification and methodology, please read the  [Cerrado biome Appendix of the Algorithm Theoretical Basis Document (ATBD).](https://mapbiomas-br-site.s3.amazonaws.com/Cerrado_Appendix_-_ATBD_Collection_5_v1.pdf)
 
