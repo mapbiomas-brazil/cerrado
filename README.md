@@ -24,13 +24,13 @@ For detailed information about the classification and methodology, please read t
 ## Workflow
 Folders are organized by key-steps and contains a set of codes following the Cerrado biome classification schema:
 
-1. [Feature space selection](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/1-feature-space)
+1. [Feature space selection](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/1-feature-space)
 
-2. [General map classification](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/2-general-map)
+2. [General map classification](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/2-general-map)
 
-3. [Wetlands classification](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/3-wetlands)
+3. [Wetlands classification](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/3-wetlands)
 
-4. [Integration of maps](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/4-integrate-map)
+4. [Integration of maps](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/4-integrate-map)
 
 ## Contact
 For information request or issue/bug report, please write to dhemerson.costa@ipam.org.br
