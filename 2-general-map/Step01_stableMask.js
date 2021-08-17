@@ -1,4 +1,5 @@
-// generate stable samples fro collection 5 for the Cerrado biome
+// Generate stable pixels by using Mapbiomas Collection 5.0 data
+// For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
 var CERRADO_simpl = 
     /* color: #d63000 */
