@@ -1,6 +1,7 @@
 // Generate stable pixels by using Mapbiomas Collection 5.0 data
 // For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
+// cerrado bound box - can be simplified 
 var CERRADO_simpl = 
     /* color: #d63000 */
     /* shown: false */
@@ -87,32 +88,31 @@ var CERRADO_simpl =
           [-57.94604647334397, -22.477333261520297],
           [-56.01245272334397, -22.68021819177981]]]);
 
-// set a year to plot a diagnosys classification from collection 5
+// define year to plot a sample from collection 5.0
 var year = 2000;
 var version_out = '2'; // set a string to identify the output version
 
-// import the color ramp module from mapbiomas 
+// import the color ramp from mapbiomas
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 45,
-    'palette': palettes.get('classification5')
+    'max': 49,
+    'palette': palettes.get('classification6')
 };
 
-// set assets
-//// landsat surface reflectance data - from collection 6
+// landsat surface reflectance data - from collection 6.0
 var assetMosaics = 'projects/nexgenmap/MapBiomas2/LANDSAT/mosaics'; 
 
-//// brazilian biomes
+// brazilian biomes
 var biomes = ee.Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster');
 
-//// brazilian administration states
+// brazilian administration states
 var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-raster');
 
-//// set directory for the output file
-var dirout = 'projects/mapbiomas-workspace/AUXILIAR/CERRADO/'; // - mapbiomas-workspace
+// set directory for the output file
+var dirout = 'projects/mapbiomas-workspace/AUXILIAR/CERRADO/';
 
-// load collection 5
+// load collection 5.0
 var colecao5 = ee.Image('projects/mapbiomas-workspace/public/collection5/mapbiomas_collection50_integration_v1');
 
 // load data to mask unstable samples
