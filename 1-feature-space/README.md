@@ -2,10 +2,10 @@
 * <b>Step 1</b>: Extract yearly spectral signatures and export as .csv
 * <b>Step 2</b>: Merge yearly .csv's and export as a unique .txt
 * <b>Step 1.1</b>: Plot exploratory graphics (correlation matrix and PCA)
-* <b>Step 2</b>: Train multiple Random Forest classifiers and estimate variables importance using a grid of classes desing
-* <b>Step 3</b>: Select top variables by using filters of importance
-* <b>Step 3.1</b>: Plot boxplots of variables importance by class desing and compute shared top variables 
-* <b>Step 4</b>: Train multiple Random Forest classifiers and estimate accuracy (1- OOB Error) using a grid of predictors desing
+* <b>Step 2</b>: Train multiple Random Forest classifiers and estimate variables importance (MeanDecreaseGini) using a grid of classes
+* <b>Step 3</b>: Select top variables by using thresholds of importance
+* <b>Step 3.1</b>: Plot boxplots of importance by class design and compute shared top variables 
+* <b>Step 4</b>: Train multiple Random Forest classifiers and estimate accuracy (1- OOB Error) using a grid of predictors
 * <b>Step 5</b>: Plot accuracy results and test statistical difference between predictors designs (Tukey HSD) 
 
 ### Short description
