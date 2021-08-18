@@ -1,7 +1,7 @@
 // Generate stable pixels by using Mapbiomas Collection 5.0 data
 // For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
-// cerrado bound box - can be simplified 
+// cerrado bound box
 var CERRADO_simpl = /* color: #98ff00 */ee.Geometry.Polygon(
         [[[-42.306314047317365, -1.7207103925816054],
           [-44.415689047317365, -1.4571401339250152],
@@ -85,9 +85,10 @@ for (var i_ano=0;i_ano<anos.length; i_ano++){
   colList = colList.add(col5flor.int8());
 }
 
-// start function
+// read collection 
 var collection = ee.ImageCollection(colList);
 
+// define function to get stable pixels
 var unique = function(arr) {
     var u = {},
         a = [];
@@ -101,15 +102,13 @@ var unique = function(arr) {
 };
 
 var getFrenquencyMask = function(collection, classId) {
-
     var classIdInt = parseInt(classId, 10);
-
     var maskCollection = collection.map(function(image) {
+            
         return image.eq(classIdInt);
     });
 
     var frequency = maskCollection.reduce(ee.Reducer.sum());
-
     var frequencyMask = frequency.gte(classFrequency[classId])
         .multiply(classIdInt)
         .toByte();
@@ -121,8 +120,10 @@ var getFrenquencyMask = function(collection, classId) {
 
 var lista_image = ee.List([]);
 
+// set maximum frequency for each class (collection 5.0 equals to 35) 
 var classFrequency = {"3": 35, "4": 35, "12": 35,"15": 35, "19": 35, "25": 35, "33": 35};
-  
+
+// mask collection by frequency 
 var frequencyMasks = Object.keys(classFrequency).map(function(classId) {
     return getFrenquencyMask(collection, classId);
 });
@@ -130,6 +131,7 @@ var frequencyMasks = Object.keys(classFrequency).map(function(classId) {
 frequencyMasks = ee.ImageCollection.fromImages(frequencyMasks);
 
 // mask stable samples that are not stable on reference data
+// PROBIO - since collection 4.1
 var referenceMap = frequencyMasks.reduce(ee.Reducer.firstNonNull()).clip(CERRADO_simpl).aside(print);
 var referenceMapRef = referenceMap.where(probioNV.eq(0)
                                                  .and(referenceMap.eq(3)
@@ -144,7 +146,7 @@ var referenceMapRef = referenceMap.where(probioNV.eq(0)
     
     referenceMapRef = referenceMapRef.updateMask(referenceMapRef.neq(27)).rename("reference");
 
-// mask using inventario florestal do estado de sp
+// Inventário Florestal do Estado de SP - Since Collection 6.0 
 // erase native vegetation samples that was not native vegetation on reference data
 var referenceMapRef2 = referenceMapRef.where(SEMA_bin.eq(0).and(referenceMapRef.eq(3)
                                                             .or(referenceMapRef.eq(4)
@@ -152,7 +154,7 @@ var referenceMapRef2 = referenceMapRef.where(SEMA_bin.eq(0).and(referenceMapRef.
 
  referenceMapRef2 = referenceMapRef2.updateMask(referenceMapRef2.neq(27)).rename("reference");
 
-// erase anthropogenic classes from mapbiomas that was classified as natural on refeernce data
+// erase anthropogenic classes from mapbiomas that was classified as natural on reference data
 var referenceMapRef3 = referenceMapRef2.where(SEMA_bin.eq(1).and(referenceMapRef2.eq(15)
                                                             .or(referenceMapRef2.eq(19)
                                                             .or(referenceMapRef2.eq(25)
@@ -160,19 +162,13 @@ var referenceMapRef3 = referenceMapRef2.where(SEMA_bin.eq(1).and(referenceMapRef
 
     referenceMapRef3 = referenceMapRef3.updateMask(referenceMapRef3.neq(27)).rename("reference");
 
-// Plotar mapa de convergências 
-//Map.addLayer(referenceMapRef, vis, 'stable C5 + probio + prodes', false);
-//Map.addLayer(referenceMapRef2, vis, 'stable C5 + previous + sema-sp', true);
-//Map.addLayer(referenceMapRef3, vis, 'stable C5 + previous + sema-sp', false);
-//Map.addLayer(SEMA_bin, vis, 'bin sp', false);
-
-// insert grassland from reference into são paulo state samples
+// insert grassland from Inventário Florestal into São Paulo state stable pixels for this class
 var referenceMapRef4 = referenceMapRef3.blend(SEMA_SP.updateMask(SEMA_SP.eq(12)));
 
-// plot correctred stable samples
+// plot stable samples 
 Map.addLayer(referenceMapRef4, vis, 'final');
 
-// explort to workspace asset
+// export as GEE asset
 Export.image.toAsset({
     "image": referenceMapRef4.toInt8(),
     "description": 'CE_amostras_estaveis85a19_col5_v'+version_out,
