@@ -1,16 +1,19 @@
-## importar API 
+## Run smileRandomForest classifier - Mapbiomas Collection 6.0
+## For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
+
+## initilize geepy API
 import ee
 ee.Initialize()
 
-## definir strings para label 
-BIOME_NAME = "CERRADO"
-SAMPLES_VERSION = '3'
-OUTPUT_VERSION = '6'
+## define strings to be used as metadata
+BIOME_NAME = "CERRADO"  # biome
+SAMPLES_VERSION = '3'   # input training samples version
+OUTPUT_VERSION = '6'    # output classification version 
 
-## definir numero de árvores para o randomForest
+## define hyperparameters for then rf classifier
 RF_TREES = 100
 
-## definir anos para classificar
+## define years to be classified
 YEARS = [ 
     '1985', '1986', '1987', '1988', '1989', 
     '1990', '1991', '1992', '1993', '1994', 
@@ -22,7 +25,7 @@ YEARS = [
     '2020'
 ]
 
-## definir regiões para classificar
+## define classification reigions
 REGION_IDS = [ 
     '1', '2', '3', '4', '5', '6', '7', 
     '8', '9', '10', '11', '12', '13', '14',
@@ -32,8 +35,8 @@ REGION_IDS = [
     '36', '37', '38'
 ]
 
-## defininir nomes das bandas
-## surface reflectance mosaic - todas as 90 bandas
+## define predictors to bem used
+## surface reflectance mosaic - all avaliable bands
 #BAND_NAMES = [
 #          'blue_median', 'blue_median_wet', 'blue_median_dry', 'blue_min', 'blue_stdDev', 
 #          'green_median', 'green_median_dry', 'green_median_wet', 'green_median_texture', 'green_min', 'green_stdDev',
@@ -61,7 +64,7 @@ REGION_IDS = [
 #          'slope', 'latitude', 'longitude', 'amp_ndvi_3anos', 'textG'
 #]
 
-## surface reflectance mosaic - 59 bandas selecionadas pelo featureSpace
+## surface reflectance mosaic - 59 bands pre-selected by cerrado 
 BAND_NAMES = [
                 "cai_median", "cai_median_dry", "evi2_amp", "evi2_median", "evi2_median_dry", "evi2_median_wet",
                 "gcvi_median", "gcvi_median_dry", "gcvi_median_wet", "gcvi_stdDev","green_median", "green_median_wet", 
@@ -76,41 +79,29 @@ BAND_NAMES = [
                 'latitude', 'longitude', 'amp_ndvi_3anos', 'textG'
 ]
 
-## surface reflectance mosaic - 48 bandas que eram usadas nos antigos mosaicos
-#BAND_NAMES = [
-#          "red_median_dry", "red_median", "swir2_median", "hallcover_median", "gv_stdDev",
-#          "shade_median", "red_min", "swir1_median", "ndfi_median", "gv_amp", "nir_median_wet", 
-#          "ndwi_median", "swir1_median_wet", "green_min", "gcvi_median_wet", "ndvi_median_wet", 
-#          "evi2_median_wet", "ndvi_median_dry", "nir_median", "green_median", "evi2_amp", "swir1_median_dry",
-#          "ndvi_median", "savi_median_dry", "nir_median_dry", "savi_median_wet", "wefi_median_wet", "evi2_median_dry",
-#          "gvs_median_wet", "ndfi_median_wet", "gcvi_median", "ndfi_median_dry", "pri_median_dry", "gvs_median",
-#          "red_median_wet", "ndfi_amp", "swir2_median_dry", "slope", "green_median_dry", "evi2_stdDev", "pri_median",
-#          "wefi_amp", "nir_stdDev", "ndvi_amp", "ndvi_stdDev", "wefi_stdDev", "savi_stdDev"
-#  ]
-
-
-## definir assets
-### amostras auxiliares 
+## define assets to be used 
+### auxiliary mosaics
 ASSET_ADD = 'projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/auxMosaics/aux_col_6_reg_'
-### mosaicos da coleção 6 - surface reflectance
+### collection 6.0 surface reflectance mosaics - landsat 5 and 8
 ASSET_MOSAICS = 'projects/nexgenmap/MapBiomas2/LANDSAT/mosaics'
-### mosaicos da coleção 6 - surface reflectance
+### collection 6.0 surface reflectance mosaics - landsat 7
 ASSET_MOSAICS_L7 = 'projects/nexgenmap/MapBiomas2/LANDSAT/mosaics-landsat-7'
-### amostras de treinamento 
+### training samples
 ASSET_SAMPLES = 'projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/training_v3/train_col_6_CERRADO_reg'
-### output da classificação 
-ASSET_OUTPUT = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/'
-### asset de regiões (vetor)
+### classification regions (vector)
 ASSET_REGIONS = 'projects/mapbiomas-workspace/AUXILIAR/CERRADO/cerrado_regioes_c6'
-### asset das regiões (raster)
+### classification regions (raster - 1 band per region) 
 ASSET_REGIONS_RASTER = "users/dhconciani/base/cerrado_regioes_c6_rasterBands"
-### asset de biomas (vetor)
+### biomes (vector)
 ASSET_BIOMESVECTOR = 'projects/mapbiomas-workspace/AUXILIAR/biomas-2019'
-### asset de biomas (raster)
+### biomes (raster - single band)
 ASSET_BIOMESRASTER = 'projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster'
 
+### define imageCollection to receive classification data
+ASSET_OUTPUT = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/'
 
-## classificação
+
+## define function to mask classification by region 
 def maskCollections(ic, reg):
     
     def maskImg (img):
@@ -120,24 +111,25 @@ def maskCollections(ic, reg):
     masked = ic.map(maskImg)
     return masked
 
-# Script
+## import assets as session objects 
 regions = ee.FeatureCollection(ASSET_REGIONS)
 ic_regions = ee.ImageCollection(ASSET_REGIONS_RASTER)
 
-
+## for each classification region:
 for regionId in REGION_IDS:
-
+    ## select only the classification region
     region = regions.filterMetadata('mapb', 'equals', int(regionId)).geometry().bounds()
     region_ras = ic_regions.filterMetadata('mapb', 'equals', regionId)
-    #YEARS = DICT_YEARS[regionId]
-    YEARS = YEARS
     print("region:", regionId)
-
+    
+    ## for each year:
+    YEARS = YEARS
     for year in YEARS:
         print("year:", year)
+        ## compute time since first year to be used as property
         time_marker = int(year) - 1985
         #print ("years since first year:", time_marker)
-
+        ## read auxiliary mosaic and by clip for the region [i] and year [j]
         mosaicAux = ee.Image(ASSET_ADD + regionId+ '_ano_' + str(year))\
             .rename([
                 'amp_ndvi_3anos',
@@ -148,18 +140,18 @@ for regionId in REGION_IDS:
             ])\
             .updateMask(ee.Image(region_ras.first()))
         
-        
+        ## degrade traing samples for water (avoid comission) 
         water = ee.FeatureCollection(ASSET_SAMPLES + regionId + '_ano_' + str(year) + '_' + SAMPLES_VERSION)\
             .filter(ee.Filter.eq("reference", 33))\
             .filter(ee.Filter.eq("slope", 0))\
             .limit(175)
-
+        
+        ## merge samples
         samples = ee.FeatureCollection(ASSET_SAMPLES + regionId + '_ano_' + str(year) + '_' + SAMPLES_VERSION)\
             .filter(ee.Filter.neq("reference", 33))\
             .merge(water)
         
-        ## compute samples size
-        
+        ## compute samples size (deprecated)        
         print("number of samples:", samples.size().getInfo())
         ## create 80% subsample when size is greater than 110k  and lower than 140k
         if (samples.size().getInfo() > 110000) and (samples.size().getInfo() < 140000):
@@ -197,22 +189,23 @@ for regionId in REGION_IDS:
                 .filterMetadata('version', 'equals', '2')
             print ('ETM+')
           
-
-       
+        ## import landsat mosaic for the year i
         mosaicTotal = mosaics\
             .filterMetadata('year', 'equals', int(year))\
-
+        
+        ## clip mosaic for the region j
         mosaicTotal = maskCollections(mosaicTotal, region_ras)\
             .mosaic()
-
+        
+        ## add auxiliary mosaic bands
         mosaicTotal = ee.Image(mosaicTotal)\
             .updateMask(ee.Image(region_ras.first()))\
             .addBands(mosaicAux)\
             .select(BAND_NAMES)\
         
-        #print(mosaicTotal.bandNames().getInfo())
         mosaicTotal = mosaicTotal
-        # samples
+        
+        # filter samples only for classes that cerrado maps
         samplesTotal = samples.filter(
             ee.Filter.inList(
                 "reference",
@@ -220,12 +213,14 @@ for regionId in REGION_IDS:
             )
         )
 
-        # classification
+        # train classifier 
         classifier = ee.Classifier.smileRandomForest(numberOfTrees=RF_TREES)\
             .train(samplesTotal, 'reference', BAND_NAMES)
-
+         
+        # perform classification and mask only to region 
         classified = mosaicTotal.classify(classifier).mask(mosaicTotal.select('red_median'))
-
+        
+        # add year as bandname 
         classified = classified.rename(['classification_' + str(year)])\
             .toInt8()
 
@@ -237,19 +232,20 @@ for regionId in REGION_IDS:
             .set('mapb', int(regionId))\
             .set('year', int(year))
         
-        ## If first year, create image, else, add bands and stack data 
+        ## if time marker equals to zero, create and recipe 
         if (time_marker == 0): 
             stacked_classification = classified
-         
+        ## else, stack into recipe
         else: 
             stacked_classification = stacked_classification.addBands(classified)            
         
         print ('=======================================')  
-        
+    
+    ## print terminal 
     print ('exporting stacked classification')
     name = BIOME_NAME + "_reg_" + str(regionId) + '_85a20' + '_v_' + OUTPUT_VERSION
     
-    # export to asset
+    # export as GEE asset
     task = ee.batch.Export.image.toAsset(
         image=stacked_classification.toInt8(),
         description=name,
@@ -259,7 +255,8 @@ for regionId in REGION_IDS:
         maxPixels=1e13,
         region=region
     )
-
+    
+    ## start task
     task.start()
         
     print ('------------> NEXT REGION --------->')
