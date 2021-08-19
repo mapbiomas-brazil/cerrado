@@ -117,8 +117,8 @@ var trainingMask = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-we
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 45,
-    'palette': palettes.get('classification5')
+    'max': 49,
+    'palette': palettes.get('classification6')
     };
     
 Map.addLayer(trainingMask, vis, 'trainingMask');
