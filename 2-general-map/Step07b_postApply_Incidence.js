@@ -1,45 +1,51 @@
-var file_out = 'gapfill_incid_v';
-var versao_out = 6;
+// Post-processing - Apply incidence filter
+// For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
-var dirout = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/';
-
+// define input
 var class4FT = ee.Image(dirout + 'CERRADO_col6_gapfill_v6');
 var image_incidence_geral = ee.Image(dirout + 'CERRADO_col6_incidMask_v6');
 
+// define output
+var dirout = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/';
+var file_out = 'gapfill_incid_v';
+var versao_out = 6;
+
+// define the incidence threshold 
 var incid_geral = 12 ;
+
+// print image
 print(image_incidence_geral);
 
-//var class4Gap = ee.Image('projects/mapbiomas-workspace/AMOSTRAS/col4/MATA_ATLANTICA/class_col4_bioma/MA_col4_v2c')
+// import mapbiomas color ramp
 var palettes = require('users/mapbiomas/modules:Palettes.js');
-var pal = palettes.get('classification2');
 var vis = {
-      bands: 'classification_2020',
-      min:0,
-      max:34,
-      palette: pal,
+      bands: 'classificationWet_2020',
+      min: 0,
+      max: 49,
+      palette: palettes.get('classification6'),
       format: 'png'
     };
-var vis2 = {
-      min:0,
-      max:34,
-      palette: pal,
-      format: 'png'
-    };
-Map.addLayer(class4FT, vis, 'class4FT');
 
+// plot image without correction
+Map.addLayer(class4FT, vis, 'gapfill');
+
+// define years to be assessed
 var anos3 = ['1986','1987','1988','1989','1990','1991','1992','1993','1994','1995',
               '1996','1997','1998','1999','2000','2001','2002','2003','2004','2005',
               '2006','2007','2008','2009','2010','2011','2012','2013','2014','2015',
               '2016','2017','2018','2019', '2020'];
 
-//Map.addLayer(class4Gap, {}, 'class GAP', false)
+// define color ramp for incidence
 var palette_incidence = ["#C8C8C8","#FED266","#FBA713","#cb701b", "#cb701b", "#a95512", "#a95512", "#662000",  "#662000", "#cb181d"];
 var palette_incidence = ['red'];
+
+// plot incidence
 Map.addLayer(image_incidence_geral, {bands: 'incidence', palette:palette_incidence, min:8, max:20}, "incidents", false);
 
+// create recipe
 var class4FT_corrigida = class4FT;
 
-
+// apply incidence filter
 var maskIncid_borda = image_incidence_geral.select('connect').lte(6)
               .and(image_incidence_geral.select('incidence').gt(incid_geral));
 maskIncid_borda = maskIncid_borda.mask(maskIncid_borda.eq(1));              
@@ -79,7 +85,7 @@ var maskIncid_anual12 = image_incidence_geral.select('connect').gt(6)
 maskIncid_anual12 = ee.Image(12).mask(maskIncid_anual12);
 //Map.addLayer(maskIncid_anual12, vis2, 'maskIncid_anual12', false)
 
-
+// blend corrections
 class4FT_corrigida = class4FT_corrigida.blend(corrige_borda);
 class4FT_corrigida = class4FT_corrigida.blend(maskIncid_anual3);
 class4FT_corrigida = class4FT_corrigida.blend(maskIncid_anual15);
@@ -93,6 +99,7 @@ Map.addLayer(class4FT_corrigida, vis, 'class4FT corrigida');
 //var connect = class4FT_corrigida.connectedPixelCount(100,false)
 //print(class4FT_corrigida)
 
+// add connections as aux band for the years j
 var anos = ['1985','1986','1987','1988','1989','1990','1991','1992','1993','1994','1995',
             '1996','1997','1998','1999','2000','2001','2002','2003', '2004','2005','2006',
             '2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017',
@@ -103,10 +110,11 @@ for (var i_ano=0;i_ano<anos.length; i_ano++){
   class4FT_corrigida = class4FT_corrigida.addBands(class4FT_corrigida.select('classification_'+ano).connectedPixelCount(100,false).rename('connect_'+ano));
 }
 
+// set properties 
 class4FT_corrigida = class4FT_corrigida.set ("version", versao_out).set('step', 'incidents');
-
 print(class4FT_corrigida);
 
+// export as GEE asset
 Export.image.toAsset({
     'image': class4FT_corrigida,
     'description': 'CERRADO_col6_' + file_out + versao_out,
