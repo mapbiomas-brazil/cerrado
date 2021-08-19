@@ -7,8 +7,8 @@ var cerrado = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 45,
-    'palette': palettes.get('classification5')
+    'max': 49,
+    'palette': palettes.get('classification6')
     };
     
 Map.addLayer(cerrado.select(['classification_2020']), vis, 'cerrado'); 
@@ -24,8 +24,8 @@ var cerrado = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 45,
-    'palette': palettes.get('classification5')
+    'max': 49,
+    'palette': palettes.get('classification6')
     };
     
 Map.addLayer(cerrado.select(['classification_2020']), vis, 'cerrado'); 
@@ -41,8 +41,8 @@ var cerrado = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 45,
-    'palette': palettes.get('classification5')
+    'max': 49,
+    'palette': palettes.get('classification6')
     };
     
 Map.addLayer(cerrado.select(['classification_2020']), vis, 'cerrado'); 
