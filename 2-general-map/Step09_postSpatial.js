@@ -1,7 +1,6 @@
 // Post-processing - Spatial filter 
 // For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
-
 // define geometry (raw extent of cerrado)
 var geometry = /* color: #98ff00 */ee.Geometry.Polygon(
         [[[-42.306314047317365, -1.7207103925816054],
