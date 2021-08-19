@@ -1,5 +1,5 @@
 // extract spectral signatures from Landsat SR mosaics by using LAPIG reference points
-// Dhemerson E. Conciani - IPAM (dhemerson.costa@ipam.org.br)
+// Dhemerson E. Conciani - IPAM (dhemerson.costa@ipam.org.br).
 
 // define inpuit parameters
 var biomeName = 'CERRADO';  // biome
