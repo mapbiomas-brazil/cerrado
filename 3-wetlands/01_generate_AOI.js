@@ -1,5 +1,4 @@
-// Script entirely from GT Água (AUTHOR)
-// Adapted by dhemerson.costa@ipam.org.br to export  a reclassificaiton of "planforms" layer // 
+// Adapted by dhemerson.costa@ipam.org.br to export a reclassification of "planforms" layer // 
 
 // Generated AOI mask is based on HAND (Height Above Nearest Drainage [m]), references:
 // 1. Camilo et al., 2008 - HAND, a new terrain descriptor using SRTM-DEM: Mapping terra-firme rainforest environments in Amazonia
