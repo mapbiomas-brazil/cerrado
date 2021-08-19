@@ -19,8 +19,8 @@ var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'bands': ['reference'],
     'min': 0,
-    'max': 34,
-    'palette': palettes.get('classification2')
+    'max': 49,
+    'palette': palettes.get('classification6')
 };
 
 // Cassia's vereda reference points
