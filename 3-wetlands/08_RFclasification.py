@@ -1,7 +1,7 @@
 ## Run smileRandomForest classifier - Mapbiomas Collection 6.0
 ## For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
-## initilize geepy API
+## initilize geepy API.
 import ee
 ee.Initialize()
 
