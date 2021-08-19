@@ -1,5 +1,5 @@
 /**
- * Script modelo para padronização dos assets do Mapbiomas
+ * Script modelo para padronização dos assets do Mapbiomas~
  */
 
 var palette = require('users/mapbiomas/modules:Palettes.js').get('classification5');
