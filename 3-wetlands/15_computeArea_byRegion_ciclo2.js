@@ -1,31 +1,27 @@
-// Calcular a área de LCLU para cada região com base nas amostras estáveis
-// Não calcular para área úmida, esse valor virá de um ratio dinânico no próximo passo
-// Esta tabela será usada para gerar as amostras de treinamento
+// Compute area by ecoregion
+// For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
-// definir palheta
+// mapbiomas color pallete
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 34,
-    'palette': palettes.get('classification2')
+    'max': 49,
+    'palette': palettes.get('classification6')
 };
 
-// strings de identificação 
+// output directory
 var dirout = 'projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-wetlands/input_tables/';
 
-// definir diretórios 
-// regiões de classificação do Cerrado
+// cerrado classification regions
 var regioesCollection = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/CERRADO/cerrado_regioes_c6');
 
-// função para calcular a área total em km²
+// define function to compute area in squared kilometers
 var pixelArea = ee.Image.pixelArea().divide(1000000);
 
-// carregar amostras estáveis 
-// Usar as amostras estáveis vai priorizar o mapeamento majoritário de classes mais estáveis
-// em cada região, potencialmente diminuindo comissão em áreas úmidas
+// training mask
 var stable = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-wetlands/input_masks/trainingMask_wetlands_c6_ciclo2_v53');
 
-// calcular área de classes estáveis em cada região 
+// generate a image by each one of the classes
   var area03 = pixelArea.mask(stable.eq(3));  // forest
   var area04 = pixelArea.mask(stable.eq(4));  // savanna
   var area11 = pixelArea.mask(stable.eq(11)); // wetland
@@ -35,10 +31,10 @@ var stable = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-wetlands
   var area25 = pixelArea.mask(stable.eq(25)); // other non-vegetated areas
   var area33 = pixelArea.mask(stable.eq(33)); // water
 
-// plot stable samples
+// plot stable pixels
 Map.addLayer(stable, vis, 'stableSamples');
 
-// compute stableSamples area forEach region 
+// define .map function to apply area computation over each classification region
 var processaReg = function(regiao) {
   regiao = regiao.set('floresta', ee.Number(area03.reduceRegion({reducer: ee.Reducer.sum(),geometry: regiao.geometry(), scale: 30,maxPixels: 1e13}).get('area')));
   regiao = regiao.set('savana', ee.Number(area04.reduceRegion({reducer: ee.Reducer.sum(),geometry: regiao.geometry(), scale: 30,maxPixels: 1e13}).get('area')));
@@ -51,14 +47,15 @@ var processaReg = function(regiao) {
   return regiao;
 };
 
+// apply function 
 var regiao2 = regioesCollection.map(processaReg);
 print(regiao2);
 
-// exportar tabela para o asset
+// export computation as GEE asset
 Export.table.toAsset(regiao2, 'areabyRegion_ciclo2_v53', 
                      dirout + 'areabyRegion_ciclo2_v53');
 
-// adicionar no mapa
+// plot 
 var blank = ee.Image(0).mask(0);
 var outline = blank.paint(regioesCollection, 'AA0000', 2); 
 var visPar = {'palette':'000000','opacity': 0.6};
