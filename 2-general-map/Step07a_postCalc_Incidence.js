@@ -1,41 +1,46 @@
-//==================Edicao Usuario====================================================================
-//Trocar o asset abaixo
+// Post-processing - Compute per pixel incidence (number of changes) 
+// For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
+
+// define input 
 var version_in = 'CERRADO_col6_gapfill_v6';
+var bioma = "CERRADO";
+
+// define output
 var version_out = 6;
 var dirout = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/';
 
+// import mapbiomas color ramp
 var palettes = require('users/mapbiomas/modules:Palettes.js');
+var vis = {
+    'min': 0,
+    'max': 49,
+    'palette': palettes.get('classification6')
+};
 
+// load input
 var imc_carta2 = ee.Image(dirout + version_in);
 
+// define years to be assessed
+var anos = ['1985', '1986', '1987','1988', '1989', '1990','1991', '1992', '1993','1994', '1995', 
+            '1996','1997', '1998', '1999','2000', '2001', '2002','2003', '2004', '2005','2006', 
+            '2007', '2008','2009', '2010', '2011','2012', '2013', '2014','2015', '2016', '2017', 
+            '2018', '2019', '2020'];
+
+// define reclassification rules
+var classeIds =    [3, 4, 12, 15, 19, 25, 33];
+var newClasseIds = [3, 3, 12, 21, 21, 21, 27];
+
+// define max frequency for each class
 var options = {
     "classFrequency": {
-        "3": 36, // Ex: Para ser considerada persistente, esta classe precisa ter frequência maior que 15 na série temporal.
-        "4": 36,
+        "3":  36, 
+        "4":  36,
         "12": 36,
         "15": 36,
         "19": 36,
         "33": 36,
     },
 };
-
-var vis = {
-    'min': 0,
-    'max': 34,
-    'palette': palettes.get('classification2')
-};
-var visParMedian = {'bands':['median_swir1','median_nir','median_red'], 'gain':[0.08, 0.06,0.2],'gamma':0.5 };
-
-//editar os parametros
-var anos = ['1985', '1986', '1987','1988', '1989', '1990','1991', '1992', '1993','1994', '1995', 
-            '1996','1997', '1998', '1999','2000', '2001', '2002','2003', '2004', '2005','2006', 
-            '2007', '2008','2009', '2010', '2011','2012', '2013', '2014','2015', '2016', '2017', 
-            '2018', '2019', '2020'];
-            
-var classeIds =  [3, 4, 12, 15, 19, 25, 33];
-var newClasseIds = [3, 3, 12, 21, 21, 21, 27];
-var bioma = "CERRADO";
-
 
 var colList = ee.List([]);
 for (var i_ano=0;i_ano<anos.length; i_ano++){
@@ -81,13 +86,6 @@ Map.addLayer(imc_carta4, vis, 'imc_carta4');
 var image_incidence = ee.Image(imc_carta4.iterate(incidence, imagefirst)).select(["incidence"]);
 //image_incidence = image_incidence.clip(geometry);
 
-var vis2 = {
-    'bands': '2018',
-    'min': 0,
-    'max': 34,
-    'palette': palettes.get('classification2')
-};
-
 var palette_incidence = ["#C8C8C8","#FED266","#FBA713","#cb701b", "#cb701b", "#a95512", "#a95512", "#662000",  "#662000", "#cb181d"];
 imc_carta2 = imc_carta2.select(['classification_1985', 'classification_1986', 'classification_1987', 'classification_1988', 'classification_1989', 
                                 'classification_1990', 'classification_1991', 'classification_1992', 'classification_1993', 'classification_1994', 
@@ -104,6 +102,7 @@ imc_carta2 = imc_carta2.select(['classification_1985', 'classification_1986', 'c
                                 
 Map.addLayer(imc_carta2, vis2, 'MapBiomas'); 
 
+// build incidence image and paste metadata
 image_incidence = image_incidence.mask(image_incidence.gt(10))
                        .set("version", version_out)
                        .set("biome", "CERRADO")
@@ -115,6 +114,7 @@ image_incidence = image_incidence.addBands(image_moda);
 print(image_incidence);
 Map.addLayer(image_incidence, {}, "incidents");
 
+// Export as GEE asset
 Export.image.toAsset({
     'image': image_incidence,
     'description': 'CERRADO_col6_incidMask_v'+ version_out,
