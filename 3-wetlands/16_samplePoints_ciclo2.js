@@ -1,39 +1,38 @@
-// sortear pontos de amostragem  (ciclo 2)
+// Sort stratified spatialPoints by region using stable pixels
+// For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
-// definir parametros
-var sampleSize = 6000;    // number of samples by year regions (all classes, except wetlands)
-var nSamplesMin = 600;    // numero minimo de amostras 10%
-//var ratioConfusion = 10;  // percentage of samples for the "confusion class"
+// define sample size
+var sampleSize = 5000;    // number of samples by region per year 
+var nSamplesMin = 500;    // minimum sample size by class
 
 // number of wetland points by region/year
 var sampleConfusionSize = 600;
 
-// output directory
+// output path
 var dirout = 'projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/wetlands/samples_v3/';    // exportation asset
 
-// definir palheta
+// import mapbiomas module
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
+    'bands': ['reference'],
     'min': 0,
-    'max': 34,
-    'palette': palettes.get('classification2')
+    'max': 49,
+    'palette': palettes.get('classification6')
 };
 
 // Cassia's vereda reference points
 var ref_veredas = ee.FeatureCollection('users/dhconciani/base/veredas_cassia_pontos');
 
-// training mask asset 
+// training mask 
 var training_mask = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-wetlands/input_masks/trainingMask_wetlands_c6_ciclo2_v53');
 
 // AOI mask
 var aoi = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-wetlands/input_masks/aoi_wetlands_c6');
 
-/// Feature de área por região
+/// area by region (vector)
 var regioes = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-wetlands/input_tables/areabyRegion_ciclo2_v53');
 
-// criar mascara de sorteio
-// base = 50[AOI], 21 [NAOI]
-// training = 11 [wetland] + other classes mapbiomas cerrado
+// generate sampling mask (value 50 equals to AOI, value 21 equals to out of AOI)
 var AOIMask = aoi.remap([0,  1, 2],
                         [21, 50, 50]);
 
@@ -51,10 +50,8 @@ var sampleMask = AOIMask.where(AOIMask.eq(21).and(training_mask.eq(3)), 3);
 Map.addLayer(sampleMask, vis, "sampleMask");
 
 // generate training points based on area distribution 
-////////////////////////////////////////////////////////
 var getTrainingSamples = function (i) {
   var feature = regioes.filter(ee.Filter.eq('mapb', i)).first();
-  
   var regiao = feature.get('mapb');
   // read stableArea of each class
   var floresta = ee.Number(feature.get('floresta'));
@@ -95,11 +92,11 @@ var getTrainingSamples = function (i) {
   var sampleNVeSize = ee.Number(nao_veg).divide(total).multiply(sampleSize).round().int16().max(nSamplesMin);
   var sampleAguSize = ee.Number(agua).divide(total).multiply(sampleSize).round().int16().max(nSamplesMin);
   
- 
+  // clip stable pixels only to feature  
   var clippedGrid = ee.Feature(feature).geometry();
-
   var referenceMap =  sampleMask.clip(clippedGrid);
-                      
+    
+  // generate points                   
   var training = referenceMap.stratifiedSample({scale:30, 
                               classBand: 'remapped', 
                               numPoints: 0, 
@@ -117,15 +114,15 @@ var getTrainingSamples = function (i) {
   return training;
  };
 
+// apply function
 var list = regioes.aggregate_array('mapb').distinct().getInfo();
-
 var mySamples = ee.FeatureCollection(list.map(getTrainingSamples)).flatten(); 
 
-Map.addLayer(ref_veredas,  {}, 'Pontos Cassia', false);
-// plotar pontos de treinamento
+// plot points
+//Map.addLayer(ref_veredas,  {}, 'Pontos Cassia', false);
 Map.addLayer(mySamples, {color:'blue'},   'Pontos de treinamento');
 
-// Export
+// export as GEE asset
 Export.table.toAsset(mySamples,
   'samples_wetland_col6_ciclo2',
   dirout + 'samples_wetland_col6_ciclo2');
