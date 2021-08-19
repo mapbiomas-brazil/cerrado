@@ -33,4 +33,4 @@ Folders are organized by key-steps and contains a set of codes following the Cer
 4. [Integration of maps](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/4-integrate-map)
 
 ## Contact
-For information request or issue/bug report, please write to dhemerson.costa@ipam.org.br
+For clarification or issue/bug report, please write to <dhemerson.costa@ipam.org.br> and/or <felipe.lenti@ipam.org.br>
