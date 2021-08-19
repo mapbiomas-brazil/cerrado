@@ -1,5 +1,7 @@
-// GAPFILL 
-// define geometry (raw extent of cerrado)
+// Post-processing - Gapfill filter
+// Use raw classification as input (one image with 36 bands per region) 
+// For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
+
 var geometry = /* color: #98ff00 */ee.Geometry.Polygon(
         [[[-42.306314047317365, -1.7207103925816054],
           [-44.415689047317365, -1.4571401339250152],
@@ -12,50 +14,47 @@ var geometry = /* color: #98ff00 */ee.Geometry.Polygon(
           [-40.548501547317365, -17.52511660076233],
           [-40.636392172317365, -2.774571568871124]]]);
 
-// version 
-var version = 54;
-var vesion_out = '54';
-var VeightConnected = true;
-var prefixo_out = 'CERRADO_col6_wetlands_gapfill_v';
+// define strings to be used as metadata
+// input version
 var dircol6 = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test';
-var dirout = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/';
-
-var ano = 2020;
+var version = 54;
 var bioma = "CERRADO";
 
-var visParMedian2 = {'bands':['median_swir1','median_nir','median_red'], 'gain':[0.08, 0.06,0.2],'gamma':0.5 };
-var dirasset = 'projects/nexgenmap/MapBiomas2/LANDSAT/mosaics';
-var dirasset7 = 'projects/nexgenmap/MapBiomas2/LANDSAT/mosaics-landsat-7';
-var visParMedian2 = {bands: ['swir1_median', 'nir_median', 'red_median'],gain: [0.08, 0.06, 0.2],gamma: 0.85};
+// Queen's case
+var VeightConnected = true;
 
+// define prefix for the output filename
+var dirout = 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/';
+var prefixo_out = 'CERRADO_col6_wetlands_gapfill_v';
+var vesion_out = '54';
 
-    var mosaicoTotal = ee.ImageCollection(dirasset)
-                        .filterMetadata('biome', 'equals', bioma)
-                        .filterMetadata('year', 'equals', ano)
-                        .mosaic();
-    Map.addLayer(mosaicoTotal, visParMedian2, 'Img_Year_' +ano, false);
-
+// define year to plot a inspect
+var ano = 2020;
 
 ////*************************************************************
 // Do not Change from these lines
 ////*************************************************************
 
+// import mapbiomas module
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 34,
-    'palette': palettes.get('classification2')
+    'max': 49,
+    'palette': palettes.get('classification6')
 };
 
+// read raw classifiation 
 var image = ee.ImageCollection(dircol6)
             .filterMetadata('version', 'equals', version)
             .filterMetadata('collection', 'equals', '6')
             .filterMetadata('biome', 'equals', bioma)
             .min();
-            
+
+// filter image
 image = image.mask(image.neq(0));
 print(image);
 
+// define years to be used in the filter
 var years = [
     1985, 1986, 1987, 1988,
     1989, 1990, 1991, 1992,
@@ -70,6 +69,7 @@ var years = [
 /**
  * User defined functions
  */
+
 var applyGapFill = function (image) {
 
     // apply the gap fill form t0 until tn
@@ -176,7 +176,7 @@ print(imageFilledtnt0);
 
 print(dirout+prefixo_out+vesion_out);
 
-// export asset
+// export as GEE asset
 Export.image.toAsset({
     'image': imageFilledtnt0,
     'description': prefixo_out+vesion_out,
