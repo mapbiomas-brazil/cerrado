@@ -1,0 +1,6 @@
+"x"
+"1" "evi2_median"
+"2" "ndvi_median"
+"3" "red_median"
+"4" "savi_median"
+"5" "evi2_median_dry"
