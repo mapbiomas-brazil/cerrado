@@ -1,4 +1,4 @@
-// Generate stable pixels by using Mapbiomas Collection 5.0 data.
+// Generate stable pixels by using Mapbiomas Collection 5.0 data  ~
 // For clarification, write to <dhemerson.costa@ipam.org.br> and <felipe.lenti@ipam.org.br>
 
 // cerrado bound box
