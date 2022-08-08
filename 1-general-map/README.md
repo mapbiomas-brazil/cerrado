@@ -8,7 +8,6 @@ var vis = {
     'max': 49,
     'palette': require('users/mapbiomas/modules:Palettes.js').get('classification6')
     };
-
 // plot 
 Map.addLayer(trainingMask, vis, 'trainingMask'); 
 ```
