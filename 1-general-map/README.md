@@ -1,4 +1,4 @@
-## 1_trainingMask.js
+## 01_trainingMask.js
 Build the training mask based on stable pixels (from 1985 to 2020), reference maps, and GEDI-based filtering 
 ```javascript
 // read training mask
@@ -13,8 +13,8 @@ Map.addLayer(trainingMask, vis, 'trainingMask');
 ```
 [Link to script](https://code.earthengine.google.com/2fe1a3f5958c0f22901e5541a1fd6429)
 
-## Step02_calcArea.js
-Compute area (*squared-kilometer*) for each class in each classification region. These calculations are used as input in next steps to balance training samples.
+## 02_computeProportion.js
+Calculates the area of each class in each classification region. These calculations will estimate the number of training samples in each class. 
 
 ## Step03_samplePoints.js
 Sort 7,000 sample points over stable pixels distributed proportionally to each class area for each region (x38).
