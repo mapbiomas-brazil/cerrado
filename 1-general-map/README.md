@@ -16,14 +16,15 @@ Map.addLayer(trainingMask, vis, 'trainingMask');
 ## 02_computeProportion.js
 Calculates the area of each class in each classification region. These calculations will estimate the number of training samples in each class. 
 
-## Step03_samplePoints.js
-Sort 7,000 sample points over stable pixels distributed proportionally to each class area for each region (x38).
+## 03_samplePoints.js
+Uses the stable pixels to sort 7,000 training samples for each classification region (38). 
 ```javascript
-// plot sample points
-var samplePoints = ee.FeatureCollection('projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/samples_v4/samples_col6_CERRADO_v4');
+// read training samples
+var samplePoints = ee.FeatureCollection('users/dh-conciani/collection7/sample/points/samplePoints_v7');
+// plot
 Map.addLayer(samplePoints, {}, 'samplePoints');
 ```
-[Link to script](https://code.earthengine.google.com/c14e10f0531238429014ab0fb21fcb7d)
+[Link to script](https://code.earthengine.google.com/4c949df27bf33031a0e5af7f85e1224d)
 
 ## Step04a_auxMosaics.js
 Create auxiliary mosaics with *slope*, *textG*, *latitude*, and *longitude* bands and export as a GEE asset.
