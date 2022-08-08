@@ -35,8 +35,8 @@ Map.addLayer(trainingPoints, {}, 'trainingSamples');
 ```
 [Link to script](https://code.earthengine.google.com/98596da0d1e5dbec9bb66e0c274a694b)
 
-## Step05_rfClassification.py
-Perform the classification of the Cerrado Landsat SR mosaics by using the `ee.Classifier.smileRandomForest()` added with auxiliary mosaics and training samples.
+## 05_rfClassification.R
+Performs the model training (`ee.Classifier.smileRandomForest()` ) and classification of the annual Landsat mosaics for each region. 
 
 ## Step06_postGapfill.js
 No-data values (gaps) produced by cloud covered (or cloud shadow) pixels in a given image, were filled by the temporally nearest future valid classification. If no future valid classification was available, then the no-data value was replaced by its previous valid classification. Therefore, gaps should only remain in the final classified map when a given pixel was consistently classified as no-data throughout the entire temporal series.
