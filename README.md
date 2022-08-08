@@ -1,6 +1,6 @@
 <div>
-    <img src='./2-general-map/www/ipam_logo.jpg' height='auto' width='160' align='right'>
-    <h1>Cerrado biome - Collection 6.0</h1>
+    <img src='https://github.com/mapbiomas-brazil/cerrado/blob/master/2-general-map/www/ipam_logo.jpg?raw=true' height='auto' width='160' align='right'>
+    <h1>Cerrado biome - Collection 7.0</h1>
 </div>
 
 Developed by [Instituto de Pesquisa Ambiental da Amazônia - IPAM](https://ipam.org.br/)<br>
@@ -24,13 +24,10 @@ For detailed information about the classification and methodology, please read t
 ## Workflow
 Folders are organized by key-steps and contains a set of codes following the Cerrado biome classification schema:
 
-1. [Feature space selection](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/1-feature-space)
+1. [General map classification](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas70/1-general-map)
 
-2. [General map classification](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/2-general-map)
+2. [Rocky Outcrop classification](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas70/2-rocky-outcrop)
 
-3. [Wetlands classification](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/3-wetlands)
-
-4. [Integration of maps](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas60/4-integrate-map)
 
 ## Contact
-For clarification or issue/bug report, please write to <dhemerson.costa@ipam.org.br> and/or <felipe.lenti@ipam.org.br>
+For clarification or issue/bug report, please write to <dhemerson.costa@ipam.org.br>

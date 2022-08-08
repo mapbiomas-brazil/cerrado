@@ -1,0 +1,1340 @@
+"","value","variable","balancing","mapb"
+"Accuracy",0.640625,"Accuracy","raw",6
+"Kappa",0.479934002494338,"Kappa","raw",6
+"AccuracyLower",0.602088716067631,"AccuracyLower","raw",6
+"AccuracyUpper",0.677857274232971,"AccuracyUpper","raw",6
+"AccuracyNull",0.496875,"AccuracyNull","raw",6
+"AccuracyPValue",0.000000000000167810348315706,"AccuracyPValue","raw",6
+"McnemarPValue",NA,"McnemarPValue","raw",6
+"Class: 12",0.61862450957766,"Class: 12","raw",6
+"Class: 21",0.769121840696902,"Class: 21","raw",6
+"Class: 3",0.812217194570136,"Class: 3","raw",6
+"Class: 33",1,"Class: 33","raw",6
+"Class: 4",0.710131665904123,"Class: 4","raw",6
+"Accuracy1",0.668231611893584,"Accuracy","filtered",6
+"Kappa1",0.515084262825561,"Kappa","filtered",6
+"AccuracyLower1",0.630228183582655,"AccuracyLower","filtered",6
+"AccuracyUpper1",0.704671780843841,"AccuracyUpper","filtered",6
+"AccuracyNull1",0.496087636932707,"AccuracyNull","filtered",6
+"AccuracyPValue1",0.00000000000000000113413654667819,"AccuracyPValue","filtered",6
+"McnemarPValue1",NA,"McnemarPValue","filtered",6
+"Class: 121",0.593966712898752,"Class: 12","filtered",6
+"Class: 211",0.793742774849619,"Class: 21","filtered",6
+"Class: 31",0.818898292277467,"Class: 3","filtered",6
+"Class: 331",1,"Class: 33","filtered",6
+"Class: 41",0.729991849002776,"Class: 4","filtered",6
+"Accuracy2",0.639625585023401,"Accuracy","filtered_w_balancing",6
+"Kappa2",0.481507808670075,"Kappa","filtered_w_balancing",6
+"AccuracyLower2",0.601102527622726,"AccuracyLower","filtered_w_balancing",6
+"AccuracyUpper2",0.676855962991164,"AccuracyUpper","filtered_w_balancing",6
+"AccuracyNull2",0.497659906396256,"AccuracyNull","filtered_w_balancing",6
+"AccuracyPValue2",0.000000000000314836108824335,"AccuracyPValue","filtered_w_balancing",6
+"McnemarPValue2",NA,"McnemarPValue","filtered_w_balancing",6
+"Class: 122",0.61705069124424,"Class: 12","filtered_w_balancing",6
+"Class: 212",0.76817110925057,"Class: 21","filtered_w_balancing",6
+"Class: 32",0.819870540418486,"Class: 3","filtered_w_balancing",6
+"Class: 332",0.999213836477987,"Class: 33","filtered_w_balancing",6
+"Class: 42",0.713671528218136,"Class: 4","filtered_w_balancing",6
+"Accuracy3",0.645533141210375,"Accuracy","raw",8
+"Kappa3",0.495854004252303,"Kappa","raw",8
+"AccuracyLower3",0.608663872519172,"AccuracyLower","raw",8
+"AccuracyUpper3",0.68115888478891,"AccuracyUpper","raw",8
+"AccuracyNull3",0.410662824207493,"AccuracyNull","raw",8
+"AccuracyPValue3",0.0000000000000000000000000000000000104708979332279,"AccuracyPValue","raw",8
+"McnemarPValue3",NA,"McnemarPValue","raw",8
+"Class: 123",0.765899255009963,"Class: 12","raw",8
+"Class: 213",0.718482443482444,"Class: 21","raw",8
+"Class: 34",0.793516852680348,"Class: 3","raw",8
+"Class: 333",1,"Class: 33","raw",8
+"Class: 43",0.71172736241582,"Class: 4","raw",8
+"Accuracy4",0.639367816091954,"Accuracy","filtered",8
+"Kappa4",0.475930342438015,"Kappa","filtered",8
+"AccuracyLower4",0.602444005129578,"AccuracyLower","filtered",8
+"AccuracyUpper4",0.675104356127288,"AccuracyUpper","filtered",8
+"AccuracyNull4",0.410919540229885,"AccuracyNull","filtered",8
+"AccuracyPValue4",0.000000000000000000000000000000000584448825408516,"AccuracyPValue","filtered",8
+"McnemarPValue4",NA,"McnemarPValue","filtered",8
+"Class: 124",0.772795893719807,"Class: 12","filtered",8
+"Class: 214",0.722660181147266,"Class: 21","filtered",8
+"Class: 35",0.718356790378116,"Class: 3","filtered",8
+"Class: 334",0.999276410998553,"Class: 33","filtered",8
+"Class: 44",0.7009977827051,"Class: 4","filtered",8
+"Accuracy5",0.651296829971182,"Accuracy","filtered_w_balancing",8
+"Kappa5",0.493351192200019,"Kappa","filtered_w_balancing",8
+"AccuracyLower5",0.614535677354189,"AccuracyLower","filtered_w_balancing",8
+"AccuracyUpper5",0.686765085025425,"AccuracyUpper","filtered_w_balancing",8
+"AccuracyNull5",0.412103746397695,"AccuracyNull","filtered_w_balancing",8
+"AccuracyPValue5",0.000000000000000000000000000000000000570212603839208,"AccuracyPValue","filtered_w_balancing",8
+"McnemarPValue5",NA,"McnemarPValue","filtered_w_balancing",8
+"Class: 125",0.767472998870458,"Class: 12","filtered_w_balancing",8
+"Class: 215",0.711989416838824,"Class: 21","filtered_w_balancing",8
+"Class: 36",0.768034835771944,"Class: 3","filtered_w_balancing",8
+"Class: 335",0.999274310595065,"Class: 33","filtered_w_balancing",8
+"Class: 45",0.710758604140957,"Class: 4","filtered_w_balancing",8
+"Accuracy6",0.83562540929928,"Accuracy","raw",18
+"Kappa6",0.758977874061055,"Kappa","raw",18
+"AccuracyLower6",0.816067775920383,"AccuracyLower","raw",18
+"AccuracyUpper6",0.853882528401055,"AccuracyUpper","raw",18
+"AccuracyNull6",0.407334643091028,"AccuracyNull","raw",18
+"AccuracyPValue6",0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000130213830272766,"AccuracyPValue","raw",18
+"McnemarPValue6",NA,"McnemarPValue","raw",18
+"Class: 126",0.770065141645205,"Class: 12","raw",18
+"Class: 216",0.94835455472853,"Class: 21","raw",18
+"Class: 37",0.901688547014621,"Class: 3","raw",18
+"Class: 336",0.998688524590164,"Class: 33","raw",18
+"Class: 46",0.795375827129859,"Class: 4","raw",18
+"Accuracy7",0.830508474576271,"Accuracy","filtered",18
+"Kappa7",0.751752434611253,"Kappa","filtered",18
+"AccuracyLower7",0.810779514233728,"AccuracyLower","filtered",18
+"AccuracyUpper7",0.84896299834485,"AccuracyUpper","filtered",18
+"AccuracyNull7",0.405475880052151,"AccuracyNull","filtered",18
+"AccuracyPValue7",0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000321571513406153,"AccuracyPValue","filtered",18
+"McnemarPValue7",NA,"McnemarPValue","filtered",18
+"Class: 127",0.751374113475177,"Class: 12","filtered",18
+"Class: 217",0.938187934380422,"Class: 21","filtered",18
+"Class: 38",0.904585871833926,"Class: 3","filtered",18
+"Class: 337",0.99934725848564,"Class: 33","filtered",18
+"Class: 47",0.797668108926302,"Class: 4","filtered",18
+"Accuracy8",0.833769633507853,"Accuracy","filtered_w_balancing",18
+"Kappa8",0.756778775170519,"Kappa","filtered_w_balancing",18
+"AccuracyLower8",0.814138701203294,"AccuracyLower","filtered_w_balancing",18
+"AccuracyUpper8",0.852108227282748,"AccuracyUpper","filtered_w_balancing",18
+"AccuracyNull8",0.407068062827225,"AccuracyNull","filtered_w_balancing",18
+"AccuracyPValue8",0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000122332348380308,"AccuracyPValue","filtered_w_balancing",18
+"McnemarPValue8",NA,"McnemarPValue","filtered_w_balancing",18
+"Class: 128",0.758375619454583,"Class: 12","filtered_w_balancing",18
+"Class: 218",0.940811133966872,"Class: 21","filtered_w_balancing",18
+"Class: 39",0.902530823449245,"Class: 3","filtered_w_balancing",18
+"Class: 338",0.999017038007864,"Class: 33","filtered_w_balancing",18
+"Class: 48",0.807754447285427,"Class: 4","filtered_w_balancing",18
+"Accuracy9",0.70460358056266,"Accuracy","raw",15
+"Kappa9",0.559115115955541,"Kappa","raw",15
+"AccuracyLower9",0.671259299848647,"AccuracyLower","raw",15
+"AccuracyUpper9",0.73639645980998,"AccuracyUpper","raw",15
+"AccuracyNull9",0.493606138107417,"AccuracyNull","raw",15
+"AccuracyPValue9",0.00000000000000000000000000000000426208006674265,"AccuracyPValue","raw",15
+"McnemarPValue9",0.0000943890299664558,"McnemarPValue","raw",15
+"Class: 129",0.669095227150847,"Class: 12","raw",15
+"Class: 219",0.846522216988538,"Class: 21","raw",15
+"Class: 310",0.791972573839662,"Class: 3","raw",15
+"Class: 339",0.848704663212435,"Class: 33","raw",15
+"Class: 49",0.723133180646375,"Class: 4","raw",15
+"Accuracy10",0.708812260536398,"Accuracy","filtered",15
+"Kappa10",0.567137941987309,"Kappa","filtered",15
+"AccuracyLower10",0.675607508658236,"AccuracyLower","filtered",15
+"AccuracyUpper10",0.740435575055337,"AccuracyUpper","filtered",15
+"AccuracyNull10",0.491698595146871,"AccuracyNull","filtered",15
+"AccuracyPValue10",0.0000000000000000000000000000000000533463489422759,"AccuracyPValue","filtered",15
+"McnemarPValue10",NA,"McnemarPValue","filtered",15
+"Class: 1210",0.626683042212518,"Class: 12","filtered",15
+"Class: 2110",0.856751288912093,"Class: 21","filtered",15
+"Class: 311",0.785648419817252,"Class: 3","filtered",15
+"Class: 3310",0.848706338939198,"Class: 33","filtered",15
+"Class: 410",0.764863790017896,"Class: 4","filtered",15
+"Accuracy11",0.706632653061224,"Accuracy","filtered_w_balancing",15
+"Kappa11",0.569256494475963,"Kappa","filtered_w_balancing",15
+"AccuracyLower11",0.673388784611536,"AccuracyLower","filtered_w_balancing",15
+"AccuracyUpper11",0.738313695404036,"AccuracyUpper","filtered_w_balancing",15
+"AccuracyNull11",0.49234693877551,"AccuracyNull","filtered_w_balancing",15
+"AccuracyPValue11",0.00000000000000000000000000000000036140247931726,"AccuracyPValue","filtered_w_balancing",15
+"McnemarPValue11",NA,"McnemarPValue","filtered_w_balancing",15
+"Class: 1211",0.633478682170543,"Class: 12","filtered_w_balancing",15
+"Class: 2111",0.864178404978259,"Class: 21","filtered_w_balancing",15
+"Class: 312",0.804269587688187,"Class: 3","filtered_w_balancing",15
+"Class: 3311",0.849354005167959,"Class: 33","filtered_w_balancing",15
+"Class: 411",0.749291331634735,"Class: 4","filtered_w_balancing",15
+"Accuracy12",0.757467144563919,"Accuracy","raw",20
+"Kappa12",0.579152166643962,"Kappa","raw",20
+"AccuracyLower12",0.726955881858136,"AccuracyLower","raw",20
+"AccuracyUpper12",0.786152906298559,"AccuracyUpper","raw",20
+"AccuracyNull12",0.606929510155317,"AccuracyNull","raw",20
+"AccuracyPValue12",0.0000000000000000000230295271854835,"AccuracyPValue","raw",20
+"McnemarPValue12",NA,"McnemarPValue","raw",20
+"Class: 1212",0.597483108108108,"Class: 12","raw",20
+"Class: 2112",0.888564128951966,"Class: 21","raw",20
+"Class: 313",0.708502419228968,"Class: 3","raw",20
+"Class: 3312",0.748802395209581,"Class: 33","raw",20
+"Class: 412",0.778139520665199,"Class: 4","raw",20
+"Accuracy13",0.747330960854093,"Accuracy","filtered",20
+"Kappa13",0.568794847410737,"Kappa","filtered",20
+"AccuracyLower13",0.716570760855684,"AccuracyLower","filtered",20
+"AccuracyUpper13",0.776350761635647,"AccuracyUpper","filtered",20
+"AccuracyNull13",0.609727164887307,"AccuracyNull","filtered",20
+"AccuracyPValue13",0.0000000000000000230185186964824,"AccuracyPValue","filtered",20
+"McnemarPValue13",NA,"McnemarPValue","filtered",20
+"Class: 1213",0.587770773254644,"Class: 12","filtered",20
+"Class: 2113",0.892271711234374,"Class: 21","filtered",20
+"Class: 314",0.692469489197919,"Class: 3","filtered",20
+"Class: 3313",0.748810939357907,"Class: 33","filtered",20
+"Class: 413",0.794523246650906,"Class: 4","filtered",20
+"Accuracy14",0.744047619047619,"Accuracy","filtered_w_balancing",20
+"Kappa14",0.564461400813681,"Kappa","filtered_w_balancing",20
+"AccuracyLower14",0.713116843772231,"AccuracyLower","filtered_w_balancing",20
+"AccuracyUpper14",0.773255084747031,"AccuracyUpper","filtered_w_balancing",20
+"AccuracyNull14",0.60952380952381,"AccuracyNull","filtered_w_balancing",20
+"AccuracyPValue14",0.000000000000000136815296896803,"AccuracyPValue","filtered_w_balancing",20
+"McnemarPValue14",NA,"McnemarPValue","filtered_w_balancing",20
+"Class: 1214",0.600636128033388,"Class: 12","filtered_w_balancing",20
+"Class: 2114",0.892435213414634,"Class: 21","filtered_w_balancing",20
+"Class: 315",0.704435746267932,"Class: 3","filtered_w_balancing",20
+"Class: 3314",0.748806682577566,"Class: 33","filtered_w_balancing",20
+"Class: 414",0.772142857142857,"Class: 4","filtered_w_balancing",20
+"Accuracy15",0.780927835051546,"Accuracy","raw",19
+"Kappa15",0.610786569894377,"Kappa","raw",19
+"AccuracyLower15",0.7364166280261,"AccuracyLower","raw",19
+"AccuracyUpper15",0.821093272791354,"AccuracyUpper","raw",19
+"AccuracyNull15",0.641752577319588,"AccuracyNull","raw",19
+"AccuracyPValue15",0.00000000205134782039045,"AccuracyPValue","raw",19
+"McnemarPValue15",NA,"McnemarPValue","raw",19
+"Class: 1215",0.652211828127477,"Class: 12","raw",19
+"Class: 2115",0.906214787206379,"Class: 21","raw",19
+"Class: 316",0.765349264705882,"Class: 3","raw",19
+"Class: 3315",0.833333333333333,"Class: 33","raw",19
+"Class: 415",0.773404317216501,"Class: 4","raw",19
+"Accuracy16",0.786632390745501,"Accuracy","filtered",19
+"Kappa16",0.623185192101209,"Kappa","filtered",19
+"AccuracyLower16",0.742525840704137,"AccuracyLower","filtered",19
+"AccuracyUpper16",0.826314878619645,"AccuracyUpper","filtered",19
+"AccuracyNull16",0.6426735218509,"AccuracyNull","filtered",19
+"AccuracyPValue16",0.000000000503895554488787,"AccuracyPValue","filtered",19
+"McnemarPValue16",NA,"McnemarPValue","filtered",19
+"Class: 1216",0.629585705249842,"Class: 12","filtered",19
+"Class: 2116",0.896431654676259,"Class: 21","filtered",19
+"Class: 317",0.824216602528862,"Class: 3","filtered",19
+"Class: 3316",0.833333333333333,"Class: 33","filtered",19
+"Class: 416",0.769172757860541,"Class: 4","filtered",19
+"Accuracy17",0.780927835051546,"Accuracy","filtered_w_balancing",19
+"Kappa17",0.615178175538494,"Kappa","filtered_w_balancing",19
+"AccuracyLower17",0.7364166280261,"AccuracyLower","filtered_w_balancing",19
+"AccuracyUpper17",0.821093272791354,"AccuracyUpper","filtered_w_balancing",19
+"AccuracyNull17",0.641752577319588,"AccuracyNull","filtered_w_balancing",19
+"AccuracyPValue17",0.00000000205134782039045,"AccuracyPValue","filtered_w_balancing",19
+"McnemarPValue17",NA,"McnemarPValue","filtered_w_balancing",19
+"Class: 1217",0.626843190106231,"Class: 12","filtered_w_balancing",19
+"Class: 2117",0.894166594435295,"Class: 21","filtered_w_balancing",19
+"Class: 318",0.811029411764706,"Class: 3","filtered_w_balancing",19
+"Class: 3317",0.833333333333333,"Class: 33","filtered_w_balancing",19
+"Class: 417",0.777273520684238,"Class: 4","filtered_w_balancing",19
+"Accuracy18",0.637735849056604,"Accuracy","raw",17
+"Kappa18",0.505031884001576,"Kappa","raw",17
+"AccuracyLower18",0.595193326090056,"AccuracyLower","raw",17
+"AccuracyUpper18",0.678732846761859,"AccuracyUpper","raw",17
+"AccuracyNull18",0.39811320754717,"AccuracyNull","raw",17
+"AccuracyPValue18",0.0000000000000000000000000000845136866689309,"AccuracyPValue","raw",17
+"McnemarPValue18",NA,"McnemarPValue","raw",17
+"Class: 1218",0.592140775126849,"Class: 12","raw",17
+"Class: 2118",0.809847122970182,"Class: 21","raw",17
+"Class: 319",0.823576692291776,"Class: 3","raw",17
+"Class: 3318",0.897142857142857,"Class: 33","raw",17
+"Class: 418",0.706526779503826,"Class: 4","raw",17
+"Accuracy19",0.607619047619048,"Accuracy","filtered",17
+"Kappa19",0.469941284295755,"Kappa","filtered",17
+"AccuracyLower19",0.564388757173935,"AccuracyLower","filtered",17
+"AccuracyUpper19",0.649630666668597,"AccuracyUpper","filtered",17
+"AccuracyNull19",0.394285714285714,"AccuracyNull","filtered",17
+"AccuracyPValue19",0.0000000000000000000000518438554453808,"AccuracyPValue","filtered",17
+"McnemarPValue19",NA,"McnemarPValue","filtered",17
+"Class: 1219",0.555030188404743,"Class: 12","filtered",17
+"Class: 2119",0.793455473521101,"Class: 21","filtered",17
+"Class: 320",0.811977266122001,"Class: 3","filtered",17
+"Class: 3319",0.799038461538462,"Class: 33","filtered",17
+"Class: 419",0.707777777777778,"Class: 4","filtered",17
+"Accuracy20",0.601134215500945,"Accuracy","filtered_w_balancing",17
+"Kappa20",0.461898173368494,"Kappa","filtered_w_balancing",17
+"AccuracyLower20",0.557991944533211,"AccuracyLower","filtered_w_balancing",17
+"AccuracyUpper20",0.643140099087097,"AccuracyUpper","filtered_w_balancing",17
+"AccuracyNull20",0.400756143667297,"AccuracyNull","filtered_w_balancing",17
+"AccuracyPValue20",0.0000000000000000000126913448015162,"AccuracyPValue","filtered_w_balancing",17
+"McnemarPValue20",NA,"McnemarPValue","filtered_w_balancing",17
+"Class: 1220",0.557158312297151,"Class: 12","filtered_w_balancing",17
+"Class: 2120",0.790830902922445,"Class: 21","filtered_w_balancing",17
+"Class: 321",0.805259377494014,"Class: 3","filtered_w_balancing",17
+"Class: 3320",0.799045801526718,"Class: 33","filtered_w_balancing",17
+"Class: 420",0.703979803979804,"Class: 4","filtered_w_balancing",17
+"Accuracy21",0.826446280991736,"Accuracy","raw",22
+"Kappa21",0.649043921303827,"Kappa","raw",22
+"AccuracyLower21",0.783486628696656,"AccuracyLower","raw",22
+"AccuracyUpper21",0.863983066411661,"AccuracyUpper","raw",22
+"AccuracyNull21",0.702479338842975,"AccuracyNull","raw",22
+"AccuracyPValue21",0.0000000401466511430371,"AccuracyPValue","raw",22
+"McnemarPValue21",NA,"McnemarPValue","raw",22
+"Class: 1221",0.788556338028169,"Class: 12","raw",22
+"Class: 2121",0.930337690631808,"Class: 21","raw",22
+"Class: 322",0.768518518518518,"Class: 3","raw",22
+"Class: 3321",0.998611111111111,"Class: 33","raw",22
+"Class: 421",0.759764865915274,"Class: 4","raw",22
+"Accuracy22",0.837912087912088,"Accuracy","filtered",22
+"Kappa22",0.667770180378082,"Kappa","filtered",22
+"AccuracyLower22",0.795957276084673,"AccuracyLower","filtered",22
+"AccuracyUpper22",0.874262659799846,"AccuracyUpper","filtered",22
+"AccuracyNull22",0.703296703296703,"AccuracyNull","filtered",22
+"AccuracyPValue22",0.00000000202376772614952,"AccuracyPValue","filtered",22
+"McnemarPValue22",NA,"McnemarPValue","filtered",22
+"Class: 1222",0.802668539325843,"Class: 12","filtered",22
+"Class: 2122",0.923900462962963,"Class: 21","filtered",22
+"Class: 323",0.809843400447427,"Class: 3","filtered",22
+"Class: 3322",1,"Class: 33","filtered",22
+"Class: 422",0.729148503342052,"Class: 4","filtered",22
+"Accuracy23",0.837465564738292,"Accuracy","filtered_w_balancing",22
+"Kappa23",0.672593022900297,"Kappa","filtered_w_balancing",22
+"AccuracyLower23",0.795409480191787,"AccuracyLower","filtered_w_balancing",22
+"AccuracyUpper23",0.87390939270352,"AccuracyUpper","filtered_w_balancing",22
+"AccuracyNull23",0.702479338842975,"AccuracyNull","filtered_w_balancing",22
+"AccuracyPValue23",0.00000000199048793210604,"AccuracyPValue","filtered_w_balancing",22
+"McnemarPValue23",NA,"McnemarPValue","filtered_w_balancing",22
+"Class: 1223",0.798415492957746,"Class: 12","filtered_w_balancing",22
+"Class: 2123",0.929084967320261,"Class: 21","filtered_w_balancing",22
+"Class: 324",0.820707070707071,"Class: 3","filtered_w_balancing",22
+"Class: 3323",1,"Class: 33","filtered_w_balancing",22
+"Class: 423",0.74363583365721,"Class: 4","filtered_w_balancing",22
+"Accuracy24",0.891509433962264,"Accuracy","raw",23
+"Kappa24",0.699037116286725,"Kappa","raw",23
+"AccuracyLower24",0.864710970331869,"AccuracyLower","raw",23
+"AccuracyUpper24",0.914602265795572,"AccuracyUpper","raw",23
+"AccuracyNull24",0.789308176100629,"AccuracyNull","raw",23
+"AccuracyPValue24",0.00000000000744681741364162,"AccuracyPValue","raw",23
+"McnemarPValue24",NA,"McnemarPValue","raw",23
+"Class: 1224",0.874534821903243,"Class: 12","raw",23
+"Class: 2124",0.94426770529821,"Class: 21","raw",23
+"Class: 325",0.75150462962963,"Class: 3","raw",23
+"Class: 3324",0.998397435897436,"Class: 33","raw",23
+"Class: 424",0.708638221039627,"Class: 4","raw",23
+"Accuracy25",0.898278560250391,"Accuracy","filtered",23
+"Kappa25",0.726022427440633,"Kappa","filtered",23
+"AccuracyLower25",0.872187465732451,"AccuracyLower","filtered",23
+"AccuracyUpper25",0.920613688484345,"AccuracyUpper","filtered",23
+"AccuracyNull25",0.790297339593114,"AccuracyNull","filtered",23
+"AccuracyPValue25",0.000000000000282267881409398,"AccuracyPValue","filtered",23
+"McnemarPValue25",NA,"McnemarPValue","filtered",23
+"Class: 1225",0.930952380952381,"Class: 12","filtered",23
+"Class: 2125",0.965501699423674,"Class: 21","filtered",23
+"Class: 326",0.778171040515654,"Class: 3","filtered",23
+"Class: 3325",0.998405103668262,"Class: 33","filtered",23
+"Class: 425",0.768394174390013,"Class: 4","filtered",23
+"Accuracy26",0.886970172684458,"Accuracy","filtered_w_balancing",23
+"Kappa26",0.700270556405129,"Kappa","filtered_w_balancing",23
+"AccuracyLower26",0.859782756457957,"AccuracyLower","filtered_w_balancing",23
+"AccuracyUpper26",0.910503346133622,"AccuracyUpper","filtered_w_balancing",23
+"AccuracyNull26",0.789638932496075,"AccuracyNull","filtered_w_balancing",23
+"AccuracyPValue26",0.0000000000752492853801113,"AccuracyPValue","filtered_w_balancing",23
+"McnemarPValue26",NA,"McnemarPValue","filtered_w_balancing",23
+"Class: 1226",0.927724699221514,"Class: 12","filtered_w_balancing",23
+"Class: 2126",0.952011809738583,"Class: 21","filtered_w_balancing",23
+"Class: 327",0.778140403573629,"Class: 3","filtered_w_balancing",23
+"Class: 3326",0.9984,"Class: 33","filtered_w_balancing",23
+"Class: 426",0.738092979127135,"Class: 4","filtered_w_balancing",23
+"Accuracy27",0.918762088974855,"Accuracy","raw",26
+"Kappa27",0.718453399719931,"Kappa","raw",26
+"AccuracyLower27",0.89177499948777,"AccuracyLower","raw",26
+"AccuracyUpper27",0.940825532173414,"AccuracyUpper","raw",26
+"AccuracyNull27",0.825918762088975,"AccuracyNull","raw",26
+"AccuracyPValue27",0.000000000917089847087497,"AccuracyPValue","raw",26
+"McnemarPValue27",NA,"McnemarPValue","raw",26
+"Class: 1227",0.742202729044834,"Class: 12","raw",26
+"Class: 2127",0.895016913869373,"Class: 21","raw",26
+"Class: 328",0.849407626804887,"Class: 3","raw",26
+"Class: 3327",0.999031007751938,"Class: 33","raw",26
+"Class: 427",0.573432343234323,"Class: 4","raw",26
+"Accuracy28",0.938104448742747,"Accuracy","filtered",26
+"Kappa28",0.793055138597018,"Kappa","filtered",26
+"AccuracyLower28",0.913742461959868,"AccuracyLower","filtered",26
+"AccuracyUpper28",0.957281935598777,"AccuracyUpper","filtered",26
+"AccuracyNull28",0.825918762088975,"AccuracyNull","filtered",26
+"AccuracyPValue28",0.0000000000000366965774354059,"AccuracyPValue","filtered",26
+"McnemarPValue28",NA,"McnemarPValue","filtered",26
+"Class: 1228",0.86817738791423,"Class: 12","filtered",26
+"Class: 2128",0.951743429612282,"Class: 21","filtered",26
+"Class: 329",0.912270146859188,"Class: 3","filtered",26
+"Class: 3328",0.999031007751938,"Class: 33","filtered",26
+"Class: 428",0.494059405940594,"Class: 4","filtered",26
+"Accuracy29",0.93036750483559,"Accuracy","filtered_w_balancing",26
+"Kappa29",0.769949569860576,"Kappa","filtered_w_balancing",26
+"AccuracyLower29",0.904899850466067,"AccuracyLower","filtered_w_balancing",26
+"AccuracyUpper29",0.950757007401087,"AccuracyUpper","filtered_w_balancing",26
+"AccuracyNull29",0.825918762088975,"AccuracyNull","filtered_w_balancing",26
+"AccuracyPValue29",0.00000000000297578423289729,"AccuracyPValue","filtered_w_balancing",26
+"McnemarPValue29",NA,"McnemarPValue","filtered_w_balancing",26
+"Class: 1229",0.741228070175439,"Class: 12","filtered_w_balancing",26
+"Class: 2129",0.949401509237575,"Class: 21","filtered_w_balancing",26
+"Class: 330",0.898571516722202,"Class: 3","filtered_w_balancing",26
+"Class: 3329",0.999031007751938,"Class: 33","filtered_w_balancing",26
+"Class: 429",0.533745874587459,"Class: 4","filtered_w_balancing",26
+"Accuracy30",0.846796657381616,"Accuracy","raw",25
+"Kappa30",0.682213960375324,"Kappa","raw",25
+"AccuracyLower30",0.805300504761546,"AccuracyLower","raw",25
+"AccuracyUpper30",0.882453733469551,"AccuracyUpper","raw",25
+"AccuracyNull30",0.696378830083565,"AccuracyNull","raw",25
+"AccuracyPValue30",0.0000000000325314627678124,"AccuracyPValue","raw",25
+"McnemarPValue30",NA,"McnemarPValue","raw",25
+"Class: 1230",0.732905982905983,"Class: 12","raw",25
+"Class: 2130",0.90554128440367,"Class: 21","raw",25
+"Class: 340",0.892295889901432,"Class: 3","raw",25
+"Class: 3330",0.998603351955307,"Class: 33","raw",25
+"Class: 430",0.608582089552239,"Class: 4","raw",25
+"Accuracy31",0.844444444444444,"Accuracy","filtered",25
+"Kappa31",0.679776351737722,"Kappa","filtered",25
+"AccuracyLower31",0.80280198569498,"AccuracyLower","filtered",25
+"AccuracyUpper31",0.880305445383785,"AccuracyUpper","filtered",25
+"AccuracyNull31",0.697222222222222,"AccuracyNull","filtered",25
+"AccuracyPValue31",0.0000000000797093266106681,"AccuracyPValue","filtered",25
+"McnemarPValue31",NA,"McnemarPValue","filtered",25
+"Class: 1231",0.735795454545455,"Class: 12","filtered",25
+"Class: 2131",0.916097079571622,"Class: 21","filtered",25
+"Class: 341",0.912064492216457,"Class: 3","filtered",25
+"Class: 3331",0.5,"Class: 33","filtered",25
+"Class: 431",0.556547619047619,"Class: 4","filtered",25
+"Accuracy32",0.841666666666667,"Accuracy","filtered_w_balancing",25
+"Kappa32",0.679715302491103,"Kappa","filtered_w_balancing",25
+"AccuracyLower32",0.79978011933317,"AccuracyLower","filtered_w_balancing",25
+"AccuracyUpper32",0.877820214712998,"AccuracyUpper","filtered_w_balancing",25
+"AccuracyNull32",0.697222222222222,"AccuracyNull","filtered_w_balancing",25
+"AccuracyPValue32",0.000000000187408784494513,"AccuracyPValue","filtered_w_balancing",25
+"McnemarPValue32",NA,"McnemarPValue","filtered_w_balancing",25
+"Class: 1232",0.731534090909091,"Class: 12","filtered_w_balancing",25
+"Class: 2132",0.921287327753207,"Class: 21","filtered_w_balancing",25
+"Class: 342",0.917346182357302,"Class: 3","filtered_w_balancing",25
+"Class: 3332",0.5,"Class: 33","filtered_w_balancing",25
+"Class: 432",0.572916666666667,"Class: 4","filtered_w_balancing",25
+"Accuracy33",0.754355400696864,"Accuracy","raw",24
+"Kappa33",0.627533457283287,"Kappa","raw",24
+"AccuracyLower33",0.717012823218383,"AccuracyLower","raw",24
+"AccuracyUpper33",0.789056572116957,"AccuracyUpper","raw",24
+"AccuracyNull33",0.489547038327526,"AccuracyNull","raw",24
+"AccuracyPValue33",0.0000000000000000000000000000000000000168879362018958,"AccuracyPValue","raw",24
+"McnemarPValue33",NA,"McnemarPValue","raw",24
+"Class: 1233",0.713946800862689,"Class: 12","raw",24
+"Class: 2133",0.907370070324171,"Class: 21","raw",24
+"Class: 343",0.815304235993891,"Class: 3","raw",24
+"Class: 3333",0.495636998254799,"Class: 33","raw",24
+"Class: 433",0.709903036083294,"Class: 4","raw",24
+"Accuracy34",0.747386759581881,"Accuracy","filtered",24
+"Kappa34",0.613426721535332,"Kappa","filtered",24
+"AccuracyLower34",0.709751614059628,"AccuracyLower","filtered",24
+"AccuracyUpper34",0.782453602023008,"AccuracyUpper","filtered",24
+"AccuracyNull34",0.491289198606272,"AccuracyNull","filtered",24
+"AccuracyPValue34",0.00000000000000000000000000000000000465832139723216,"AccuracyPValue","filtered",24
+"McnemarPValue34",NA,"McnemarPValue","filtered",24
+"Class: 1234",0.653582554517134,"Class: 12","filtered",24
+"Class: 2134",0.903939570581949,"Class: 21","filtered",24
+"Class: 344",0.822561369509044,"Class: 3","filtered",24
+"Class: 3334",0.99825479930192,"Class: 33","filtered",24
+"Class: 434",0.68500635828962,"Class: 4","filtered",24
+"Accuracy35",0.745644599303136,"Accuracy","filtered_w_balancing",24
+"Kappa35",0.61382780675723,"Kappa","filtered_w_balancing",24
+"AccuracyLower35",0.707938199892063,"AccuracyLower","filtered_w_balancing",24
+"AccuracyUpper35",0.780800958670432,"AccuracyUpper","filtered_w_balancing",24
+"AccuracyNull35",0.491289198606272,"AccuracyNull","filtered_w_balancing",24
+"AccuracyPValue35",0.000000000000000000000000000000000014236058169267,"AccuracyPValue","filtered_w_balancing",24
+"McnemarPValue35",NA,"McnemarPValue","filtered_w_balancing",24
+"Class: 1235",0.66359932901989,"Class: 12","filtered_w_balancing",24
+"Class: 2135",0.901984358301758,"Class: 21","filtered_w_balancing",24
+"Class: 345",0.820268087855297,"Class: 3","filtered_w_balancing",24
+"Class: 3335",0.99825479930192,"Class: 33","filtered_w_balancing",24
+"Class: 435",0.698160069941186,"Class: 4","filtered_w_balancing",24
+"Accuracy36",0.877846790890269,"Accuracy","raw",27
+"Kappa36",0.679711822687782,"Kappa","raw",27
+"AccuracyLower36",0.845274084465149,"AccuracyLower","raw",27
+"AccuracyUpper36",0.905697007179036,"AccuracyUpper","raw",27
+"AccuracyNull36",0.766045548654244,"AccuracyNull","raw",27
+"AccuracyPValue36",0.000000000368738877401371,"AccuracyPValue","raw",27
+"McnemarPValue36",NA,"McnemarPValue","raw",27
+"Class: 1236",0.490663900414938,"Class: 12","raw",27
+"Class: 2136",0.929944989237025,"Class: 21","raw",27
+"Class: 346",0.737775061124694,"Class: 3","raw",27
+"Class: 3336",0.941176470588235,"Class: 33","raw",27
+"Class: 436",0.662337662337662,"Class: 4","raw",27
+"Accuracy37",0.882474226804124,"Accuracy","filtered",27
+"Kappa37",0.700003255526256,"Kappa","filtered",27
+"AccuracyLower37",0.850424027137943,"AccuracyLower","filtered",27
+"AccuracyUpper37",0.90976075717882,"AccuracyUpper","filtered",27
+"AccuracyNull37",0.767010309278351,"AccuracyNull","filtered",27
+"AccuracyPValue37",0.0000000000740330217974968,"AccuracyPValue","filtered",27
+"McnemarPValue37",NA,"McnemarPValue","filtered",27
+"Class: 1237",0.487603305785124,"Class: 12","filtered",27
+"Class: 2137",0.946736130935389,"Class: 21","filtered",27
+"Class: 347",0.77472545538239,"Class: 3","filtered",27
+"Class: 3337",0.941176470588235,"Class: 33","filtered",27
+"Class: 437",0.66569170771757,"Class: 4","filtered",27
+"Accuracy38",0.872164948453608,"Accuracy","filtered_w_balancing",27
+"Kappa38",0.678903980864514,"Kappa","filtered_w_balancing",27
+"AccuracyLower38",0.839134274680847,"AccuracyLower","filtered_w_balancing",27
+"AccuracyUpper38",0.900567498932457,"AccuracyUpper","filtered_w_balancing",27
+"AccuracyNull38",0.767010309278351,"AccuracyNull","filtered_w_balancing",27
+"AccuracyPValue38",0.00000000373951087021117,"AccuracyPValue","filtered_w_balancing",27
+"McnemarPValue38",NA,"McnemarPValue","filtered_w_balancing",27
+"Class: 1238",0.485537190082645,"Class: 12","filtered_w_balancing",27
+"Class: 2138",0.947128651631935,"Class: 21","filtered_w_balancing",27
+"Class: 348",0.759995396856711,"Class: 3","filtered_w_balancing",27
+"Class: 3338",0.941176470588235,"Class: 33","filtered_w_balancing",27
+"Class: 438",0.66245894909688,"Class: 4","filtered_w_balancing",27
+"Accuracy39",0.877263581488934,"Accuracy","raw",37
+"Kappa39",0.711659359158479,"Kappa","raw",37
+"AccuracyLower39",0.845145849886398,"AccuracyLower","raw",37
+"AccuracyUpper39",0.904801726939678,"AccuracyUpper","raw",37
+"AccuracyNull39",0.746478873239437,"AccuracyNull","raw",37
+"AccuracyPValue39",0.000000000000407955296111091,"AccuracyPValue","raw",37
+"McnemarPValue39",NA,"McnemarPValue","raw",37
+"Class: 1239",0.970647773279352,"Class: 12","raw",37
+"Class: 2139",0.926699610661875,"Class: 21","raw",37
+"Class: 349",0.853586112380082,"Class: 3","raw",37
+"Class: 3339",0.857142857142857,"Class: 33","raw",37
+"Class: 439",0.586652977412731,"Class: 4","raw",37
+"Accuracy40",0.889112903225806,"Accuracy","filtered",37
+"Kappa40",0.743657207291863,"Kappa","filtered",37
+"AccuracyLower40",0.858118914718237,"AccuracyLower","filtered",37
+"AccuracyUpper40",0.915364786082568,"AccuracyUpper","filtered",37
+"AccuracyNull40",0.745967741935484,"AccuracyNull","filtered",37
+"AccuracyPValue40",0.0000000000000013497073591771,"AccuracyPValue","filtered",37
+"McnemarPValue40",NA,"McnemarPValue","filtered",37
+"Class: 1240",0.81710615280595,"Class: 12","filtered",37
+"Class: 2140",0.929064779064779,"Class: 21","filtered",37
+"Class: 350",0.901572399053507,"Class: 3","filtered",37
+"Class: 3340",0.892857142857143,"Class: 33","filtered",37
+"Class: 440",0.636625514403292,"Class: 4","filtered",37
+"Accuracy41",0.883299798792757,"Accuracy","filtered_w_balancing",37
+"Kappa41",0.728729661312028,"Kappa","filtered_w_balancing",37
+"AccuracyLower41",0.851760761157627,"AccuracyLower","filtered_w_balancing",37
+"AccuracyUpper41",0.910181658529506,"AccuracyUpper","filtered_w_balancing",37
+"AccuracyNull41",0.746478873239437,"AccuracyNull","filtered_w_balancing",37
+"AccuracyPValue41",0.0000000000000257920545009474,"AccuracyPValue","filtered_w_balancing",37
+"McnemarPValue41",NA,"McnemarPValue","filtered_w_balancing",37
+"Class: 1241",0.979757085020243,"Class: 12","filtered_w_balancing",37
+"Class: 2141",0.934561245882001,"Class: 21","filtered_w_balancing",37
+"Class: 351",0.871300949190396,"Class: 3","filtered_w_balancing",37
+"Class: 3341",0.892857142857143,"Class: 33","filtered_w_balancing",37
+"Class: 441",0.583572895277207,"Class: 4","filtered_w_balancing",37
+"Accuracy42",0.880658436213992,"Accuracy","raw",38
+"Kappa42",0.673458985438412,"Kappa","raw",38
+"AccuracyLower42",0.848467429111368,"AccuracyLower","raw",38
+"AccuracyUpper42",0.90811968240796,"AccuracyUpper","raw",38
+"AccuracyNull42",0.775720164609053,"AccuracyNull","raw",38
+"AccuracyPValue42",0.00000000209848215641315,"AccuracyPValue","raw",38
+"McnemarPValue42",NA,"McnemarPValue","raw",38
+"Class: 1242",0.843572919773337,"Class: 12","raw",38
+"Class: 2142",0.894994281264449,"Class: 21","raw",38
+"Class: 352",0.757060333761232,"Class: 3","raw",38
+"Class: 3342",0.882352941176471,"Class: 33","raw",38
+"Class: 442",0.645702306079665,"Class: 4","raw",38
+"Accuracy43",0.903092783505155,"Accuracy","filtered",38
+"Kappa43",0.743790041587052,"Kappa","filtered",38
+"AccuracyLower43",0.873220548471696,"AccuracyLower","filtered",38
+"AccuracyUpper43",0.927925314359115,"AccuracyUpper","filtered",38
+"AccuracyNull43",0.775257731958763,"AccuracyNull","filtered",38
+"AccuracyPValue43",0.000000000000131864283377765,"AccuracyPValue","filtered",38
+"McnemarPValue43",0.0649223556606834,"McnemarPValue","filtered",38
+"Class: 1243",0.920203227734608,"Class: 12","filtered",38
+"Class: 2143",0.926337107163771,"Class: 21","filtered",38
+"Class: 353",0.838148243469309,"Class: 3","filtered",38
+"Class: 3343",0.882352941176471,"Class: 33","filtered",38
+"Class: 443",0.653011204481793,"Class: 4","filtered",38
+"Accuracy44",0.895061728395062,"Accuracy","filtered_w_balancing",38
+"Kappa44",0.722652403544893,"Kappa","filtered_w_balancing",38
+"AccuracyLower44",0.864338958498841,"AccuracyLower","filtered_w_balancing",38
+"AccuracyUpper44",0.920863577971082,"AccuracyUpper","filtered_w_balancing",38
+"AccuracyNull44",0.775720164609053,"AccuracyNull","filtered_w_balancing",38
+"AccuracyPValue44",0.00000000000602331255789226,"AccuracyPValue","filtered_w_balancing",38
+"McnemarPValue44",NA,"McnemarPValue","filtered_w_balancing",38
+"Class: 1244",0.987473903966597,"Class: 12","filtered_w_balancing",38
+"Class: 2144",0.92179933321977,"Class: 21","filtered_w_balancing",38
+"Class: 354",0.80895378690629,"Class: 3","filtered_w_balancing",38
+"Class: 3344",0.882352941176471,"Class: 33","filtered_w_balancing",38
+"Class: 444",0.650943396226415,"Class: 4","filtered_w_balancing",38
+"Accuracy45",0.886792452830189,"Accuracy","raw",36
+"Kappa45",0.668792245887004,"Kappa","raw",36
+"AccuracyLower45",0.850067745256923,"AccuracyLower","raw",36
+"AccuracyUpper45",0.917181194808066,"AccuracyUpper","raw",36
+"AccuracyNull45",0.805929919137466,"AccuracyNull","raw",36
+"AccuracyPValue45",0.000019864117549976,"AccuracyPValue","raw",36
+"McnemarPValue45",NA,"McnemarPValue","raw",36
+"Class: 1245",0.647644927536232,"Class: 12","raw",36
+"Class: 2145",0.920777591973244,"Class: 21","raw",36
+"Class: 355",0.737107311648596,"Class: 3","raw",36
+"Class: 3345",0.997229916897507,"Class: 33","raw",36
+"Class: 445",0.744194756554307,"Class: 4","raw",36
+"Accuracy46",0.886792452830189,"Accuracy","filtered",36
+"Kappa46",0.692711209276643,"Kappa","filtered",36
+"AccuracyLower46",0.850067745256923,"AccuracyLower","filtered",36
+"AccuracyUpper46",0.917181194808066,"AccuracyUpper","filtered",36
+"AccuracyNull46",0.805929919137466,"AccuracyNull","filtered",36
+"AccuracyPValue46",0.000019864117549976,"AccuracyPValue","filtered",36
+"McnemarPValue46",NA,"McnemarPValue","filtered",36
+"Class: 1246",0.815670289855073,"Class: 12","filtered",36
+"Class: 2146",0.940449646971386,"Class: 21","filtered",36
+"Class: 356",0.797643869891576,"Class: 3","filtered",36
+"Class: 3346",0.99584487534626,"Class: 33","filtered",36
+"Class: 446",0.810861423220974,"Class: 4","filtered",36
+"Accuracy47",0.878706199460916,"Accuracy","filtered_w_balancing",36
+"Kappa47",0.676760440666809,"Kappa","filtered_w_balancing",36
+"AccuracyLower47",0.841082124768896,"AccuracyLower","filtered_w_balancing",36
+"AccuracyUpper47",0.910135829550315,"AccuracyUpper","filtered_w_balancing",36
+"AccuracyNull47",0.805929919137466,"AccuracyNull","filtered_w_balancing",36
+"AccuracyPValue47",0.000125365813101797,"AccuracyPValue","filtered_w_balancing",36
+"McnemarPValue47",NA,"McnemarPValue","filtered_w_balancing",36
+"Class: 1247",0.808876811594203,"Class: 12","filtered_w_balancing",36
+"Class: 2147",0.935432924563359,"Class: 21","filtered_w_balancing",36
+"Class: 357",0.799172921879344,"Class: 3","filtered_w_balancing",36
+"Class: 3347",0.99584487534626,"Class: 33","filtered_w_balancing",36
+"Class: 447",0.812265917602996,"Class: 4","filtered_w_balancing",36
+"Accuracy48",0.904191616766467,"Accuracy","raw",35
+"Kappa48",0.73857743860679,"Kappa","raw",35
+"AccuracyLower48",0.849077354277706,"AccuracyLower","raw",35
+"AccuracyUpper48",0.94424020021225,"AccuracyUpper","raw",35
+"AccuracyNull48",0.784431137724551,"AccuracyNull","raw",35
+"AccuracyPValue48",0.0000343169800147667,"AccuracyPValue","raw",35
+"McnemarPValue48",NA,"McnemarPValue","raw",35
+"Class: 1248",0.859662576687117,"Class: 12","raw",35
+"Class: 2148",0.915288379983036,"Class: 21","raw",35
+"Class: 358",0.842941176470588,"Class: 3","raw",35
+"Class: 3348",1,"Class: 33","raw",35
+"Class: 448",0.615566037735849,"Class: 4","raw",35
+"Accuracy49",0.91566265060241,"Accuracy","filtered",35
+"Kappa49",0.778413424866514,"Kappa","filtered",35
+"AccuracyLower49",0.862544719151939,"AccuracyLower","filtered",35
+"AccuracyUpper49",0.953124073464211,"AccuracyUpper","filtered",35
+"AccuracyNull49",0.783132530120482,"AccuracyNull","filtered",35
+"AccuracyPValue49",0.00000429405684032233,"AccuracyPValue","filtered",35
+"McnemarPValue49",NA,"McnemarPValue","filtered",35
+"Class: 1249",0.981481481481481,"Class: 12","filtered",35
+"Class: 2149",0.939102564102564,"Class: 21","filtered",35
+"Class: 359",0.927753651796289,"Class: 3","filtered",35
+"Class: 3349",1,"Class: 33","filtered",35
+"Class: 449",0.559335443037975,"Class: 4","filtered",35
+"Accuracy50",0.922155688622755,"Accuracy","filtered_w_balancing",35
+"Kappa50",0.796817969115583,"Kappa","filtered_w_balancing",35
+"AccuracyLower50",0.870562511428286,"AccuracyLower","filtered_w_balancing",35
+"AccuracyUpper50",0.957900988935748,"AccuracyUpper","filtered_w_balancing",35
+"AccuracyNull50",0.784431137724551,"AccuracyNull","filtered_w_balancing",35
+"AccuracyPValue50",0.00000138955583334416,"AccuracyPValue","filtered_w_balancing",35
+"McnemarPValue50",NA,"McnemarPValue","filtered_w_balancing",35
+"Class: 1250",0.98159509202454,"Class: 12","filtered_w_balancing",35
+"Class: 2150",0.953138252756573,"Class: 21","filtered_w_balancing",35
+"Class: 360",0.927843137254902,"Class: 3","filtered_w_balancing",35
+"Class: 3350",1,"Class: 33","filtered_w_balancing",35
+"Class: 450",0.62185534591195,"Class: 4","filtered_w_balancing",35
+"Accuracy51",0.791569086651054,"Accuracy","raw",32
+"Kappa51",0.601286274838953,"Kappa","raw",32
+"AccuracyLower51",0.749910939825964,"AccuracyLower","raw",32
+"AccuracyUpper51",0.829132013670478,"AccuracyUpper","raw",32
+"AccuracyNull51",0.653395784543325,"AccuracyNull","raw",32
+"AccuracyPValue51",0.000000000292142664366737,"AccuracyPValue","raw",32
+"McnemarPValue51",NA,"McnemarPValue","raw",32
+"Class: 1251",0.669132653061224,"Class: 12","raw",32
+"Class: 2151",0.836953889373244,"Class: 21","raw",32
+"Class: 361",0.796163544668588,"Class: 3","raw",32
+"Class: 3351",0.963075060532688,"Class: 33","raw",32
+"Class: 451",0.69640092879257,"Class: 4","raw",32
+"Accuracy52",0.82093023255814,"Accuracy","filtered",32
+"Kappa52",0.649707472413538,"Kappa","filtered",32
+"AccuracyLower52",0.781357056262983,"AccuracyLower","filtered",32
+"AccuracyUpper52",0.856017874913332,"AccuracyUpper","filtered",32
+"AccuracyNull52",0.655813953488372,"AccuracyNull","filtered",32
+"AccuracyPValue52",0.000000000000022542760809218,"AccuracyPValue","filtered",32
+"McnemarPValue52",NA,"McnemarPValue","filtered",32
+"Class: 1252",0.604159132007233,"Class: 12","filtered",32
+"Class: 2152",0.837598236534407,"Class: 21","filtered",32
+"Class: 362",0.879464285714286,"Class: 3","filtered",32
+"Class: 3352",0.996394230769231,"Class: 33","filtered",32
+"Class: 452",0.712511205019849,"Class: 4","filtered",32
+"Accuracy53",0.813953488372093,"Accuracy","filtered_w_balancing",32
+"Kappa53",0.643260844766616,"Kappa","filtered_w_balancing",32
+"AccuracyLower53",0.773892112037803,"AccuracyLower","filtered_w_balancing",32
+"AccuracyUpper53",0.849629371233248,"AccuracyUpper","filtered_w_balancing",32
+"AccuracyNull53",0.655813953488372,"AccuracyNull","filtered_w_balancing",32
+"AccuracyPValue53",0.000000000000298103627987975,"AccuracyPValue","filtered_w_balancing",32
+"McnemarPValue53",NA,"McnemarPValue","filtered_w_balancing",32
+"Class: 1253",0.65877034358047,"Class: 12","filtered_w_balancing",32
+"Class: 2153",0.850944029135519,"Class: 21","filtered_w_balancing",32
+"Class: 363",0.860714285714286,"Class: 3","filtered_w_balancing",32
+"Class: 3353",0.890453296703297,"Class: 33","filtered_w_balancing",32
+"Class: 453",0.730311179408375,"Class: 4","filtered_w_balancing",32
+"Accuracy54",0.717171717171717,"Accuracy","raw",16
+"Kappa54",0.581665730998388,"Kappa","raw",16
+"AccuracyLower54",0.67526893805943,"AccuracyLower","raw",16
+"AccuracyUpper54",0.756457995910175,"AccuracyUpper","raw",16
+"AccuracyNull54",0.478787878787879,"AccuracyNull","raw",16
+"AccuracyPValue54",0.00000000000000000000000000463978551930843,"AccuracyPValue","raw",16
+"McnemarPValue54",NA,"McnemarPValue","raw",16
+"Class: 1254",0.611321349731946,"Class: 12","raw",16
+"Class: 2154",0.881071533706211,"Class: 21","raw",16
+"Class: 364",0.756324421998795,"Class: 3","raw",16
+"Class: 3354",0.996963562753036,"Class: 33","raw",16
+"Class: 454",0.785623409669211,"Class: 4","raw",16
+"Accuracy55",0.686116700201207,"Accuracy","filtered",16
+"Kappa55",0.541705334712576,"Kappa","filtered",16
+"AccuracyLower55",0.643292291952403,"AccuracyLower","filtered",16
+"AccuracyUpper55",0.7267099813552,"AccuracyUpper","filtered",16
+"AccuracyNull55",0.480885311871227,"AccuracyNull","filtered",16
+"AccuracyPValue55",0.0000000000000000000187043977176813,"AccuracyPValue","filtered",16
+"McnemarPValue55",NA,"McnemarPValue","filtered",16
+"Class: 1255",0.544322344322344,"Class: 12","filtered",16
+"Class: 2155",0.865865524958646,"Class: 21","filtered",16
+"Class: 365",0.744918418141593,"Class: 3","filtered",16
+"Class: 3355",0.997983870967742,"Class: 33","filtered",16
+"Class: 455",0.786423430131546,"Class: 4","filtered",16
+"Accuracy56",0.667342799188641,"Accuracy","filtered_w_balancing",16
+"Kappa56",0.518620615745509,"Kappa","filtered_w_balancing",16
+"AccuracyLower56",0.623827976449959,"AccuracyLower","filtered_w_balancing",16
+"AccuracyUpper56",0.708836010582917,"AccuracyUpper","filtered_w_balancing",16
+"AccuracyNull56",0.478701825557809,"AccuracyNull","filtered_w_balancing",16
+"AccuracyPValue56",0.0000000000000000233504710697685,"AccuracyPValue","filtered_w_balancing",16
+"McnemarPValue56",NA,"McnemarPValue","filtered_w_balancing",16
+"Class: 1256",0.566533563565724,"Class: 12","filtered_w_balancing",16
+"Class: 2156",0.847589527138429,"Class: 21","filtered_w_balancing",16
+"Class: 366",0.735945505356311,"Class: 3","filtered_w_balancing",16
+"Class: 3356",0.995934959349593,"Class: 33","filtered_w_balancing",16
+"Class: 456",0.772378516624041,"Class: 4","filtered_w_balancing",16
+"Accuracy57",0.762,"Accuracy","raw",9
+"Kappa57",0.67803204528114,"Kappa","raw",9
+"AccuracyLower57",0.734356319276744,"AccuracyLower","raw",9
+"AccuracyUpper57",0.788091594186229,"AccuracyUpper","raw",9
+"AccuracyNull57",0.343,"AccuracyNull","raw",9
+"AccuracyPValue57",0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000222976694591618,"AccuracyPValue","raw",9
+"McnemarPValue57",NA,"McnemarPValue","raw",9
+"Class: 1257",0.863197855789413,"Class: 12","raw",9
+"Class: 2157",0.877142857142857,"Class: 21","raw",9
+"Class: 367",0.826164874551971,"Class: 3","raw",9
+"Class: 3357",0.931810490693739,"Class: 33","raw",9
+"Class: 457",0.754571149248386,"Class: 4","raw",9
+"Accuracy58",0.769154228855721,"Accuracy","filtered",9
+"Kappa58",0.686947835380426,"Kappa","filtered",9
+"AccuracyLower58",0.741837723312429,"AccuracyLower","filtered",9
+"AccuracyUpper58",0.794883878798319,"AccuracyUpper","filtered",9
+"AccuracyNull58",0.341293532338308,"AccuracyNull","filtered",9
+"AccuracyPValue58",0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000259213349324728,"AccuracyPValue","filtered",9
+"McnemarPValue58",NA,"McnemarPValue","filtered",9
+"Class: 1258",0.875051747069134,"Class: 12","filtered",9
+"Class: 2158",0.872961089421128,"Class: 21","filtered",9
+"Class: 368",0.844273504273504,"Class: 3","filtered",9
+"Class: 3358",0.904733316481294,"Class: 33","filtered",9
+"Class: 458",0.734393046893047,"Class: 4","filtered",9
+"Accuracy59",0.762189054726368,"Accuracy","filtered_w_balancing",9
+"Kappa59",0.679382190524625,"Kappa","filtered_w_balancing",9
+"AccuracyLower59",0.734623911585763,"AccuracyLower","filtered_w_balancing",9
+"AccuracyUpper59",0.788208789813364,"AccuracyUpper","filtered_w_balancing",9
+"AccuracyNull59",0.341293532338308,"AccuracyNull","filtered_w_balancing",9
+"AccuracyPValue59",0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000102546267043508,"AccuracyPValue","filtered_w_balancing",9
+"McnemarPValue59",NA,"McnemarPValue","filtered_w_balancing",9
+"Class: 1259",0.87234768745651,"Class: 12","filtered_w_balancing",9
+"Class: 2159",0.872605850328623,"Class: 21","filtered_w_balancing",9
+"Class: 369",0.835726495726496,"Class: 3","filtered_w_balancing",9
+"Class: 3359",0.904733316481294,"Class: 33","filtered_w_balancing",9
+"Class: 459",0.742261097204441,"Class: 4","filtered_w_balancing",9
+"Accuracy60",0.759831460674157,"Accuracy","raw",10
+"Kappa60",0.576520306256875,"Kappa","raw",10
+"AccuracyLower60",0.736770033108117,"AccuracyLower","raw",10
+"AccuracyUpper60",0.781815771171349,"AccuracyUpper","raw",10
+"AccuracyNull60",0.641151685393258,"AccuracyNull","raw",10
+"AccuracyPValue60",0.000000000000000000000388989663870295,"AccuracyPValue","raw",10
+"McnemarPValue60",0.0000000000000000000000000000000805086199797591,"McnemarPValue","raw",10
+"Class: 1260",0.656082725060827,"Class: 12","raw",10
+"Class: 2160",0.869352878512806,"Class: 21","raw",10
+"Class: 370",0.749365720376514,"Class: 3","raw",10
+"Class: 3360",0.958349234040233,"Class: 33","raw",10
+"Class: 460",0.795709961837084,"Class: 4","raw",10
+"Accuracy61",0.763139453398739,"Accuracy","filtered",10
+"Kappa61",0.57994321744583,"Kappa","filtered",10
+"AccuracyLower61",0.740201402243945,"AccuracyLower","filtered",10
+"AccuracyUpper61",0.784988883701676,"AccuracyUpper","filtered",10
+"AccuracyNull61",0.641906096706377,"AccuracyNull","filtered",10
+"AccuracyPValue61",0.0000000000000000000000396439879222257,"AccuracyPValue","filtered",10
+"McnemarPValue61",NA,"McnemarPValue","filtered",10
+"Class: 1261",0.650124086212943,"Class: 12","filtered",10
+"Class: 2161",0.878405429887454,"Class: 21","filtered",10
+"Class: 371",0.738278365185439,"Class: 3","filtered",10
+"Class: 3361",0.927156000404408,"Class: 33","filtered",10
+"Class: 461",0.798720736049406,"Class: 4","filtered",10
+"Accuracy62",0.755977496483826,"Accuracy","filtered_w_balancing",10
+"Kappa62",0.579245097997416,"Kappa","filtered_w_balancing",10
+"AccuracyLower62",0.732786930553067,"AccuracyLower","filtered_w_balancing",10
+"AccuracyUpper62",0.778105531635121,"AccuracyUpper","filtered_w_balancing",10
+"AccuracyNull62",0.640646976090014,"AccuracyNull","filtered_w_balancing",10
+"AccuracyPValue62",0.00000000000000000000639528345068538,"AccuracyPValue","filtered_w_balancing",10
+"McnemarPValue62",NA,"McnemarPValue","filtered_w_balancing",10
+"Class: 1262",0.649000974658869,"Class: 12","filtered_w_balancing",10
+"Class: 2162",0.877483507725752,"Class: 21","filtered_w_balancing",10
+"Class: 372",0.752740990013027,"Class: 3","filtered_w_balancing",10
+"Class: 3362",0.927150974025974,"Class: 33","filtered_w_balancing",10
+"Class: 462",0.819912271914887,"Class: 4","filtered_w_balancing",10
+"Accuracy63",0.648364485981308,"Accuracy","raw",12
+"Kappa63",0.479905208295485,"Kappa","raw",12
+"AccuracyLower63",0.615325848275499,"AccuracyLower","raw",12
+"AccuracyUpper63",0.680377493163371,"AccuracyUpper","raw",12
+"AccuracyNull63",0.408878504672897,"AccuracyNull","raw",12
+"AccuracyPValue63",0.00000000000000000000000000000000000000000000271947491325873,"AccuracyPValue","raw",12
+"McnemarPValue63",NA,"McnemarPValue","raw",12
+"Class: 1263",0.585826620636747,"Class: 12","raw",12
+"Class: 2163",0.784223602484472,"Class: 21","raw",12
+"Class: 373",0.68821499240716,"Class: 3","raw",12
+"Class: 3363",0.999407582938389,"Class: 33","raw",12
+"Class: 463",0.742232610157138,"Class: 4","raw",12
+"Accuracy64",0.632558139534884,"Accuracy","filtered",12
+"Kappa64",0.451918868826373,"Kappa","filtered",12
+"AccuracyLower64",0.599344917501388,"AccuracyLower","filtered",12
+"AccuracyUpper64",0.664859505103122,"AccuracyUpper","filtered",12
+"AccuracyNull64",0.411627906976744,"AccuracyNull","filtered",12
+"AccuracyPValue64",0.00000000000000000000000000000000000000599450292001686,"AccuracyPValue","filtered",12
+"McnemarPValue64",NA,"McnemarPValue","filtered",12
+"Class: 1264",0.563570391872279,"Class: 12","filtered",12
+"Class: 2164",0.798463634130546,"Class: 21","filtered",12
+"Class: 374",0.622649279341112,"Class: 3","filtered",12
+"Class: 3364",0.999410377358491,"Class: 33","filtered",12
+"Class: 464",0.72924192222416,"Class: 4","filtered",12
+"Accuracy65",0.64294049008168,"Accuracy","filtered_w_balancing",12
+"Kappa65",0.472284268862514,"Kappa","filtered_w_balancing",12
+"AccuracyLower65",0.609830238875938,"AccuracyLower","filtered_w_balancing",12
+"AccuracyUpper65",0.675063849420202,"AccuracyUpper","filtered_w_balancing",12
+"AccuracyNull65",0.407234539089848,"AccuracyNull","filtered_w_balancing",12
+"AccuracyPValue65",0.0000000000000000000000000000000000000000000558491632069821,"AccuracyPValue","filtered_w_balancing",12
+"McnemarPValue65",NA,"McnemarPValue","filtered_w_balancing",12
+"Class: 1265",0.583955867141708,"Class: 12","filtered_w_balancing",12
+"Class: 2165",0.794965367867698,"Class: 21","filtered_w_balancing",12
+"Class: 375",0.665646539840088,"Class: 3","filtered_w_balancing",12
+"Class: 3365",0.999408284023669,"Class: 33","filtered_w_balancing",12
+"Class: 465",0.734814120587316,"Class: 4","filtered_w_balancing",12
+"Accuracy66",0.708454810495627,"Accuracy","raw",11
+"Kappa66",0.565123679839742,"Kappa","raw",11
+"AccuracyLower66",0.657242801020677,"AccuracyLower","raw",11
+"AccuracyUpper66",0.756025349385779,"AccuracyUpper","raw",11
+"AccuracyNull66",0.466472303206997,"AccuracyNull","raw",11
+"AccuracyPValue66",0.000000000000000000102359800578341,"AccuracyPValue","raw",11
+"McnemarPValue66",NA,"McnemarPValue","raw",11
+"Class: 1266",0.783686006825939,"Class: 12","raw",11
+"Class: 2166",0.855515710382514,"Class: 21","raw",11
+"Class: 376",0.692130987292278,"Class: 3","raw",11
+"Class: 3366",1,"Class: 33","raw",11
+"Class: 466",0.725510204081633,"Class: 4","raw",11
+"Accuracy67",0.710982658959538,"Accuracy","filtered",11
+"Kappa67",0.569314263664314,"Kappa","filtered",11
+"AccuracyLower67",0.660106177083396,"AccuracyLower","filtered",11
+"AccuracyUpper67",0.758205575942886,"AccuracyUpper","filtered",11
+"AccuracyNull67",0.468208092485549,"AccuracyNull","filtered",11
+"AccuracyPValue67",0.0000000000000000000520743898173419,"AccuracyPValue","filtered",11
+"McnemarPValue67",NA,"McnemarPValue","filtered",11
+"Class: 1267",0.791013513513513,"Class: 12","filtered",11
+"Class: 2167",0.875167740203972,"Class: 21","filtered",11
+"Class: 377",0.631571304095266,"Class: 3","filtered",11
+"Class: 3367",1,"Class: 33","filtered",11
+"Class: 467",0.732098311045679,"Class: 4","filtered",11
+"Accuracy68",0.714285714285714,"Accuracy","filtered_w_balancing",11
+"Kappa68",0.577363140292202,"Kappa","filtered_w_balancing",11
+"AccuracyLower68",0.663307999595025,"AccuracyLower","filtered_w_balancing",11
+"AccuracyUpper68",0.761519262781422,"AccuracyUpper","filtered_w_balancing",11
+"AccuracyNull68",0.463556851311953,"AccuracyNull","filtered_w_balancing",11
+"AccuracyPValue68",0.0000000000000000000046574820300712,"AccuracyPValue","filtered_w_balancing",11
+"McnemarPValue68",NA,"McnemarPValue","filtered_w_balancing",11
+"Class: 1268",0.800511945392491,"Class: 12","filtered_w_balancing",11
+"Class: 2168",0.869479764834564,"Class: 21","filtered_w_balancing",11
+"Class: 378",0.631524926686217,"Class: 3","filtered_w_balancing",11
+"Class: 3368",1,"Class: 33","filtered_w_balancing",11
+"Class: 468",0.750931445603577,"Class: 4","filtered_w_balancing",11
+"Accuracy69",0.810276679841897,"Accuracy","raw",30
+"Kappa69",0.665002344762903,"Kappa","raw",30
+"AccuracyLower69",0.773349505838709,"AccuracyLower","raw",30
+"AccuracyUpper69",0.843530958359687,"AccuracyUpper","raw",30
+"AccuracyNull69",0.612648221343874,"AccuracyNull","raw",30
+"AccuracyPValue69",0.000000000000000000000674421920748215,"AccuracyPValue","raw",30
+"McnemarPValue69",NA,"McnemarPValue","raw",30
+"Class: 1269",0.756298811544992,"Class: 12","raw",30
+"Class: 2169",0.880595786701778,"Class: 21","raw",30
+"Class: 379",0.818359589567816,"Class: 3","raw",30
+"Class: 3369",0.862626262626263,"Class: 33","raw",30
+"Class: 469",0.779548204921339,"Class: 4","raw",30
+"Accuracy70",0.812252964426877,"Accuracy","filtered",30
+"Kappa70",0.671946550559267,"Kappa","filtered",30
+"AccuracyLower70",0.775450018567506,"AccuracyLower","filtered",30
+"AccuracyUpper70",0.845359091330435,"AccuracyUpper","filtered",30
+"AccuracyNull70",0.614624505928854,"AccuracyNull","filtered",30
+"AccuracyPValue70",0.000000000000000000000574309444160464,"AccuracyPValue","filtered",30
+"McnemarPValue70",NA,"McnemarPValue","filtered",30
+"Class: 1270",0.719677871148459,"Class: 12","filtered",30
+"Class: 2170",0.896009563855223,"Class: 21","filtered",30
+"Class: 380",0.830729681629425,"Class: 3","filtered",30
+"Class: 3370",0.906060606060606,"Class: 33","filtered",30
+"Class: 470",0.777416008759292,"Class: 4","filtered",30
+"Accuracy71",0.824110671936759,"Accuracy","filtered_w_balancing",30
+"Kappa71",0.699500880798591,"Kappa","filtered_w_balancing",30
+"AccuracyLower71",0.788083318846578,"AccuracyLower","filtered_w_balancing",30
+"AccuracyUpper71",0.856297302133779,"AccuracyUpper","filtered_w_balancing",30
+"AccuracyNull71",0.612648221343874,"AccuracyNull","filtered_w_balancing",30
+"AccuracyPValue71",0.000000000000000000000000457946152328792,"AccuracyPValue","filtered_w_balancing",30
+"McnemarPValue71",NA,"McnemarPValue","filtered_w_balancing",30
+"Class: 1271",0.726146010186757,"Class: 12","filtered_w_balancing",30
+"Class: 2171",0.915898617511521,"Class: 21","filtered_w_balancing",30
+"Class: 381",0.843550194449937,"Class: 3","filtered_w_balancing",30
+"Class: 3371",0.906060606060606,"Class: 33","filtered_w_balancing",30
+"Class: 471",0.843917478245837,"Class: 4","filtered_w_balancing",30
+"Accuracy72",0.893557422969188,"Accuracy","raw",31
+"Kappa72",0.681631503602356,"Kappa","raw",31
+"AccuracyLower72",0.856834025779704,"AccuracyLower","raw",31
+"AccuracyUpper72",0.923566584031269,"AccuracyUpper","raw",31
+"AccuracyNull72",0.781512605042017,"AccuracyNull","raw",31
+"AccuracyPValue72",0.0000000236895107070046,"AccuracyPValue","raw",31
+"McnemarPValue72",NA,"McnemarPValue","raw",31
+"Class: 1272",0.741549295774648,"Class: 12","raw",31
+"Class: 2172",0.861042183622829,"Class: 21","raw",31
+"Class: 382",0.814446366782007,"Class: 3","raw",31
+"Class: 3372",1,"Class: 33","raw",31
+"Class: 472",0.555714285714286,"Class: 4","raw",31
+"Accuracy73",0.904761904761905,"Accuracy","filtered",31
+"Kappa73",0.718388937868312,"Kappa","filtered",31
+"AccuracyLower73",0.86945974528661,"AccuracyLower","filtered",31
+"AccuracyUpper73",0.933140695474162,"AccuracyUpper","filtered",31
+"AccuracyNull73",0.781512605042017,"AccuracyNull","filtered",31
+"AccuracyPValue73",0.000000000594451780341462,"AccuracyPValue","filtered",31
+"McnemarPValue73",NA,"McnemarPValue","filtered",31
+"Class: 1273",0.745774647887324,"Class: 12","filtered",31
+"Class: 2173",0.860283981251723,"Class: 21","filtered",31
+"Class: 383",0.862889273356401,"Class: 3","filtered",31
+"Class: 3373",1,"Class: 33","filtered",31
+"Class: 473",0.564285714285714,"Class: 4","filtered",31
+"Accuracy74",0.916201117318436,"Accuracy","filtered_w_balancing",31
+"Kappa74",0.757971830985916,"Kappa","filtered_w_balancing",31
+"AccuracyLower74",0.882533026012392,"AccuracyLower","filtered_w_balancing",31
+"AccuracyUpper74",0.942747920189983,"AccuracyUpper","filtered_w_balancing",31
+"AccuracyNull74",0.782122905027933,"AccuracyNull","filtered_w_balancing",31
+"AccuracyPValue74",0.00000000000910384055707853,"AccuracyPValue","filtered_w_balancing",31
+"McnemarPValue74",NA,"McnemarPValue","filtered_w_balancing",31
+"Class: 1274",0.995786516853933,"Class: 12","filtered_w_balancing",31
+"Class: 2174",0.892399267399267,"Class: 21","filtered_w_balancing",31
+"Class: 384",0.892342799188641,"Class: 3","filtered_w_balancing",31
+"Class: 3374",1,"Class: 33","filtered_w_balancing",31
+"Class: 474",0.491452991452991,"Class: 4","filtered_w_balancing",31
+"Accuracy75",0.905813953488372,"Accuracy","raw",21
+"Kappa75",0.71380443714051,"Kappa","raw",21
+"AccuracyLower75",0.884295835836153,"AccuracyLower","raw",21
+"AccuracyUpper75",0.924499336114777,"AccuracyUpper","raw",21
+"AccuracyNull75",0.795348837209302,"AccuracyNull","raw",21
+"AccuracyPValue75",0.00000000000000000154808658102996,"AccuracyPValue","raw",21
+"McnemarPValue75",NA,"McnemarPValue","raw",21
+"Class: 1275",0.869629377376696,"Class: 12","raw",21
+"Class: 2175",0.882542530568846,"Class: 21","raw",21
+"Class: 385",0.800224903767138,"Class: 3","raw",21
+"Class: 3375",0.999413145539906,"Class: 33","raw",21
+"Class: 475",0.677961291787275,"Class: 4","raw",21
+"Accuracy76",0.931712962962963,"Accuracy","filtered",21
+"Kappa76",0.799997645923328,"Kappa","filtered",21
+"AccuracyLower76",0.91279556396871,"AccuracyLower","filtered",21
+"AccuracyUpper76",0.947613807165703,"AccuracyUpper","filtered",21
+"AccuracyNull76",0.797453703703704,"AccuracyNull","filtered",21
+"AccuracyPValue76",0.000000000000000000000000000216956003804372,"AccuracyPValue","filtered",21
+"McnemarPValue76",NA,"McnemarPValue","filtered",21
+"Class: 1276",0.871462463989154,"Class: 12","filtered",21
+"Class: 2176",0.930520422973253,"Class: 21","filtered",21
+"Class: 386",0.893910690121786,"Class: 3","filtered",21
+"Class: 3376",0.999415887850467,"Class: 33","filtered",21
+"Class: 476",0.706575156753093,"Class: 4","filtered",21
+"Accuracy77",0.924506387921022,"Accuracy","filtered_w_balancing",21
+"Kappa77",0.780747804148025,"Kappa","filtered_w_balancing",21
+"AccuracyLower77",0.904786231177066,"AccuracyLower","filtered_w_balancing",21
+"AccuracyUpper77",0.941255438018866,"AccuracyUpper","filtered_w_balancing",21
+"AccuracyNull77",0.797909407665505,"AccuracyNull","filtered_w_balancing",21
+"AccuracyPValue77",0.000000000000000000000000582396100177379,"AccuracyPValue","filtered_w_balancing",21
+"McnemarPValue77",NA,"McnemarPValue","filtered_w_balancing",21
+"Class: 1277",0.849404761904762,"Class: 12","filtered_w_balancing",21
+"Class: 2177",0.934447623349897,"Class: 21","filtered_w_balancing",21
+"Class: 387",0.873566551407187,"Class: 3","filtered_w_balancing",21
+"Class: 3377",0.999413833528722,"Class: 33","filtered_w_balancing",21
+"Class: 477",0.726785714285714,"Class: 4","filtered_w_balancing",21
+"Accuracy78",0.775616083009079,"Accuracy","raw",33
+"Kappa78",0.580720096566119,"Kappa","raw",33
+"AccuracyLower78",0.744495952396669,"AccuracyLower","raw",33
+"AccuracyUpper78",0.804611192922232,"AccuracyUpper","raw",33
+"AccuracyNull78",0.642023346303502,"AccuracyNull","raw",33
+"AccuracyPValue78",0.000000000000000711356346477161,"AccuracyPValue","raw",33
+"McnemarPValue78",NA,"McnemarPValue","raw",33
+"Class: 1278",0.663819350473613,"Class: 12","raw",33
+"Class: 2178",0.811780851998243,"Class: 21","raw",33
+"Class: 388",0.858487797720937,"Class: 3","raw",33
+"Class: 3378",0.99868073878628,"Class: 33","raw",33
+"Class: 478",0.668189943489794,"Class: 4","raw",33
+"Accuracy79",0.780234070221066,"Accuracy","filtered",33
+"Kappa79",0.593742380383747,"Kappa","filtered",33
+"AccuracyLower79",0.749270725956614,"AccuracyLower","filtered",33
+"AccuracyUpper79",0.809030655701683,"AccuracyUpper","filtered",33
+"AccuracyNull79",0.641092327698309,"AccuracyNull","filtered",33
+"AccuracyPValue79",0.0000000000000000455617411641136,"AccuracyPValue","filtered",33
+"McnemarPValue79",NA,"McnemarPValue","filtered",33
+"Class: 1279",0.642210144927536,"Class: 12","filtered",33
+"Class: 2179",0.819366052267984,"Class: 21","filtered",33
+"Class: 389",0.897159467216131,"Class: 3","filtered",33
+"Class: 3379",0.998677248677249,"Class: 33","filtered",33
+"Class: 479",0.657089127962914,"Class: 4","filtered",33
+"Accuracy80",0.775906735751295,"Accuracy","filtered_w_balancing",33
+"Kappa80",0.595365775329783,"Kappa","filtered_w_balancing",33
+"AccuracyLower80",0.744820215378812,"AccuracyLower","filtered_w_balancing",33
+"AccuracyUpper80",0.804868755840884,"AccuracyUpper","filtered_w_balancing",33
+"AccuracyNull80",0.64119170984456,"AccuracyNull","filtered_w_balancing",33
+"AccuracyPValue80",0.000000000000000402351030533973,"AccuracyPValue","filtered_w_balancing",33
+"McnemarPValue80",NA,"McnemarPValue","filtered_w_balancing",33
+"Class: 1280",0.668552917538032,"Class: 12","filtered_w_balancing",33
+"Class: 2180",0.827199795791854,"Class: 21","filtered_w_balancing",33
+"Class: 390",0.895678447170848,"Class: 3","filtered_w_balancing",33
+"Class: 3380",0.998682476943346,"Class: 33","filtered_w_balancing",33
+"Class: 480",0.671982957162598,"Class: 4","filtered_w_balancing",33
+"Accuracy81",0.683578104138852,"Accuracy","raw",34
+"Kappa81",0.525730255125078,"Kappa","raw",34
+"AccuracyLower81",0.64892884735264,"AccuracyLower","raw",34
+"AccuracyUpper81",0.716774088324589,"AccuracyUpper","raw",34
+"AccuracyNull81",0.401869158878505,"AccuracyNull","raw",34
+"AccuracyPValue81",0.00000000000000000000000000000000000000000000000000000118628579283129,"AccuracyPValue","raw",34
+"McnemarPValue81",NA,"McnemarPValue","raw",34
+"Class: 1281",0.713732430491433,"Class: 12","raw",34
+"Class: 2181",0.773697051495017,"Class: 21","raw",34
+"Class: 391",0.799754901960784,"Class: 3","raw",34
+"Class: 3381",0.916666666666667,"Class: 33","raw",34
+"Class: 481",0.745128051967446,"Class: 4","raw",34
+"Accuracy82",0.683853459972863,"Accuracy","filtered",34
+"Kappa82",0.52529295822149,"Kappa","filtered",34
+"AccuracyLower82",0.64891932003059,"AccuracyLower","filtered",34
+"AccuracyUpper82",0.717308183995749,"AccuracyUpper","filtered",34
+"AccuracyNull82",0.408412483039349,"AccuracyNull","filtered",34
+"AccuracyPValue82",0.00000000000000000000000000000000000000000000000000175582595593458,"AccuracyPValue","filtered",34
+"McnemarPValue82",NA,"McnemarPValue","filtered",34
+"Class: 1282",0.664358345021038,"Class: 12","filtered",34
+"Class: 2182",0.764321527629614,"Class: 21","filtered",34
+"Class: 392",0.800918422474338,"Class: 3","filtered",34
+"Class: 3382",0.916666666666667,"Class: 33","filtered",34
+"Class: 482",0.758954460173972,"Class: 4","filtered",34
+"Accuracy83",0.712871287128713,"Accuracy","raw",29
+"Kappa83",0.554671013020817,"Kappa","raw",29
+"AccuracyLower83",0.671254634061721,"AccuracyLower","raw",29
+"AccuracyUpper83",0.751975040084782,"AccuracyUpper","raw",29
+"AccuracyNull83",0.514851485148515,"AccuracyNull","raw",29
+"AccuracyPValue83",0.0000000000000000000965400514171912,"AccuracyPValue","raw",29
+"McnemarPValue83",NA,"McnemarPValue","raw",29
+"Class: 1283",0.718409586056645,"Class: 12","raw",29
+"Class: 2183",0.830141287284144,"Class: 21","raw",29
+"Class: 393",0.728429129088706,"Class: 3","raw",29
+"Class: 3383",0.831341301460823,"Class: 33","raw",29
+"Class: 483",0.762630553713528,"Class: 4","raw",29
+"Accuracy84",0.697628458498024,"Accuracy","filtered",29
+"Kappa84",0.530469906115815,"Kappa","filtered",29
+"AccuracyLower84",0.655550466422817,"AccuracyLower","filtered",29
+"AccuracyUpper84",0.737379242393873,"AccuracyUpper","filtered",29
+"AccuracyNull84",0.515810276679842,"AccuracyNull","filtered",29
+"AccuracyPValue84",0.0000000000000000701194451584599,"AccuracyPValue","filtered",29
+"McnemarPValue84",NA,"McnemarPValue","filtered",29
+"Class: 1284",0.726086956521739,"Class: 12","filtered",29
+"Class: 2184",0.834701696770662,"Class: 21","filtered",29
+"Class: 394",0.64984555466022,"Class: 3","filtered",29
+"Class: 3384",0.832339297548045,"Class: 33","filtered",29
+"Class: 484",0.760044642857143,"Class: 4","filtered",29
+"Accuracy85",0.709486166007905,"Accuracy","filtered_w_balancing",29
+"Kappa85",0.555578127240572,"Kappa","filtered_w_balancing",29
+"AccuracyLower85",0.667796082038686,"AccuracyLower","filtered_w_balancing",29
+"AccuracyUpper85",0.748708527093307,"AccuracyUpper","filtered_w_balancing",29
+"AccuracyNull85",0.515810276679842,"AccuracyNull","filtered_w_balancing",29
+"AccuracyPValue85",0.000000000000000000554464990364964,"AccuracyPValue","filtered_w_balancing",29
+"McnemarPValue85",NA,"McnemarPValue","filtered_w_balancing",29
+"Class: 1285",0.73695652173913,"Class: 12","filtered_w_balancing",29
+"Class: 2185",0.847447024786926,"Class: 21","filtered_w_balancing",29
+"Class: 395",0.690538544184797,"Class: 3","filtered_w_balancing",29
+"Class: 3385",0.832339297548045,"Class: 33","filtered_w_balancing",29
+"Class: 485",0.770440641534392,"Class: 4","filtered_w_balancing",29
+"Accuracy86",0.693623639191291,"Accuracy","raw",14
+"Kappa86",0.524487731264676,"Kappa","raw",14
+"AccuracyLower86",0.667617884313488,"AccuracyLower","raw",14
+"AccuracyUpper86",0.7187411475365,"AccuracyUpper","raw",14
+"AccuracyNull86",0.51244167962675,"AccuracyNull","raw",14
+"AccuracyPValue86",0.000000000000000000000000000000000000000741618042113058,"AccuracyPValue","raw",14
+"McnemarPValue86",NA,"McnemarPValue","raw",14
+"Class: 1286",0.769157066443353,"Class: 12","raw",14
+"Class: 2186",0.84976524554776,"Class: 21","raw",14
+"Class: 396",0.691996520226185,"Class: 3","raw",14
+"Class: 3386",0.75,"Class: 33","raw",14
+"Class: 486",0.731943667971142,"Class: 4","raw",14
+"Accuracy87",0.695820433436533,"Accuracy","filtered",14
+"Kappa87",0.519809798696054,"Kappa","filtered",14
+"AccuracyLower87",0.669922491077779,"AccuracyLower","filtered",14
+"AccuracyUpper87",0.720824224104258,"AccuracyUpper","filtered",14
+"AccuracyNull87",0.511609907120743,"AccuracyNull","filtered",14
+"AccuracyPValue87",0.000000000000000000000000000000000000000024729015621627,"AccuracyPValue","filtered",14
+"McnemarPValue87",NA,"McnemarPValue","filtered",14
+"Class: 1287",0.749292586304471,"Class: 12","filtered",14
+"Class: 2187",0.849391268122425,"Class: 21","filtered",14
+"Class: 397",0.648026315789474,"Class: 3","filtered",14
+"Class: 3387",0.75,"Class: 33","filtered",14
+"Class: 487",0.730612743981529,"Class: 4","filtered",14
+"Accuracy88",0.683965917893106,"Accuracy","filtered_w_balancing",14
+"Kappa88",0.503803001328271,"Kappa","filtered_w_balancing",14
+"AccuracyLower88",0.657819843720789,"AccuracyLower","filtered_w_balancing",14
+"AccuracyUpper88",0.70927148724877,"AccuracyUpper","filtered_w_balancing",14
+"AccuracyNull88",0.512006196746708,"AccuracyNull","filtered_w_balancing",14
+"AccuracyPValue88",0.00000000000000000000000000000000000398435919281037,"AccuracyPValue","filtered_w_balancing",14
+"McnemarPValue88",NA,"McnemarPValue","filtered_w_balancing",14
+"Class: 1288",0.751907913368809,"Class: 12","filtered_w_balancing",14
+"Class: 2188",0.841047177032981,"Class: 21","filtered_w_balancing",14
+"Class: 398",0.659123889971843,"Class: 3","filtered_w_balancing",14
+"Class: 3388",0.75,"Class: 33","filtered_w_balancing",14
+"Class: 488",0.718145906875105,"Class: 4","filtered_w_balancing",14
+"Accuracy89",0.663492063492063,"Accuracy","raw",13
+"Kappa89",0.380634390651085,"Kappa","raw",13
+"AccuracyLower89",0.625100613222286,"AccuracyLower","raw",13
+"AccuracyUpper89",0.700342494343377,"AccuracyUpper","raw",13
+"AccuracyNull89",0.655555555555556,"AccuracyNull","raw",13
+"AccuracyPValue89",0.354383529659139,"AccuracyPValue","raw",13
+"McnemarPValue89",NA,"McnemarPValue","raw",13
+"Class: 1289",0.792876668911691,"Class: 12","raw",13
+"Class: 2189",0.72361626059322,"Class: 21","raw",13
+"Class: 399",0.659412707236519,"Class: 3","raw",13
+"Class: 3389",0.832535885167464,"Class: 33","raw",13
+"Class: 489",0.66332109661798,"Class: 4","raw",13
+"Accuracy90",0.670364500792393,"Accuracy","filtered",13
+"Kappa90",0.361432359452162,"Kappa","filtered",13
+"AccuracyLower90",0.632161320282915,"AccuracyLower","filtered",13
+"AccuracyUpper90",0.706964234063056,"AccuracyUpper","filtered",13
+"AccuracyNull90",0.654516640253566,"AccuracyNull","filtered",13
+"AccuracyPValue90",0.213688122604671,"AccuracyPValue","filtered",13
+"McnemarPValue90",NA,"McnemarPValue","filtered",13
+"Class: 1290",0.798339011925043,"Class: 12","filtered",13
+"Class: 2190",0.687753989493508,"Class: 21","filtered",13
+"Class: 3100",0.626885160279428,"Class: 3","filtered",13
+"Class: 3390",0.832537154989384,"Class: 33","filtered",13
+"Class: 490",0.650598662727414,"Class: 4","filtered",13
+"Accuracy91",0.670364500792393,"Accuracy","filtered_w_balancing",13
+"Kappa91",0.372061201641995,"Kappa","filtered_w_balancing",13
+"AccuracyLower91",0.632161320282915,"AccuracyLower","filtered_w_balancing",13
+"AccuracyUpper91",0.706964234063056,"AccuracyUpper","filtered_w_balancing",13
+"AccuracyNull91",0.654516640253566,"AccuracyNull","filtered_w_balancing",13
+"AccuracyPValue91",0.213688122604671,"AccuracyPValue","filtered_w_balancing",13
+"McnemarPValue91",NA,"McnemarPValue","filtered_w_balancing",13
+"Class: 1291",0.785271798048629,"Class: 12","filtered_w_balancing",13
+"Class: 2191",0.696228565764694,"Class: 21","filtered_w_balancing",13
+"Class: 3101",0.662025853626689,"Class: 3","filtered_w_balancing",13
+"Class: 3391",0.832537154989384,"Class: 33","filtered_w_balancing",13
+"Class: 491",0.656013283870538,"Class: 4","filtered_w_balancing",13
+"Accuracy92",0.728423475258918,"Accuracy","raw",7
+"Kappa92",0.483385687332012,"Kappa","raw",7
+"AccuracyLower92",0.697534737107794,"AccuracyLower","raw",7
+"AccuracyUpper92",0.757754371908719,"AccuracyUpper","raw",7
+"AccuracyNull92",0.684695051783659,"AccuracyNull","raw",7
+"AccuracyPValue92",0.00280354421350091,"AccuracyPValue","raw",7
+"McnemarPValue92",NA,"McnemarPValue","raw",7
+"Class: 1292",0.560239206534422,"Class: 12","raw",7
+"Class: 2192",0.806594446957891,"Class: 21","raw",7
+"Class: 3102",0.763015261731565,"Class: 3","raw",7
+"Class: 3392",0.5,"Class: 33","raw",7
+"Class: 492",0.747147764215175,"Class: 4","raw",7
+"Accuracy93",0.755172413793103,"Accuracy","filtered",7
+"Kappa93",0.486294534446625,"Kappa","filtered",7
+"AccuracyLower93",0.725189913576611,"AccuracyLower","filtered",7
+"AccuracyUpper93",0.783415200097882,"AccuracyUpper","filtered",7
+"AccuracyNull93",0.683908045977011,"AccuracyNull","filtered",7
+"AccuracyPValue93",0.00000227983566460597,"AccuracyPValue","filtered",7
+"McnemarPValue93",NA,"McnemarPValue","filtered",7
+"Class: 1293",0.576631701631702,"Class: 12","filtered",7
+"Class: 2193",0.777678749916705,"Class: 21","filtered",7
+"Class: 3103",0.706410256410256,"Class: 3","filtered",7
+"Class: 3393",0.5,"Class: 33","filtered",7
+"Class: 493",0.738930481283423,"Class: 4","filtered",7
+"Accuracy94",0.744533947065593,"Accuracy","filtered_w_balancing",7
+"Kappa94",0.487773016201749,"Kappa","filtered_w_balancing",7
+"AccuracyLower94",0.714163186981291,"AccuracyLower","filtered_w_balancing",7
+"AccuracyUpper94",0.773236180418894,"AccuracyUpper","filtered_w_balancing",7
+"AccuracyNull94",0.684695051783659,"AccuracyNull","filtered_w_balancing",7
+"AccuracyPValue94",0.0000648273242568752,"AccuracyPValue","filtered_w_balancing",7
+"McnemarPValue94",NA,"McnemarPValue","filtered_w_balancing",7
+"Class: 1294",0.566073512252042,"Class: 12","filtered_w_balancing",7
+"Class: 2194",0.81298279126661,"Class: 21","filtered_w_balancing",7
+"Class: 3104",0.705755241762944,"Class: 3","filtered_w_balancing",7
+"Class: 3394",0.5,"Class: 33","filtered_w_balancing",7
+"Class: 494",0.741624240937251,"Class: 4","filtered_w_balancing",7
+"Accuracy95",0.681360201511335,"Accuracy","raw",5
+"Kappa95",0.400180350189905,"Kappa","raw",5
+"AccuracyLower95",0.647691610973503,"AccuracyLower","raw",5
+"AccuracyUpper95",0.713675345296515,"AccuracyUpper","raw",5
+"AccuracyNull95",0.6272040302267,"AccuracyNull","raw",5
+"AccuracyPValue95",0.000816011904312313,"AccuracyPValue","raw",5
+"McnemarPValue95",NA,"McnemarPValue","raw",5
+"Class: 1295",0.668777056277056,"Class: 12","raw",5
+"Class: 2195",0.731119694943792,"Class: 21","raw",5
+"Class: 3105",0.660946278686964,"Class: 3","raw",5
+"Class: 3395",0.999365482233503,"Class: 33","raw",5
+"Class: 495",0.678857321176598,"Class: 4","raw",5
+"Accuracy96",0.655345911949686,"Accuracy","filtered",5
+"Kappa96",0.313159786598055,"Kappa","filtered",5
+"AccuracyLower96",0.621151691166584,"AccuracyLower","filtered",5
+"AccuracyUpper96",0.688382853724693,"AccuracyUpper","filtered",5
+"AccuracyNull96",0.627672955974843,"AccuracyNull","filtered",5
+"AccuracyPValue96",0.0567878125515663,"AccuracyPValue","filtered",5
+"McnemarPValue96",NA,"McnemarPValue","filtered",5
+"Class: 1296",0.638311688311688,"Class: 12","filtered",5
+"Class: 2196",0.65665798938855,"Class: 21","filtered",5
+"Class: 3106",0.613915453162356,"Class: 3","filtered",5
+"Class: 3396",1,"Class: 33","filtered",5
+"Class: 496",0.638631993717164,"Class: 4","filtered",5
+"Accuracy97",0.664987405541562,"Accuracy","filtered_w_balancing",5
+"Kappa97",0.356683571678774,"Kappa","filtered_w_balancing",5
+"AccuracyLower97",0.630960945028502,"AccuracyLower","filtered_w_balancing",5
+"AccuracyUpper97",0.697782992421981,"AccuracyUpper","filtered_w_balancing",5
+"AccuracyNull97",0.628463476070529,"AccuracyNull","filtered_w_balancing",5
+"AccuracyPValue97",0.0176569396226426,"AccuracyPValue","filtered_w_balancing",5
+"McnemarPValue97",NA,"McnemarPValue","filtered_w_balancing",5
+"Class: 1297",0.654980494148244,"Class: 12","filtered_w_balancing",5
+"Class: 2197",0.684758371746543,"Class: 21","filtered_w_balancing",5
+"Class: 3107",0.653056088370132,"Class: 3","filtered_w_balancing",5
+"Class: 3397",0.999365482233503,"Class: 33","filtered_w_balancing",5
+"Class: 497",0.659515641452396,"Class: 4","filtered_w_balancing",5
+"Accuracy98",0.67032967032967,"Accuracy","raw",2
+"Kappa98",0.472508617624782,"Kappa","raw",2
+"AccuracyLower98",0.62503412138212,"AccuracyLower","raw",2
+"AccuracyUpper98",0.71339328910229,"AccuracyUpper","raw",2
+"AccuracyNull98",0.448351648351648,"AccuracyNull","raw",2
+"AccuracyPValue98",0.00000000000000000000120620360167258,"AccuracyPValue","raw",2
+"McnemarPValue98",NA,"McnemarPValue","raw",2
+"Class: 1298",0.741130820399113,"Class: 12","raw",2
+"Class: 2198",0.767147097882978,"Class: 21","raw",2
+"Class: 3108",0.7791124590949,"Class: 3","raw",2
+"Class: 3398",1,"Class: 33","raw",2
+"Class: 498",0.578815128272944,"Class: 4","raw",2
+"Accuracy99",0.660087719298246,"Accuracy","filtered",2
+"Kappa99",0.453228950707058,"Kappa","filtered",2
+"AccuracyLower99",0.614584018619891,"AccuracyLower","filtered",2
+"AccuracyUpper99",0.703498854437157,"AccuracyUpper","filtered",2
+"AccuracyNull99",0.449561403508772,"AccuracyNull","filtered",2
+"AccuracyPValue99",0.000000000000000000116655579934755,"AccuracyPValue","filtered",2
+"McnemarPValue99",NA,"McnemarPValue","filtered",2
+"Class: 1299",0.5,"Class: 12","filtered",2
+"Class: 2199",0.752599358662909,"Class: 21","filtered",2
+"Class: 3109",0.782726676341371,"Class: 3","filtered",2
+"Class: 3399",0.998896247240618,"Class: 33","filtered",2
+"Class: 499",0.56140350877193,"Class: 4","filtered",2
+"Accuracy100",0.680616740088106,"Accuracy","filtered_w_balancing",2
+"Kappa100",0.484732973802237,"Kappa","filtered_w_balancing",2
+"AccuracyLower100",0.635553906416197,"AccuracyLower","filtered_w_balancing",2
+"AccuracyUpper100",0.723306946924429,"AccuracyUpper","filtered_w_balancing",2
+"AccuracyNull100",0.449339207048458,"AccuracyNull","filtered_w_balancing",2
+"AccuracyPValue100",0.000000000000000000000024668172244915,"AccuracyPValue","filtered_w_balancing",2
+"McnemarPValue100",NA,"McnemarPValue","filtered_w_balancing",2
+"Class: 12100",0.496674057649667,"Class: 12","filtered_w_balancing",2
+"Class: 21100",0.769470588235294,"Class: 21","filtered_w_balancing",2
+"Class: 3110",0.792966011736666,"Class: 3","filtered_w_balancing",2
+"Class: 33100",1,"Class: 33","filtered_w_balancing",2
+"Class: 4100",0.584935260064519,"Class: 4","filtered_w_balancing",2
+"Accuracy101",0.635658914728682,"Accuracy","raw",4
+"Kappa101",0.478396772898465,"Kappa","raw",4
+"AccuracyLower101",0.585526798857483,"AccuracyLower","raw",4
+"AccuracyUpper101",0.683698328314872,"AccuracyUpper","raw",4
+"AccuracyNull101",0.343669250645995,"AccuracyNull","raw",4
+"AccuracyPValue101",0.00000000000000000000000000000013087899924912,"AccuracyPValue","raw",4
+"McnemarPValue101",NA,"McnemarPValue","raw",4
+"Class: 12101",0.682539682539683,"Class: 12","raw",4
+"Class: 21101",0.792167426440116,"Class: 21","raw",4
+"Class: 3111",0.801381461675579,"Class: 3","raw",4
+"Class: 4101",0.641722110974743,"Class: 4","raw",4
+"Accuracy102",0.638461538461538,"Accuracy","filtered",4
+"Kappa102",0.484953215881312,"Kappa","filtered",4
+"AccuracyLower102",0.588587743038254,"AccuracyLower","filtered",4
+"AccuracyUpper102",0.686215922462798,"AccuracyUpper","filtered",4
+"AccuracyNull102",0.343589743589744,"AccuracyNull","filtered",4
+"AccuracyPValue102",0.000000000000000000000000000000019585717701169,"AccuracyPValue","filtered",4
+"McnemarPValue102",NA,"McnemarPValue","filtered",4
+"Class: 12102",0.733158355205599,"Class: 12","filtered",4
+"Class: 21102",0.790345149253731,"Class: 21","filtered",4
+"Class: 3112",0.809901338971106,"Class: 3","filtered",4
+"Class: 4102",0.644664031620553,"Class: 4","filtered",4
+"Accuracy103",0.626288659793814,"Accuracy","filtered_w_balancing",4
+"Kappa103",0.468171591704006,"Kappa","filtered_w_balancing",4
+"AccuracyLower103",0.576044666225642,"AccuracyLower","filtered_w_balancing",4
+"AccuracyUpper103",0.6745899243068,"AccuracyUpper","filtered_w_balancing",4
+"AccuracyNull103",0.347938144329897,"AccuracyNull","filtered_w_balancing",4
+"AccuracyPValue103",0.0000000000000000000000000000644265650323951,"AccuracyPValue","filtered_w_balancing",4
+"McnemarPValue103",NA,"McnemarPValue","filtered_w_balancing",4
+"Class: 12103",0.676048079742011,"Class: 12","filtered_w_balancing",4
+"Class: 21103",0.789371980676329,"Class: 21","filtered_w_balancing",4
+"Class: 3113",0.799521786913001,"Class: 3","filtered_w_balancing",4
+"Class: 4103",0.634995977473854,"Class: 4","filtered_w_balancing",4
+"Accuracy104",0.672268907563025,"Accuracy","raw",1
+"Kappa104",0.46368908758676,"Kappa","raw",1
+"AccuracyLower104",0.628078661490753,"AccuracyLower","raw",1
+"AccuracyUpper104",0.714302520497977,"AccuracyUpper","raw",1
+"AccuracyNull104",0.504201680672269,"AccuracyNull","raw",1
+"AccuracyPValue104",0.0000000000000889236785516864,"AccuracyPValue","raw",1
+"McnemarPValue104",NA,"McnemarPValue","raw",1
+"Class: 12104",0.703070175438597,"Class: 12","raw",1
+"Class: 21104",0.683526999316473,"Class: 21","raw",1
+"Class: 3114",0.801518361581921,"Class: 3","raw",1
+"Class: 33101",0.9,"Class: 33","raw",1
+"Class: 4104",0.626622433706409,"Class: 4","raw",1
+"Accuracy105",0.636942675159236,"Accuracy","filtered",1
+"Kappa105",0.375447820220537,"Kappa","filtered",1
+"AccuracyLower105",0.591699875581092,"AccuracyLower","filtered",1
+"AccuracyUpper105",0.680453952514817,"AccuracyUpper","filtered",1
+"AccuracyNull105",0.509554140127389,"AccuracyNull","filtered",1
+"AccuracyPValue105",0.0000000167590188853001,"AccuracyPValue","filtered",1
+"McnemarPValue105",NA,"McnemarPValue","filtered",1
+"Class: 12105",0.64683278993945,"Class: 12","filtered",1
+"Class: 21105",0.572141529565636,"Class: 21","filtered",1
+"Class: 3115",0.760795454545454,"Class: 3","filtered",1
+"Class: 33102",0.95,"Class: 33","filtered",1
+"Class: 4105",0.597885216918265,"Class: 4","filtered",1
+"Accuracy106",0.646934460887949,"Accuracy","filtered_w_balancing",1
+"Kappa106",0.405228561317381,"Kappa","filtered_w_balancing",1
+"AccuracyLower106",0.60199312561782,"AccuracyLower","filtered_w_balancing",1
+"AccuracyUpper106",0.690025539541459,"AccuracyUpper","filtered_w_balancing",1
+"AccuracyNull106",0.507399577167019,"AccuracyNull","filtered_w_balancing",1
+"AccuracyPValue106",0.000000000635763143476729,"AccuracyPValue","filtered_w_balancing",1
+"McnemarPValue106",NA,"McnemarPValue","filtered_w_balancing",1
+"Class: 12106",0.645780199397171,"Class: 12","filtered_w_balancing",1
+"Class: 21106",0.590335008375209,"Class: 21","filtered_w_balancing",1
+"Class: 3116",0.786346566523605,"Class: 3","filtered_w_balancing",1
+"Class: 33103",0.95,"Class: 33","filtered_w_balancing",1
+"Class: 4106",0.609496124031008,"Class: 4","filtered_w_balancing",1
+"Accuracy107",0.615030674846626,"Accuracy","raw",3
+"Kappa107",0.351284927716622,"Kappa","raw",3
+"AccuracyLower107",0.576461576055594,"AccuracyLower","raw",3
+"AccuracyUpper107",0.652553325073177,"AccuracyUpper","raw",3
+"AccuracyNull107",0.553680981595092,"AccuracyNull","raw",3
+"AccuracyPValue107",0.000880521423419764,"AccuracyPValue","raw",3
+"McnemarPValue107",NA,"McnemarPValue","raw",3
+"Class: 12107",0.606216505894962,"Class: 12","raw",3
+"Class: 21107",0.614692694663167,"Class: 21","raw",3
+"Class: 3117",0.755714653176713,"Class: 3","raw",3
+"Class: 33104",0.947663551401869,"Class: 33","raw",3
+"Class: 4107",0.653749131374285,"Class: 4","raw",3
+"Accuracy108",0.61171032357473,"Accuracy","filtered",3
+"Kappa108",0.311672460669523,"Kappa","filtered",3
+"AccuracyLower108",0.573005464221071,"AccuracyLower","filtered",3
+"AccuracyUpper108",0.649394233884382,"AccuracyUpper","filtered",3
+"AccuracyNull108",0.556240369799692,"AccuracyNull","filtered",3
+"AccuracyPValue108",0.0024189496637215,"AccuracyPValue","filtered",3
+"McnemarPValue108",NA,"McnemarPValue","filtered",3
+"Class: 12108",0.568159065628476,"Class: 12","filtered",3
+"Class: 21108",0.553941995166264,"Class: 21","filtered",3
+"Class: 3118",0.773899024036969,"Class: 3","filtered",3
+"Class: 33105",0.948435054773083,"Class: 33","filtered",3
+"Class: 4108",0.626654355186211,"Class: 4","filtered",3
+"Accuracy109",0.617647058823529,"Accuracy","filtered_w_balancing",3
+"Kappa109",0.335512726545842,"Kappa","filtered_w_balancing",3
+"AccuracyLower109",0.578929926458452,"AccuracyLower","filtered_w_balancing",3
+"AccuracyUpper109",0.655283857334108,"AccuracyUpper","filtered_w_balancing",3
+"AccuracyNull109",0.557275541795666,"AccuracyNull","filtered_w_balancing",3
+"AccuracyPValue109",0.00108583534538167,"AccuracyPValue","filtered_w_balancing",3
+"McnemarPValue109",NA,"McnemarPValue","filtered_w_balancing",3
+"Class: 12109",0.567383263985206,"Class: 12","filtered_w_balancing",3
+"Class: 21109",0.582711888210098,"Class: 21","filtered_w_balancing",3
+"Class: 3119",0.783780972031973,"Class: 3","filtered_w_balancing",3
+"Class: 33106",0.948427672955975,"Class: 33","filtered_w_balancing",3
+"Class: 4109",0.636062548562549,"Class: 4","filtered_w_balancing",3
+"Accuracy110",0.715355805243446,"Accuracy","raw",28
+"Kappa110",0.485744697027294,"Kappa","raw",28
+"AccuracyLower110",0.657166276247063,"AccuracyLower","raw",28
+"AccuracyUpper110",0.768692998527818,"AccuracyUpper","raw",28
+"AccuracyNull110",0.573033707865168,"AccuracyNull","raw",28
+"AccuracyPValue110",0.00000108183016051196,"AccuracyPValue","raw",28
+"McnemarPValue110",NA,"McnemarPValue","raw",28
+"Class: 12110",0.602186311787072,"Class: 12","raw",28
+"Class: 21110",0.784743722050224,"Class: 21","raw",28
+"Class: 3120",0.644003634161115,"Class: 3","raw",28
+"Class: 4110",0.744633110976349,"Class: 4","raw",28
+"Accuracy111",0.728301886792453,"Accuracy","filtered",28
+"Kappa111",0.503771131339402,"Kappa","filtered",28
+"AccuracyLower111",0.670493982815277,"AccuracyLower","filtered",28
+"AccuracyUpper111",0.780923196314321,"AccuracyUpper","filtered",28
+"AccuracyNull111",0.577358490566038,"AccuracyNull","filtered",28
+"AccuracyPValue111",0.000000244547847111154,"AccuracyPValue","filtered",28
+"McnemarPValue111",NA,"McnemarPValue","filtered",28
+"Class: 12111",0.611590038314176,"Class: 12","filtered",28
+"Class: 21111",0.799924136321195,"Class: 21","filtered",28
+"Class: 3121",0.613400488400488,"Class: 3","filtered",28
+"Class: 4111",0.751238390092879,"Class: 4","filtered",28
