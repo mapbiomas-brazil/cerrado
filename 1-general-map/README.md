@@ -1,5 +1,5 @@
-## Step01_stableMask.js
-Compute stable pixels over all the time-series (1985-2019) from collection 5 and filter them using reference data.
+## 1_trainingMask.js
+Build the training mask based on stable pixels (Collection 7 - 1985 to 2020), reference maps, and GEDI-based filtering 
 ```javascript
 // plot stable pixels
 var stableSamples = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/CE_amostras_estaveis85a19_col5_v2');
@@ -78,9 +78,7 @@ classified as the same class over more than 50% of the period for savana and gra
 
 # Changelog <br>
 ## 1_trainingMask:
-  * Inclusion of new reference maps (TO)
-  * Update of the PRODES deforestation database (2000 to 2021) 
-  * Inclusion of canopy heigth (GEDI derived) to filter stable pixels
+ 
 
 ## 2_computeProportion:
   * Code structure optmization. Inclusion of .map functions instead repetition 
