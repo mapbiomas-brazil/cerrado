@@ -64,4 +64,4 @@ Uses IBGE's (2009) geomorphology - "Floodplain" - to optimize wetland classifica
 The spatial filter avoids misclassifications at the edge of pixel groups and was built based on the "connectedPixelCount" function. Native to the GEE platform, this function locates connected components (neighbors) that share the same pixel value. Thus, only pixels that do not share connections to a predefined number of identical neighbors are considered isolated. At least six connected pixels are required to reach the minimum connection value. Consequently, the minimum mapping unit is directly affected by the spatial filter applied, and it was defined as six pixels (0.54 hectares).
 
 ## Classification schema:
-![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/2-general-map/www/Collection%206.png?raw=true)
+![alt text](https://github.com/mapbiomas-brazil/cerrado/blob/mapbiomas70/1-general-map/utils/Collection%207.png?raw=true)
