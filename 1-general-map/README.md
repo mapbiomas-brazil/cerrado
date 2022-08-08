@@ -38,83 +38,30 @@ Map.addLayer(trainingPoints, {}, 'trainingSamples');
 ## 05_rfClassification.R
 Performs the model training (`ee.Classifier.smileRandomForest()` ) and classification of the annual Landsat mosaics for each region. 
 
-## Step06_postGapfill.js
-No-data values (gaps) produced by cloud covered (or cloud shadow) pixels in a given image, were filled by the temporally nearest future valid classification. If no future valid classification was available, then the no-data value was replaced by its previous valid classification. Therefore, gaps should only remain in the final classified map when a given pixel was consistently classified as no-data throughout the entire temporal series.
+## 06_gapFill.js
+No-data values (gaps) due to cloud and/or cloud shadow contaminated pixels in a given image were filled by the temporally nearest future valid classification. If no future valid classification was available, then the no-data value was replaced by its previous valid classification. Therefore, gaps should only remain in the final classified map when a given pixel was consistently classified as no-data throughout the entire temporal series. 
 
-## Step07a_postCalc_Incidence.js
-Compute an image in which each pixel-value represents the number of times that a given pixel as changed among different classes. 
+## 7_incidence.js
+An incident filter was applied to remove pixels that changed too many times over the 37 years. All pixels that changed more than 12 times, and were connected to less than six same-class pixels that also changed more than 12 times, were replaced by the pixel MODE value. This avoids spurious transitions at the border of the same-class pixel group. Note that this filter was not applied to the Wetland (11) and Rocky Outcrop (29) classes.  
 
-## Step07b_postApply_Incidence.js
-An incident filter was applied to remove pixels that changed too many times over the 36 years. All pixels that changed more than eight times, and were connected to less than 6
-same-class pixels that also changed more than eight times, were replaced by the MODE value. This avoids spurious transitions at the border of the same-class pixel group. <br> <br> Savanna Formation and Grassland pixels that changed more than ten times, and were connected to less than 66 pixels that also changed more than ten times, were classified as Other Non-Vegetated Areas (Class 25). Natural classes tend to be stable, and these areas that change too often are likely not native vegetation. <br><br> As a final rule, all forest pixels that changed more than eight times, and were connected to more than 66 pixels that also changed more than eight times, were also classified as Other Non-Vegetated Areas (Class 25). This rule aims to filter out areas of commercial tree plantations mapped as Forest Formation; as the growth period for *Eucalyptus* sp. and *Pinus* sp. commercial forest stands is approximately seven to eight years.
-
-## Step08_postTemporal.js
+## 8_temporal.js
 The temporal filter uses the subsequent years to replace pixels that have invalid transitions in a given year. It follows sequential steps:
-1. As a first step, the filter searches for any native vegetation class (Forest, Savanna, and Grassland) that was not classified as such in 1985, and was correctly classified in 1986 and 1987, and then corrects the 1985 value.
+1. As a first step, the filter evaluates all pixels in a 5- (from 1986 to 2018) and 4-year (from 1986 to 2019) moving window to correct any value that has a given class in the past year (year -1), changes in the current year and return to the initial class in the last year (year +2 or +3). This process is applied for each class, observing this order: Savanna formation (4), Forest Formation (3), Grassland Formation (12), Wetland (11), Mosaic of Uses (21), River, Lake, and Ocean (33), and Other Non-vegetated Area (25).  
 
-2. In the second step, the filter searches for pixel values that were not Pasture, Agriculture, or Other Non Vegetated Areas (classes representing anthropogenic use) in 2020, but were classified as such in 2018 and 2019. The value in 2020 is then corrected to match the previous years to avoid any regeneration detection in the last year (which can not be corroborated).
+2. The second step is similar to the first but consists of a 3-year moving window (from 1986 to 2020) that corrects all the middle years (concerning -1 and +1 years), running in the same class order as the first.    
 
-3. In the third step, the filter evaluates all pixels in a 3-year moving window to correct any value that changes in the second year (midpoint of the window) but returns to the same class in the third year. This process is applied observing prevalence rules, in this order: Pasture (15), Agriculture (19), Other non Vegetated Areas (25), River, Lake and Ocean (33), Savanna (4), Grassland (12), Forest (3).
+3. In the third step, the filter searches for any native vegetation class (Forest, Savanna, Wetland, and Grassland) that was not classified as such in 1985 and was correctly classified in 1986 and 1987, and then corrects the 1985 value.
 
-4. The last step is similar to the third process, but consists of a 4- and 5-year moving window that corrects all middle years running in the same order of class prevalence.
+4. In the last step, the filter searches for pixel values that were not Mosaic of Uses (21) in 2021 but were classified as such in 2019 and 2020. The value in 2021 is then corrected to match the previous years to avoid any regeneration, which cannot be corroborated in the last year.
 
-## Step09_postSpatial.js
-The spatial filter avoids misclassifications at the edge of pixel groups, and was built based on the `connectedPixelCount` function. Native to the GEE platform, this function
-locates connected components (neighbours) that share the same pixel value. Thus, only pixels that do not share connections to a predefined number of identical neighbours are
-considered isolated. At least six connected pixels are required to reach the minimum connection value. Consequently, the minimum mapping unit is directly affected by the
-spatial filter applied, and it was defined as six pixels (~0,5 ha).
+## 9_frequency.js
+The frequency filter was applied only on pixels classified as native vegetation at least 90% of the time-series. If such a pixel was classified as Forest Formation over more than 75% of the time, that class was assigned to the pixel over the whole period. The same rule was applied for the Savanna Formation, Wetland, and Grassland Formation, but using a frequency criterion of 50% of the time-series. In the case of Rocky Outcrop, a criterion of 70% was applied in the first round of classification and 90% in the second. This frequency filter resulted in a more stable classification of native vegetation classes. Another significant result was the removal of noise in the first and last years of the classification, which the temporal filter cannot adequately assess.
 
-## Step10_postFrequency.js
-The frequency filter was applied only on pixels that were classified as native vegetation (no conversion transitions) throughout the time series. If such a pixel was
-classified as the same class over more than 50% of the period for savana and grassland or 75% for forest , that class was assigned to that pixel over the whole period. The results of this frequency filter was a more stable classification of native vegetation classes. Another important result was the removal of noise in the first and last year of the classification, which can not be adequately assessed by the temporal filter.
+## 10_geomorfology.js
+Uses IBGE's (2009) geomorphology - "Floodplain" - to optimize wetland classification in the Araguaia basin
+
+## 11_spatial.js
+The spatial filter avoids misclassifications at the edge of pixel groups and was built based on the "connectedPixelCount" function. Native to the GEE platform, this function locates connected components (neighbors) that share the same pixel value. Thus, only pixels that do not share connections to a predefined number of identical neighbors are considered isolated. At least six connected pixels are required to reach the minimum connection value. Consequently, the minimum mapping unit is directly affected by the spatial filter applied, and it was defined as six pixels (0.54 hectares).
 
 ## Classification schema:
 ![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/2-general-map/www/Collection%206.png?raw=true)
-
-
-# Changelog <br>
-## 1_trainingMask:
- 
-
-## 2_computeProportion:
-  * Code structure optmization. Inclusion of .map functions instead repetition 
-
-## 3_createPoints:
-  * Code structure optmization. Inclusion of .map functions instead repetition 
-
-## 4_getSignatures.R:
-  * Migration from python api to R api (rgee)
-  * inclusion of the time since the last fire as predictor
-  * Inclusion of derived longitude geo-descriptors (sin, cos)
-  * inclusion of HAND as predictor 
-  * Inclusion the auxMosaics inside this step
-
-## 5_rfClassification.R:
-  * Migration from python api to R api (rgee)
-  * ntree optimization (from 100 to 300)
-  * mtry optimization (form sqrt(predictors) to 12)  
-
-## 6_gapfill.js:
-  * No changes
-
-## 7_incidence.js:
-  * code optimization (from 240 to 83 lines)
-
-## 8_temporal.js:
-  * rewriten to new sintax 
-  * rules reviewed and optimized
-  * wetlands included 
- 
- ## 9_frequency.js:
-  * stabilize pixels that are native vegetation for at least 90% of the time
-
- ## 10_geomorfology.js:
-  * use geomorfology from IBGE (2009)- "Plano de inundação" - to optimize wetlands classification in Araguaia basin 
- 
- ## 10_spatial.js:
-  * double filtering
-  * minimum mapping area equals to 0.45 ha
- 
-
-
-
