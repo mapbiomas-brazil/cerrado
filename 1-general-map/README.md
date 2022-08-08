@@ -1,19 +1,18 @@
 ## 1_trainingMask.js
 Build the training mask based on stable pixels (from 1985 to 2020), reference maps, and GEDI-based filtering 
 ```javascript
-// plot stable pixels
-var stableSamples = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/CE_amostras_estaveis85a19_col5_v2');
-
-var palettes = require('users/mapbiomas/modules:Palettes.js');
+// read training mask
+var trainingMask = ee.Image('users/dh-conciani/collection7/masks/cerrado_stablePixels_1985_2020_v3');
 var vis = {
     'min': 0,
     'max': 49,
-    'palette': palettes.get('classification6')
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification6')
     };
-    
-Map.addLayer(stableSamples, vis, 'stableSamples'); 
+
+// plot 
+Map.addLayer(trainingMask, vis, 'trainingMask'); 
 ```
-[Link to script](https://code.earthengine.google.com/8f113e6c88c20fa7cf10025a61010354)
+[Link to script](https://code.earthengine.google.com/2fe1a3f5958c0f22901e5541a1fd6429)
 
 ## Step02_calcArea.js
 Compute area (*squared-kilometer*) for each class in each classification region. These calculations are used as input in next steps to balance training samples.
