@@ -1,0 +1,443 @@
+"","value","variable","balancing","mapb"
+"Accuracy",0.618380062305296,"Accuracy","GEDI*",6
+"Kappa",0.458013162882051,"Kappa","GEDI*",6
+"AccuracyLower",0.57954914843098,"AccuracyLower","GEDI*",6
+"AccuracyUpper",0.656117054596419,"AccuracyUpper","GEDI*",6
+"AccuracyNull",0.498442367601246,"AccuracyNull","GEDI*",6
+"AccuracyPValue",0.000000000658361006791087,"AccuracyPValue","GEDI*",6
+"McnemarPValue",NA,"McnemarPValue","GEDI*",6
+"Class: 12",0.599723947550035,"Class: 12","GEDI*",6
+"Class: 21",0.728192934782609,"Class: 21","GEDI*",6
+"Class: 3",0.847746394230769,"Class: 3","GEDI*",6
+"Class: 33",1,"Class: 33","GEDI*",6
+"Class: 4",0.713981978333502,"Class: 4","GEDI*",6
+"Accuracy1",0.66857962697274,"Accuracy","GEDI*",8
+"Kappa1",0.53048643573047,"Kappa","GEDI*",8
+"AccuracyLower1",0.632258278490203,"AccuracyLower","GEDI*",8
+"AccuracyUpper1",0.70346620157007,"AccuracyUpper","GEDI*",8
+"AccuracyNull1",0.410329985652798,"AccuracyNull","GEDI*",8
+"AccuracyPValue1",0.000000000000000000000000000000000000000000490505114125867,"AccuracyPValue","GEDI*",8
+"McnemarPValue1",NA,"McnemarPValue","GEDI*",8
+"Class: 121",0.765040014137487,"Class: 12","GEDI*",8
+"Class: 211",0.721527086591782,"Class: 21","GEDI*",8
+"Class: 31",0.844994455884682,"Class: 3","GEDI*",8
+"Class: 331",1,"Class: 33","GEDI*",8
+"Class: 41",0.736124581015092,"Class: 4","GEDI*",8
+"Accuracy2",0.851803278688525,"Accuracy","GEDI*",18
+"Kappa2",0.781662431684383,"Kappa","GEDI*",18
+"AccuracyLower2",0.832967504082813,"AccuracyLower","GEDI*",18
+"AccuracyUpper2",0.869272729497282,"AccuracyUpper","GEDI*",18
+"AccuracyNull2",0.407868852459016,"AccuracyNull","GEDI*",18
+"AccuracyPValue2",0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106223348545241,"AccuracyPValue","GEDI*",18
+"McnemarPValue2",NA,"McnemarPValue","GEDI*",18
+"Class: 122",0.772131525343087,"Class: 12","GEDI*",18
+"Class: 212",0.94574253062217,"Class: 21","GEDI*",18
+"Class: 32",0.916277645433407,"Class: 3","GEDI*",18
+"Class: 332",0.999671700590939,"Class: 33","GEDI*",18
+"Class: 42",0.817437304751549,"Class: 4","GEDI*",18
+"Accuracy3",0.695928753180662,"Accuracy","GEDI*",15
+"Kappa3",0.550279737523132,"Kappa","GEDI*",15
+"AccuracyLower3",0.662441469474158,"AccuracyLower","GEDI*",15
+"AccuracyUpper3",0.727938360025628,"AccuracyUpper","GEDI*",15
+"AccuracyNull3",0.489821882951654,"AccuracyNull","GEDI*",15
+"AccuracyPValue3",0.000000000000000000000000000000101603899403728,"AccuracyPValue","GEDI*",15
+"McnemarPValue3",NA,"McnemarPValue","GEDI*",15
+"Class: 123",0.643828647524427,"Class: 12","GEDI*",15
+"Class: 213",0.841862875279334,"Class: 21","GEDI*",15
+"Class: 34",0.816349825668272,"Class: 3","GEDI*",15
+"Class: 333",0.817536656891496,"Class: 33","GEDI*",15
+"Class: 43",0.712716476991588,"Class: 4","GEDI*",15
+"Accuracy4",0.775388291517324,"Accuracy","GEDI*",20
+"Kappa4",0.612853701922249,"Kappa","GEDI*",20
+"AccuracyLower4",0.745575042531332,"AccuracyLower","GEDI*",20
+"AccuracyUpper4",0.803247607381248,"AccuracyUpper","GEDI*",20
+"AccuracyNull4",0.606929510155317,"AccuracyNull","GEDI*",20
+"AccuracyPValue4",0.00000000000000000000000026535395815378,"AccuracyPValue","GEDI*",20
+"McnemarPValue4",NA,"McnemarPValue","GEDI*",20
+"Class: 124",0.598733108108108,"Class: 12","GEDI*",20
+"Class: 214",0.88721788765766,"Class: 21","GEDI*",20
+"Class: 35",0.780596417980334,"Class: 3","GEDI*",20
+"Class: 334",0.74940119760479,"Class: 33","GEDI*",20
+"Class: 44",0.782541574957202,"Class: 4","GEDI*",20
+"Accuracy5",0.806701030927835,"Accuracy","GEDI*",19
+"Kappa5",0.656458810473874,"Kappa","GEDI*",19
+"AccuracyLower5",0.763836443955225,"AccuracyLower","GEDI*",19
+"AccuracyUpper5",0.84481255905096,"AccuracyUpper","GEDI*",19
+"AccuracyNull5",0.641752577319588,"AccuracyNull","GEDI*",19
+"AccuracyPValue5",0.000000000000890742585654213,"AccuracyPValue","GEDI*",19
+"McnemarPValue5",NA,"McnemarPValue","GEDI*",19
+"Class: 125",0.594736007610591,"Class: 12","GEDI*",19
+"Class: 215",0.913409031810696,"Class: 21","GEDI*",19
+"Class: 36",0.869393382352941,"Class: 3","GEDI*",19
+"Class: 335",0.833333333333333,"Class: 33","GEDI*",19
+"Class: 45",0.760313027288066,"Class: 4","GEDI*",19
+"Accuracy6",0.640977443609023,"Accuracy","GEDI*",17
+"Kappa6",0.504251903965028,"Kappa","GEDI*",17
+"AccuracyLower6",0.59857925179765,"AccuracyLower","GEDI*",17
+"AccuracyUpper6",0.681799663882004,"AccuracyUpper","GEDI*",17
+"AccuracyNull6",0.400375939849624,"AccuracyNull","GEDI*",17
+"AccuracyPValue6",0.0000000000000000000000000000410236020455749,"AccuracyPValue","GEDI*",17
+"McnemarPValue6",NA,"McnemarPValue","GEDI*",17
+"Class: 126",0.585838678467768,"Class: 12","GEDI*",17
+"Class: 216",0.792603058266002,"Class: 21","GEDI*",17
+"Class: 37",0.858404418630415,"Class: 3","GEDI*",17
+"Class: 336",0.799051233396584,"Class: 33","GEDI*",17
+"Class: 46",0.672149122807018,"Class: 4","GEDI*",17
+"Accuracy7",0.853994490358127,"Accuracy","GEDI*",22
+"Kappa7",0.701757921498109,"Kappa","GEDI*",22
+"AccuracyLower7",0.813409683471896,"AccuracyLower","GEDI*",22
+"AccuracyUpper7",0.888680642372906,"AccuracyUpper","GEDI*",22
+"AccuracyNull7",0.702479338842975,"AccuracyNull","GEDI*",22
+"AccuracyPValue7",0.0000000000120776676688551,"AccuracyPValue","GEDI*",22
+"McnemarPValue7",NA,"McnemarPValue","GEDI*",22
+"Class: 127",0.73169014084507,"Class: 12","GEDI*",22
+"Class: 217",0.934967320261438,"Class: 21","GEDI*",22
+"Class: 38",0.853535353535354,"Class: 3","GEDI*",22
+"Class: 337",1,"Class: 33","GEDI*",22
+"Class: 47",0.745579090555771,"Class: 4","GEDI*",22
+"Accuracy8",0.904088050314465,"Accuracy","GEDI*",23
+"Kappa8",0.733648228372134,"Kappa","GEDI*",23
+"AccuracyLower8",0.878503075008573,"AccuracyLower","GEDI*",23
+"AccuracyUpper8",0.925839848726742,"AccuracyUpper","GEDI*",23
+"AccuracyNull8",0.789308176100629,"AccuracyNull","GEDI*",23
+"AccuracyPValue8",0.00000000000000775674946033979,"AccuracyPValue","GEDI*",23
+"McnemarPValue8",NA,"McnemarPValue","GEDI*",23
+"Class: 128",0.931685273790537,"Class: 12","GEDI*",23
+"Class: 218",0.943271689361955,"Class: 21","GEDI*",23
+"Class: 39",0.793171296296296,"Class: 3","GEDI*",23
+"Class: 338",0.998397435897436,"Class: 33","GEDI*",23
+"Class: 48",0.713484747695524,"Class: 4","GEDI*",23
+"Accuracy9",0.934362934362934,"Accuracy","GEDI*",26
+"Kappa9",0.778205951616356,"Kappa","GEDI*",26
+"AccuracyLower9",0.909483654861958,"AccuracyLower","GEDI*",26
+"AccuracyUpper9",0.954119683942414,"AccuracyUpper","GEDI*",26
+"AccuracyNull9",0.826254826254826,"AccuracyNull","GEDI*",26
+"AccuracyPValue9",0.000000000000354250506700499,"AccuracyPValue","GEDI*",26
+"McnemarPValue9",NA,"McnemarPValue","GEDI*",26
+"Class: 129",0.743190661478599,"Class: 12","GEDI*",26
+"Class: 219",0.933930425752856,"Class: 21","GEDI*",26
+"Class: 310",0.906572264121902,"Class: 3","GEDI*",26
+"Class: 339",0.999032882011605,"Class: 33","GEDI*",26
+"Class: 49",0.535737812911726,"Class: 4","GEDI*",26
+"Accuracy10",0.852777777777778,"Accuracy","GEDI*",25
+"Kappa10",0.694407072842591,"Kappa","GEDI*",25
+"AccuracyLower10",0.811892512075934,"AccuracyLower","GEDI*",25
+"AccuracyUpper10",0.88773568124131,"AccuracyUpper","GEDI*",25
+"AccuracyNull10",0.697222222222222,"AccuracyNull","GEDI*",25
+"AccuracyPValue10",0.00000000000541032221606319,"AccuracyPValue","GEDI*",25
+"McnemarPValue10",NA,"McnemarPValue","GEDI*",25
+"Class: 1210",0.738636363636364,"Class: 12","GEDI*",25
+"Class: 2110",0.906319675426733,"Class: 21","GEDI*",25
+"Class: 311",0.916512231282431,"Class: 3","GEDI*",25
+"Class: 3310",1,"Class: 33","GEDI*",25
+"Class: 410",0.589285714285714,"Class: 4","GEDI*",25
+"Accuracy11",0.730434782608696,"Accuracy","GEDI*",24
+"Kappa11",0.586292531216636,"Kappa","GEDI*",24
+"AccuracyLower11",0.692172437937434,"AccuracyLower","GEDI*",24
+"AccuracyUpper11",0.766310542342572,"AccuracyUpper","GEDI*",24
+"AccuracyNull11",0.490434782608696,"AccuracyNull","GEDI*",24
+"AccuracyPValue11",0.0000000000000000000000000000000923760609706957,"AccuracyPValue","GEDI*",24
+"McnemarPValue11",NA,"McnemarPValue","GEDI*",24
+"Class: 1211",0.621436088786835,"Class: 12","GEDI*",24
+"Class: 2111",0.902439909955704,"Class: 21","GEDI*",24
+"Class: 312",0.83925421010425,"Class: 3","GEDI*",24
+"Class: 3311",0.497386759581882,"Class: 33","GEDI*",24
+"Class: 411",0.623146165437386,"Class: 4","GEDI*",24
+"Accuracy12",0.88659793814433,"Accuracy","GEDI*",27
+"Kappa12",0.703212096262753,"Kappa","GEDI*",27
+"AccuracyLower12",0.85495891970592,"AccuracyLower","GEDI*",27
+"AccuracyUpper12",0.91341866196707,"AccuracyUpper","GEDI*",27
+"AccuracyNull12",0.767010309278351,"AccuracyNull","GEDI*",27
+"AccuracyPValue12",0.0000000000134842923967589,"AccuracyPValue","GEDI*",27
+"McnemarPValue12",NA,"McnemarPValue","GEDI*",27
+"Class: 1212",0.491735537190083,"Class: 12","GEDI*",27
+"Class: 2112",0.938838138738224,"Class: 21","GEDI*",27
+"Class: 313",0.764861576905373,"Class: 3","GEDI*",27
+"Class: 3312",0.941176470588235,"Class: 33","GEDI*",27
+"Class: 412",0.663536535303777,"Class: 4","GEDI*",27
+"Accuracy13",0.877263581488934,"Accuracy","GEDI*",37
+"Kappa13",0.727861906770913,"Kappa","GEDI*",37
+"AccuracyLower13",0.845145849886398,"AccuracyLower","GEDI*",37
+"AccuracyUpper13",0.904801726939678,"AccuracyUpper","GEDI*",37
+"AccuracyNull13",0.746478873239437,"AccuracyNull","GEDI*",37
+"AccuracyPValue13",0.000000000000407955296111091,"AccuracyPValue","GEDI*",37
+"McnemarPValue13",NA,"McnemarPValue","GEDI*",37
+"Class: 1213",0.97165991902834,"Class: 12","GEDI*",37
+"Class: 2113",0.923554956573825,"Class: 21","GEDI*",37
+"Class: 314",0.929445205827115,"Class: 3","GEDI*",37
+"Class: 3313",0.892857142857143,"Class: 33","GEDI*",37
+"Class: 413",0.595893223819302,"Class: 4","GEDI*",37
+"Accuracy14",0.901234567901235,"Accuracy","GEDI*",38
+"Kappa14",0.734087178551888,"Kappa","GEDI*",38
+"AccuracyLower14",0.871187449128403,"AccuracyLower","GEDI*",38
+"AccuracyUpper14",0.926277719262534,"AccuracyUpper","GEDI*",38
+"AccuracyNull14",0.775720164609053,"AccuracyNull","GEDI*",38
+"AccuracyPValue14",0.000000000000357813003016608,"AccuracyPValue","GEDI*",38
+"McnemarPValue14",NA,"McnemarPValue","GEDI*",38
+"Class: 1214",0.770056665672532,"Class: 12","GEDI*",38
+"Class: 2114",0.908037865329862,"Class: 21","GEDI*",38
+"Class: 315",0.845988446726573,"Class: 3","GEDI*",38
+"Class: 3314",0.882352941176471,"Class: 33","GEDI*",38
+"Class: 414",0.662473794549266,"Class: 4","GEDI*",38
+"Accuracy15",0.905913978494624,"Accuracy","GEDI*",36
+"Kappa15",0.729864309722395,"Kappa","GEDI*",36
+"AccuracyLower15",0.871580433224577,"AccuracyLower","GEDI*",36
+"AccuracyUpper15",0.933588705432234,"AccuracyUpper","GEDI*",36
+"AccuracyNull15",0.806451612903226,"AccuracyNull","GEDI*",36
+"AccuracyPValue15",0.000000107192357731008,"AccuracyPValue","GEDI*",36
+"McnemarPValue15",NA,"McnemarPValue","GEDI*",36
+"Class: 1215",0.649051490514905,"Class: 12","GEDI*",36
+"Class: 2115",0.938333333333333,"Class: 21","GEDI*",36
+"Class: 316",0.844650776053215,"Class: 3","GEDI*",36
+"Class: 3315",0.997237569060774,"Class: 33","GEDI*",36
+"Class: 415",0.720728291316527,"Class: 4","GEDI*",36
+"Accuracy16",0.916167664670659,"Accuracy","GEDI*",35
+"Kappa16",0.77085171028129,"Kappa","GEDI*",35
+"AccuracyLower16",0.863343674878372,"AccuracyLower","GEDI*",35
+"AccuracyUpper16",0.953409496008631,"AccuracyUpper","GEDI*",35
+"AccuracyNull16",0.784431137724551,"AccuracyNull","GEDI*",35
+"AccuracyPValue16",0.0000043504025362846,"AccuracyPValue","GEDI*",35
+"McnemarPValue16",NA,"McnemarPValue","GEDI*",35
+"Class: 1216",0.859662576687117,"Class: 12","GEDI*",35
+"Class: 2116",0.915288379983036,"Class: 21","GEDI*",35
+"Class: 317",0.901764705882353,"Class: 3","GEDI*",35
+"Class: 3316",1,"Class: 33","GEDI*",35
+"Class: 416",0.62185534591195,"Class: 4","GEDI*",35
+"Accuracy17",0.811627906976744,"Accuracy","GEDI*",32
+"Kappa17",0.642483217343105,"Kappa","GEDI*",32
+"AccuracyLower17",0.771408108790645,"AccuracyLower","GEDI*",32
+"AccuracyUpper17",0.8474954977862,"AccuracyUpper","GEDI*",32
+"AccuracyNull17",0.655813953488372,"AccuracyNull","GEDI*",32
+"AccuracyPValue17",0.000000000000683848308999808,"AccuracyPValue","GEDI*",32
+"McnemarPValue17",NA,"McnemarPValue","GEDI*",32
+"Class: 1217",0.65370705244123,"Class: 12","GEDI*",32
+"Class: 2117",0.83870040253019,"Class: 21","GEDI*",32
+"Class: 318",0.868392857142857,"Class: 3","GEDI*",32
+"Class: 3317",0.926167582417582,"Class: 33","GEDI*",32
+"Class: 417",0.78659239339224,"Class: 4","GEDI*",32
+"Accuracy18",0.743326488706366,"Accuracy","GEDI*",16
+"Kappa18",0.623512604210474,"Kappa","GEDI*",16
+"AccuracyLower18",0.702100560514697,"AccuracyLower","GEDI*",16
+"AccuracyUpper18",0.78156906757497,"AccuracyUpper","GEDI*",16
+"AccuracyNull18",0.470225872689938,"AccuracyNull","GEDI*",16
+"AccuracyPValue18",0.000000000000000000000000000000000132049081204308,"AccuracyPValue","GEDI*",16
+"McnemarPValue18",NA,"McnemarPValue","GEDI*",16
+"Class: 1218",0.661048689138577,"Class: 12","GEDI*",16
+"Class: 2118",0.873658643918622,"Class: 21","GEDI*",16
+"Class: 319",0.810053949174199,"Class: 3","GEDI*",16
+"Class: 3318",0.997942386831276,"Class: 33","GEDI*",16
+"Class: 418",0.804978354978355,"Class: 4","GEDI*",16
+"Accuracy19",0.765702891326022,"Accuracy","GEDI*",9
+"Kappa19",0.686559999148929,"Kappa","GEDI*",9
+"AccuracyLower19",0.738233370489267,"AccuracyLower","GEDI*",9
+"AccuracyUpper19",0.791602943342449,"AccuracyUpper","GEDI*",9
+"AccuracyNull19",0.342971086739781,"AccuracyNull","GEDI*",9
+"AccuracyPValue19",0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000803819653496311,"AccuracyPValue","GEDI*",9
+"McnemarPValue19",NA,"McnemarPValue","GEDI*",9
+"Class: 1219",0.835427180011998,"Class: 12","GEDI*",9
+"Class: 2119",0.869944439711882,"Class: 21","GEDI*",9
+"Class: 320",0.88832333618966,"Class: 3","GEDI*",9
+"Class: 3319",0.931815114709852,"Class: 33","GEDI*",9
+"Class: 419",0.783050847457627,"Class: 4","GEDI*",9
+"Accuracy20",0.770365168539326,"Accuracy","GEDI*",10
+"Kappa20",0.598187889927257,"Kappa","GEDI*",10
+"AccuracyLower20",0.747623225267257,"AccuracyLower","GEDI*",10
+"AccuracyUpper20",0.791985973705406,"AccuracyUpper","GEDI*",10
+"AccuracyNull20",0.641151685393258,"AccuracyNull","GEDI*",10
+"AccuracyPValue20",0.0000000000000000000000000450956368400183,"AccuracyPValue","GEDI*",10
+"McnemarPValue20",NA,"McnemarPValue","GEDI*",10
+"Class: 1220",0.647553392808867,"Class: 12","GEDI*",10
+"Class: 2120",0.863292343899705,"Class: 21","GEDI*",10
+"Class: 321",0.815772680753717,"Class: 3","GEDI*",10
+"Class: 3320",0.927152988855116,"Class: 33","GEDI*",10
+"Class: 420",0.778276088959074,"Class: 4","GEDI*",10
+"Accuracy21",0.644028103044497,"Accuracy","GEDI*",12
+"Kappa21",0.479414477641869,"Kappa","GEDI*",12
+"AccuracyLower21",0.610876009046588,"AccuracyLower","GEDI*",12
+"AccuracyUpper21",0.676182252711674,"AccuracyUpper","GEDI*",12
+"AccuracyNull21",0.403981264637002,"AccuracyNull","GEDI*",12
+"AccuracyPValue21",0.00000000000000000000000000000000000000000000202840653179989,"AccuracyPValue","GEDI*",12
+"McnemarPValue21",NA,"McnemarPValue","GEDI*",12
+"Class: 1221",0.566239809260114,"Class: 12","GEDI*",12
+"Class: 2121",0.775248426867116,"Class: 21","GEDI*",12
+"Class: 322",0.745567400433799,"Class: 3","GEDI*",12
+"Class: 3321",0.999406175771971,"Class: 33","GEDI*",12
+"Class: 421",0.726355247981546,"Class: 4","GEDI*",12
+"Accuracy22",0.711370262390671,"Accuracy","GEDI*",11
+"Kappa22",0.570789357264741,"Kappa","GEDI*",11
+"AccuracyLower22",0.660274207172387,"AccuracyLower","GEDI*",11
+"AccuracyUpper22",0.758773509579372,"AccuracyUpper","GEDI*",11
+"AccuracyNull22",0.466472303206997,"AccuracyNull","GEDI*",11
+"AccuracyPValue22",0.000000000000000000036398542401589,"AccuracyPValue","GEDI*",11
+"McnemarPValue22",NA,"McnemarPValue","GEDI*",11
+"Class: 1222",0.745631399317406,"Class: 12","GEDI*",11
+"Class: 2122",0.850819672131148,"Class: 21","GEDI*",11
+"Class: 323",0.735972629521017,"Class: 3","GEDI*",11
+"Class: 3322",1,"Class: 33","GEDI*",11
+"Class: 422",0.747959183673469,"Class: 4","GEDI*",11
+"Accuracy23",0.806706114398422,"Accuracy","GEDI*",30
+"Kappa23",0.659362959509674,"Kappa","GEDI*",30
+"AccuracyLower23",0.769597360603378,"AccuracyLower","GEDI*",30
+"AccuracyUpper23",0.840192419988124,"AccuracyUpper","GEDI*",30
+"AccuracyNull23",0.613412228796844,"AccuracyNull","GEDI*",30
+"AccuracyPValue23",0.00000000000000000000503232125981396,"AccuracyPValue","GEDI*",30
+"McnemarPValue23",NA,"McnemarPValue","GEDI*",30
+"Class: 1223",0.690769856329629,"Class: 12","GEDI*",30
+"Class: 2123",0.876845593542883,"Class: 21","GEDI*",30
+"Class: 324",0.843162393162393,"Class: 3","GEDI*",30
+"Class: 3323",0.862628299120235,"Class: 33","GEDI*",30
+"Class: 423",0.768257619321449,"Class: 4","GEDI*",30
+"Accuracy24",0.893557422969188,"Accuracy","GEDI*",31
+"Kappa24",0.6817659339886,"Kappa","GEDI*",31
+"AccuracyLower24",0.856834025779704,"AccuracyLower","GEDI*",31
+"AccuracyUpper24",0.923566584031269,"AccuracyUpper","GEDI*",31
+"AccuracyNull24",0.781512605042017,"AccuracyNull","GEDI*",31
+"AccuracyPValue24",0.0000000236895107070046,"AccuracyPValue","GEDI*",31
+"McnemarPValue24",NA,"McnemarPValue","GEDI*",31
+"Class: 1224",0.744366197183099,"Class: 12","GEDI*",31
+"Class: 2124",0.851047697821891,"Class: 21","GEDI*",31
+"Class: 325",0.825692041522491,"Class: 3","GEDI*",31
+"Class: 3324",1,"Class: 33","GEDI*",31
+"Class: 424",0.557142857142857,"Class: 4","GEDI*",31
+"Accuracy25",0.913294797687861,"Accuracy","GEDI*",21
+"Kappa25",0.734559440273317,"Kappa","GEDI*",21
+"AccuracyLower25",0.89252581148332,"AccuracyLower","GEDI*",21
+"AccuracyUpper25",0.931191815306866,"AccuracyUpper","GEDI*",21
+"AccuracyNull25",0.796531791907514,"AccuracyNull","GEDI*",21
+"AccuracyPValue25",0.00000000000000000000541455820128651,"AccuracyPValue","GEDI*",21
+"McnemarPValue25",NA,"McnemarPValue","GEDI*",21
+"Class: 1225",0.848256601218687,"Class: 12","GEDI*",21
+"Class: 2125",0.882611492281304,"Class: 21","GEDI*",21
+"Class: 326",0.824043645423889,"Class: 3","GEDI*",21
+"Class: 3325",0.999416569428238,"Class: 33","GEDI*",21
+"Class: 425",0.703029790115098,"Class: 4","GEDI*",21
+"Accuracy26",0.780645161290323,"Accuracy","GEDI*",33
+"Kappa26",0.598736667702185,"Kappa","GEDI*",33
+"AccuracyLower26",0.749826350080053,"AccuracyLower","GEDI*",33
+"AccuracyUpper26",0.809310995793484,"AccuracyUpper","GEDI*",33
+"AccuracyNull26",0.64258064516129,"AccuracyNull","GEDI*",33
+"AccuracyPValue26",0.0000000000000000559481110868299,"AccuracyPValue","GEDI*",33
+"McnemarPValue26",NA,"McnemarPValue","GEDI*",33
+"Class: 1226",0.632023889636608,"Class: 12","GEDI*",33
+"Class: 2126",0.817805518101286,"Class: 21","GEDI*",33
+"Class: 327",0.905214105181297,"Class: 3","GEDI*",33
+"Class: 3326",0.998687664041995,"Class: 33","GEDI*",33
+"Class: 426",0.685181236673774,"Class: 4","GEDI*",33
+"Accuracy27",0.668891855807744,"Accuracy","GEDI*",34
+"Kappa27",0.502292244416757,"Kappa","GEDI*",34
+"AccuracyLower27",0.633906107366108,"AccuracyLower","GEDI*",34
+"AccuracyUpper27",0.702540990567466,"AccuracyUpper","GEDI*",34
+"AccuracyNull27",0.401869158878505,"AccuracyNull","GEDI*",34
+"AccuracyPValue27",0.000000000000000000000000000000000000000000000000317260884634631,"AccuracyPValue","GEDI*",34
+"McnemarPValue27",NA,"McnemarPValue","GEDI*",34
+"Class: 1227",0.643120960295475,"Class: 12","GEDI*",34
+"Class: 2127",0.755969684385382,"Class: 21","GEDI*",34
+"Class: 328",0.812447005829359,"Class: 3","GEDI*",34
+"Class: 3327",0.833333333333333,"Class: 33","GEDI*",34
+"Class: 427",0.734114836108415,"Class: 4","GEDI*",34
+"Accuracy28",0.714851485148515,"Accuracy","GEDI*",29
+"Kappa28",0.560327940216208,"Kappa","GEDI*",29
+"AccuracyLower28",0.673304358151046,"AccuracyLower","GEDI*",29
+"AccuracyUpper28",0.753862172068672,"AccuracyUpper","GEDI*",29
+"AccuracyNull28",0.514851485148515,"AccuracyNull","GEDI*",29
+"AccuracyPValue28",0.0000000000000000000408639335025861,"AccuracyPValue","GEDI*",29
+"McnemarPValue28",NA,"McnemarPValue","GEDI*",29
+"Class: 1228",0.683645922136971,"Class: 12","GEDI*",29
+"Class: 2128",0.832888540031397,"Class: 21","GEDI*",29
+"Class: 329",0.747055458338942,"Class: 3","GEDI*",29
+"Class: 3328",0.832337317397078,"Class: 33","GEDI*",29
+"Class: 428",0.777965434350133,"Class: 4","GEDI*",29
+"Accuracy29",0.595275590551181,"Accuracy","GEDI*",13
+"Kappa29",0.340084999009288,"Kappa","GEDI*",13
+"AccuracyLower29",0.555941150074013,"AccuracyLower","GEDI*",13
+"AccuracyUpper29",0.633720041612942,"AccuracyUpper","GEDI*",13
+"AccuracyNull29",0.650393700787402,"AccuracyNull","GEDI*",13
+"AccuracyPValue29",0.998282872987071,"AccuracyPValue","GEDI*",13
+"McnemarPValue29",NA,"McnemarPValue","GEDI*",13
+"Class: 1229",0.737944162436548,"Class: 12","GEDI*",13
+"Class: 2129",0.708840635285847,"Class: 21","GEDI*",13
+"Class: 330",0.686085716138235,"Class: 3","GEDI*",13
+"Class: 3329",0.833333333333333,"Class: 33","GEDI*",13
+"Class: 429",0.679100407913967,"Class: 4","GEDI*",13
+"Accuracy30",0.768082663605052,"Accuracy","GEDI*",7
+"Kappa30",0.536352951717377,"Kappa","GEDI*",7
+"AccuracyLower30",0.738598659815087,"AccuracyLower","GEDI*",7
+"AccuracyUpper30",0.795740186896355,"AccuracyUpper","GEDI*",7
+"AccuracyNull30",0.683122847301952,"AccuracyNull","GEDI*",7
+"AccuracyPValue30",0.0000000189116882347022,"AccuracyPValue","GEDI*",7
+"McnemarPValue30",NA,"McnemarPValue","GEDI*",7
+"Class: 1230",0.584254947613504,"Class: 12","GEDI*",7
+"Class: 2130",0.802134918926081,"Class: 21","GEDI*",7
+"Class: 340",0.786349409588846,"Class: 3","GEDI*",7
+"Class: 3330",0.5,"Class: 33","GEDI*",7
+"Class: 430",0.76967482645232,"Class: 4","GEDI*",7
+"Accuracy31",0.69647355163728,"Accuracy","GEDI*",5
+"Kappa31",0.414935869016862,"Kappa","GEDI*",5
+"AccuracyLower31",0.663175972569056,"AccuracyLower","GEDI*",5
+"AccuracyUpper31",0.728304414261193,"AccuracyUpper","GEDI*",5
+"AccuracyNull31",0.6272040302267,"AccuracyNull","GEDI*",5
+"AccuracyPValue31",0.0000250657469636441,"AccuracyPValue","GEDI*",5
+"McnemarPValue31",NA,"McnemarPValue","GEDI*",5
+"Class: 1231",0.563300062031241,"Class: 12","GEDI*",5
+"Class: 2131",0.718661277602524,"Class: 21","GEDI*",5
+"Class: 341",0.692507039954291,"Class: 3","GEDI*",5
+"Class: 3331",0.999365482233503,"Class: 33","GEDI*",5
+"Class: 431",0.69022034082275,"Class: 4","GEDI*",5
+"Accuracy32",0.655773420479303,"Accuracy","GEDI*",2
+"Kappa32",0.44641384995878,"Kappa","GEDI*",2
+"AccuracyLower32",0.610322421099089,"AccuracyLower","GEDI*",2
+"AccuracyUpper32",0.699201913152697,"AccuracyUpper","GEDI*",2
+"AccuracyNull32",0.44880174291939,"AccuracyNull","GEDI*",2
+"AccuracyPValue32",0.000000000000000000365195653253061,"AccuracyPValue","GEDI*",2
+"McnemarPValue32",NA,"McnemarPValue","GEDI*",2
+"Class: 1232",0.595594713656388,"Class: 12","GEDI*",2
+"Class: 2132",0.755861698453509,"Class: 21","GEDI*",2
+"Class: 342",0.77685090680694,"Class: 3","GEDI*",2
+"Class: 3332",1,"Class: 33","GEDI*",2
+"Class: 432",0.539277297721917,"Class: 4","GEDI*",2
+"Accuracy33",0.625954198473282,"Accuracy","GEDI*",4
+"Kappa33",0.462320256875611,"Kappa","GEDI*",4
+"AccuracyLower33",0.576037312784631,"AccuracyLower","GEDI*",4
+"AccuracyUpper33",0.673958476625757,"AccuracyUpper","GEDI*",4
+"AccuracyNull33",0.343511450381679,"AccuracyNull","GEDI*",4
+"AccuracyPValue33",0.00000000000000000000000000000383968747351028,"AccuracyPValue","GEDI*",4
+"McnemarPValue33",NA,"McnemarPValue","GEDI*",4
+"Class: 1233",0.574652777777778,"Class: 12","GEDI*",4
+"Class: 2133",0.763695090439277,"Class: 21","GEDI*",4
+"Class: 343",0.80925635667015,"Class: 3","GEDI*",4
+"Class: 433",0.64678558156819,"Class: 4","GEDI*",4
+"Accuracy34",0.643605870020964,"Accuracy","GEDI*",1
+"Kappa34",0.41101701070614,"Kappa","GEDI*",1
+"AccuracyLower34",0.598791424590213,"AccuracyLower","GEDI*",1
+"AccuracyUpper34",0.686627437603649,"AccuracyUpper","GEDI*",1
+"AccuracyNull34",0.50314465408805,"AccuracyNull","GEDI*",1
+"AccuracyPValue34",0.000000000431447009371773,"AccuracyPValue","GEDI*",1
+"McnemarPValue34",NA,"McnemarPValue","GEDI*",1
+"Class: 1234",0.674028822055138,"Class: 12","GEDI*",1
+"Class: 2134",0.620113636363636,"Class: 21","GEDI*",1
+"Class: 344",0.776951476793249,"Class: 3","GEDI*",1
+"Class: 3333",0.9,"Class: 33","GEDI*",1
+"Class: 434",0.618217054263566,"Class: 4","GEDI*",1
+"Accuracy35",0.587155963302752,"Accuracy","GEDI*",3
+"Kappa35",0.325930195716156,"Kappa","GEDI*",3
+"AccuracyLower35",0.548334641988319,"AccuracyLower","GEDI*",3
+"AccuracyUpper35",0.625187104975303,"AccuracyUpper","GEDI*",3
+"AccuracyNull35",0.551987767584098,"AccuracyNull","GEDI*",3
+"AccuracyPValue35",0.0381439698063668,"AccuracyPValue","GEDI*",3
+"McnemarPValue35",NA,"McnemarPValue","GEDI*",3
+"Class: 1235",0.598237179487179,"Class: 12","GEDI*",3
+"Class: 2135",0.607067738108079,"Class: 21","GEDI*",3
+"Class: 345",0.775008969912351,"Class: 3","GEDI*",3
+"Class: 3334",0.948447204968944,"Class: 33","GEDI*",3
+"Class: 435",0.631664035245289,"Class: 4","GEDI*",3
+"Accuracy36",0.68796992481203,"Accuracy","GEDI*",28
+"Kappa36",0.448436094733687,"Kappa","GEDI*",28
+"AccuracyLower36",0.628538765266915,"AccuracyLower","GEDI*",28
+"AccuracyUpper36",0.743154276954746,"AccuracyUpper","GEDI*",28
+"AccuracyNull36",0.575187969924812,"AccuracyNull","GEDI*",28
+"AccuracyPValue36",0.000101822357965515,"AccuracyPValue","GEDI*",28
+"McnemarPValue36",0.0874791036189421,"McnemarPValue","GEDI*",28
+"Class: 1236",0.467557251908397,"Class: 12","GEDI*",28
+"Class: 2136",0.782896639481751,"Class: 21","GEDI*",28
+"Class: 346",0.638035877166312,"Class: 3","GEDI*",28
+"Class: 436",0.724509803921569,"Class: 4","GEDI*",28
