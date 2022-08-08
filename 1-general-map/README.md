@@ -26,17 +26,14 @@ Map.addLayer(samplePoints, {}, 'samplePoints');
 ```
 [Link to script](https://code.earthengine.google.com/4c949df27bf33031a0e5af7f85e1224d)
 
-## Step04a_auxMosaics.js
-Create auxiliary mosaics with *slope*, *textG*, *latitude*, and *longitude* bands and export as a GEE asset.
-
-## Step04b_trainingSamples.py
-Extract spectral signatures for each year from Landsat mosaics and build training dataset. 
+## 04_getSignatures.R
+Use the points generated in the previous step to extract the spectral signatures from the Landsat mosaic for each year. 
 ```javascript
-// plot a sample of training dataset (one region and one year)
-var trainingPoints = ee.FeatureCollection('projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/training_v4/train_col_6_CERRADO_reg26_ano_2020_4');
+// inspect a sample of the training dataset 
+var trainingPoints = ee.FeatureCollection('users/dh-conciani/collection7/training/v2/train_col7_reg34_2021_v2');
 Map.addLayer(trainingPoints, {}, 'trainingSamples');
 ```
-[Link to script](https://code.earthengine.google.com/a93519bea0d3c0ceefd7b7bff27935b5)
+[Link to script](https://code.earthengine.google.com/98596da0d1e5dbec9bb66e0c274a694b)
 
 ## Step05_rfClassification.py
 Perform the classification of the Cerrado Landsat SR mosaics by using the `ee.Classifier.smileRandomForest()` added with auxiliary mosaics and training samples.
