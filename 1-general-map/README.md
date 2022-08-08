@@ -1,5 +1,5 @@
 ## 1_trainingMask.js
-Build the training mask based on stable pixels (Collection 7 - 1985 to 2020), reference maps, and GEDI-based filtering 
+Build the training mask based on stable pixels (from 1985 to 2020), reference maps, and GEDI-based filtering 
 ```javascript
 // plot stable pixels
 var stableSamples = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/CE_amostras_estaveis85a19_col5_v2');
