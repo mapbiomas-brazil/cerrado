@@ -281,17 +281,33 @@ to_filter = run_3yr_first(4, to_filter);
 to_filter = run_3yr_first(11, to_filter);
 
 ////////////////// filter last year
-to_filter = run_3yr_last(21, to_filter);
+var filtered = run_3yr_last(21, to_filter);
 
 // insert metadata
-print('filtered', to_filter);
+print('filtered', filtered);
 //to_filter = to_filter.set("version", version_out);
 
-Map.addLayer(classification.select(['classification_2015']), vis, 'classification 2010');
-Map.addLayer(to_filter.select(['classification_2015']), vis, 'filtered 2010');
+Map.addLayer(classification.select(['classification_2021']), vis, 'classification 2010');
+Map.addLayer(filtered.select(['classification_2021']), vis, 'filtered 2010');
 
 // avoid that filter runs over small deforestation (as atlantic rainforest)
-
+// remap native vegetation 
+// create an empty recipe for the remmapd collection
+var remap_col = ee.Image([]);
+// for each year
+ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
+  .forEach(function(year_i) {
+    // get year [i] clasification
+    var x = to_filter.select(['classification_' + year_i])
+      // perform remap
+      .remap([3, 4, 11, 12, 21],
+             [3, 3,  3,  3, 21])
+             .rename('classification_' + year_i);
+    // put it on recipe
+    var remap_col = remap_col.addBands(x);
+  });
+  
+  
 
 
 Export.image.toAsset({
