@@ -280,6 +280,9 @@ to_filter = run_3yr_first(3, to_filter);
 to_filter = run_3yr_first(4, to_filter);
 to_filter = run_3yr_first(11, to_filter);
 
+// plot 
+Map.addLayer(to_filter.select(['classification_2021']), vis, 'pre-last-year-filter 2021');
+
 ////////////////// filter last year
 var filtered = run_3yr_last(21, to_filter);
 
@@ -287,8 +290,8 @@ var filtered = run_3yr_last(21, to_filter);
 print('filtered', filtered);
 //to_filter = to_filter.set("version", version_out);
 
-Map.addLayer(classification.select(['classification_2021']), vis, 'classification 2010');
-Map.addLayer(filtered.select(['classification_2021']), vis, 'filtered 2010');
+Map.addLayer(classification.select(['classification_2021']), vis, 'unfiltered 2021');
+Map.addLayer(filtered.select(['classification_2021']), vis, 'post-last-year-filter 2021');
 
 // avoid that filter runs over small deforestation (as atlantic rainforest)
 // remap native vegetation 
@@ -304,11 +307,22 @@ ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
              [3, 3,  3,  3, 21])
              .rename('classification_' + year_i);
     // put it on recipe
-    var remap_col = remap_col.addBands(x);
+    remap_col = remap_col.addBands(x);
   });
   
-  
+print('remaped col', remap_col);
+Map.addLayer(remap_col.select(['classification_2021']), vis, 'remap col 2021');
 
+// get the number of changes from natural to anthropogenic
+var nChanges = remap_col.reduce(ee.Reducer.countRuns()).subtract(1);
+//Map.addLayer(nChanges, {'min': 0,'max': 6, 'palette': ["#ffffff","#fee0d2","#fcbba1",
+//             "#fb6a4a","#ef3b2c","#a50f15","#67000d"],'format': 'png'}, 'nChanges',false)
+
+// get dforestations from 2020 to 2021
+var deforestation_last = nivel0_2021.eq(10).and(nivel0_2020.eq(1))
+
+
+  
 
 Export.image.toAsset({
     'image': to_filter,
