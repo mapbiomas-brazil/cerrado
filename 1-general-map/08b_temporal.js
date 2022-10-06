@@ -8,7 +8,7 @@ var root = 'users/dh-conciani/collection7/c7-general-post/';
 var file_in = 'CERRADO_col7_gapfill_incidence_v8';
 
 // set metadata to export 
-var version_out = '8';
+var version_out = '20';
 
 // import mapbiomas color ramp
 var vis = {
@@ -325,22 +325,9 @@ var excludeReg = to_filter.select(['classification_2020'])
 var x21 = to_filter.select(['classification_2021']).blend(excludeReg);
 
 // remove 2021 from time-series and add rectified data
-to_filter = to_filter.select(to_filter.bandNames().getInfo().remove('classification_2021'))
-                        .addBands(x21.rename('classification_2021'));
+to_filter = to_filter.slice(0,36).addBands(x21.rename('classification_2021'));
 
 Map.addLayer(to_filter.select(['classification_2021']), vis, 'big-reg-filter');
-
-
-
-
-
-
-
-
-
-
-
-  
 
 Export.image.toAsset({
     'image': to_filter,
