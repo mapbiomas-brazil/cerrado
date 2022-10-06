@@ -96,7 +96,6 @@ var run_3yr = function(image, class_id) {
   return recipe;
 };
 
-
 // four years
 var run_4yr = function(image, class_id) {
   // create recipe with the first year (without previous year)
@@ -309,17 +308,36 @@ ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
     // put it on recipe
     remap_col = remap_col.addBands(x);
   });
-  
-print('remaped col', remap_col);
-Map.addLayer(remap_col.select(['classification_2021']), vis, 'remap col 2021');
 
-// get the number of changes from natural to anthropogenic
-var nChanges = remap_col.reduce(ee.Reducer.countRuns()).subtract(1);
-//Map.addLayer(nChanges, {'min': 0,'max': 6, 'palette': ["#ffffff","#fee0d2","#fcbba1",
-//             "#fb6a4a","#ef3b2c","#a50f15","#67000d"],'format': 'png'}, 'nChanges',false)
 
-// get dforestations from 2020 to 2021
-var deforestation_last = nivel0_2021.eq(10).and(nivel0_2020.eq(1))
+// get regenrations from 2020 to 2021
+var reg_last = remap_col.select(['classification_2021']).eq(3)
+                  .and(remap_col.select(['classification_2020']).eq(21));
+
+// get regeneration sizes
+var reg_size = reg_last.selfMask().connectedPixelCount(20,true).reproject('epsg:4326', null, 30);
+
+// get pixels with regenerations lower than 1 ha (900 * 11) and retain 2020 class
+var excludeReg = to_filter.select(['classification_2020'])
+                    .updateMask(reg_size.lte(10).eq(1));
+
+// update 2021 year discarding only small regenerations
+var x21 = to_filter.select(['classification_2021']).blend(excludeReg);
+
+// remove 2021 from time-series and add rectified data
+to_filter = to_filter.select(to_filter.bandNames().getInfo().remove('classification_2021'))
+                        .addBands(x21.rename('classification_2021'));
+
+Map.addLayer(to_filter.select(['classification_2021']), vis, 'big-reg-filter');
+
+
+
+
+
+
+
+
+
 
 
   
