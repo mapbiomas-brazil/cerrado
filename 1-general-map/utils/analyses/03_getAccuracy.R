@@ -3,7 +3,6 @@
 
 ## get libraries
 library(rgee)
-library(rgeeExtra)
 library(reticulate)
 library(caret)
 library(reshape2)
@@ -20,30 +19,15 @@ file_path <- 'users/dh-conciani/collection7/c7-general-post/'
 # 'mapbiomas_collection60_integration_v1'
 # 'CERRADO_col6_gapfill_incid_temporal_spatial_freq_v8'
 file_name <- c(#'CERRADO_col7_gapfill_v1',
-  #CERRADO_col7_gapfill_incidence_v1',
-  #'CERRADO_col7_gapfill_incidence_temporal_v1',
-  #'CERRADO_col7_gapfill_incidence_temporal_v2',
-  #'CERRADO_col7_gapfill_incidence_temporal_v3'
-  #'CERRADO_col7_gapfill_incidence_temporal_spatial_v2',
-  #'CERRADO_col7_gapfill_incidence_temporal_spatial_v3'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_v3'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_v4'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_spatial_v5'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_spatial_integration_v5'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_spatial_perturbance_v5'
-  #'CERRADO_col7_gapfill_v2'
-  #'CERRADO_col7_gapfill_incidence_v6'
-  #'CERRADO_col7_gapfill_incidence_temporal_v6'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_v6'
-  #'CERRADO_col7_gapfill_incidence_temporal_v7'
-  #'CERRADO_col7_gapfill_incidence_v8'
-  #'CERRADO_col7_gapfill_incidence_temporal_v8'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_v8'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_v8'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_spatial_v8'
-  #'CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_spatial_v9'
-  'CERRADO_col7_pseudo_v9'
-  )
+               #'CERRADO_col7_gapfill_incidence_v1',
+               #'CERRADO_col7_gapfill_incidence_temporal_v1',
+               #'CERRADO_col7_gapfill_incidence_temporal_v2',
+               #'CERRADO_col7_gapfill_incidence_temporal_spatial_v2',
+               #'CERRADO_col7_gapfill_incidence_temporal_spatial_v3',
+               #'CERRADO_col7_gapfill_incidence_temporal_v8',
+                'CERRADO_col7_gapfill_incidence_temporal_v20',
+                'CERRADO_col7_gapfill_incidence_temporal_v21')
+
 
 ## set output path (local)
 output <- './table/accuracy/'
@@ -141,7 +125,7 @@ for (i in 1:length(unique(file_name))) {
       ## subset by considering classes that have reference points
       toCompute <- subset(toCompute, predicted %in% unique(toCompute$predicted)[
         which(unique(toCompute$predicted) %in% unique(toCompute$reference))
-      ]
+        ]
       )
       
       ## compute confusion matrix
