@@ -5,7 +5,7 @@
 var root = 'users/dh-conciani/collection7/c7-general-post/';
 
 // define input file 
-var file_in = 'CERRADO_col7_gapfill_incidence_temporal_v8';
+var file_in = 'CERRADO_col7_gapfill_incidence_temporal_v20';
 
 // define output version 
 var version_out = 8;
