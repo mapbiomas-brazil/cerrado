@@ -8,7 +8,7 @@ var root = 'users/dh-conciani/collection7/c7-general-post/';
 var file_in = 'CERRADO_col7_gapfill_incidence_temporal_v20';
 
 // define output version 
-var version_out = 8;
+var version_out = 20;
 
 // load classification
 var classification = ee.Image(root + file_in);
