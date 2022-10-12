@@ -2,7 +2,7 @@
 // dhemerson.costa@ipam.org.br
 
 // get collection 
-var classification = ee.Image('users/dh-conciani/collection7/c7-general-post/CERRADO_col7_gapfill_incidence_temporal_frequency_v8');
+var classification = ee.Image('users/dh-conciani/collection7/c7-general-post/CERRADO_col7_gapfill_incidence_temporal_frequency_v20');
 
 // get geomorfology 
 var geomorfology = ee.Image('users/juandoblas/geomorfologia_IBGE_2009_250_raster_30m')
@@ -41,7 +41,7 @@ Map.addLayer(recipe.select(['classification_2021']), vis, 'filtered 2021');
 
 // export as GEE asset
 Export.image.toAsset({
-    'image': recipe2,
+    'image': recipe,
     'description': 'CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_v8',
     'assetId': 'users/dh-conciani/collection7/c7-general-post/CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_v6',
     'pyramidingPolicy': {
