@@ -5,10 +5,10 @@
 var root = 'users/dh-conciani/collection7/c7-general-post/';
 
 // define input file 
-var file_in = 'CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_v8';
+var file_in = 'CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_v6';
 
 // define output version 
-var version_out = 8;
+var version_out = 20;
 
 // read image
 var classification = ee.Image(root + file_in);
