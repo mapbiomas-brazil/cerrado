@@ -54,6 +54,8 @@ The temporal filter uses the subsequent years to replace pixels that have invali
 
 4. In the last step, the filter searches for pixel values that were not Mosaic of Uses (21) in 2021 but were classified as such in 2019 and 2020. The value in 2021 is then corrected to match the previous years to avoid any regeneration, which cannot be corroborated in the last year.
 
+(insert 7.1 update here)
+
 ## 9_frequency.js
 The frequency filter was applied only on pixels classified as native vegetation at least 90% of the time-series. If such a pixel was classified as Forest Formation over more than 75% of the time, that class was assigned to the pixel over the whole period. The same rule was applied for the Savanna Formation, Wetland, and Grassland Formation, but using a frequency criterion of 50% of the time-series. In the case of Rocky Outcrop, a criterion of 70% was applied in the first round of classification and 90% in the second. This frequency filter resulted in a more stable classification of native vegetation classes. Another significant result was the removal of noise in the first and last years of the classification, which the temporal filter cannot adequately assess.
 
