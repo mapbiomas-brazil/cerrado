@@ -102,8 +102,8 @@ ggplot(data, mapping= aes(x=as.numeric(year), y= as.numeric(accuracy),
   xlab(NULL) +
   ylab('Global acc.') +
   theme_bw() +
-  geom_text_repel(data= leg, mapping=aes(x= 2026, y= value, 
-                                  label= paste0('C',collection,': ', round(value*100, digits=2))))
+  geom_text_repel(data= leg2, mapping=aes(x= 2024, y= as.numeric(position), 
+                                  label= paste0(round(value*100, digits=2))), size=4)
 
 
 
