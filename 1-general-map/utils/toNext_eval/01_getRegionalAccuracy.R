@@ -11,23 +11,13 @@ library(reshape2)
 ee_Initialize()
 
 ## set directories
-# 'projects/mapbiomas-workspace/public/collection6/'
-# 'users/dhconciani/backup-c6/general-map-ft/'
 file_path <- 'projects/mapbiomas-workspace/public/collection7_1/'
 
 ##  define files to be computed
-# 'mapbiomas_collection60_integration_v1'
-# 'CERRADO_col6_gapfill_incid_temporal_spatial_freq_v8'
-file_name <- c(#'CERRADO_col7_gapfill_v1',
-  #'CERRADO_col7_gapfill_incidence_v1',
-  #'CERRADO_col7_gapfill_incidence_temporal_v1',
-  #'CERRADO_col7_gapfill_incidence_temporal_v2',
-  #'CERRADO_col7_gapfill_incidence_temporal_spatial_v2',
-  #'CERRADO_col7_gapfill_incidence_temporal_spatial_v3',
-  #'CERRADO_col7_gapfill_incidence_temporal_v8',
-  #'CERRADO_col7_gapfill_incidence_temporal_v20',
+file_name <- c(
   #'CERRADO_col7_gapfill_incidence_temporal_v21'
-  'mapbiomas_collection71_integration_v1')
+  'mapbiomas_collection71_integration_v1'
+)
 
 
 ## set output path (local)
