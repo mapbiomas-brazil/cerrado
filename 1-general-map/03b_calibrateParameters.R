@@ -87,6 +87,7 @@ for (i in 1:length(region_name)) {
       addBands(hand)
     
     ## get spectral signatures from GEE and ingest locally 
+    print('Ingesting array of samples locally')
     sample_ij <- as.data.frame(na.omit(ee_as_sf(mosaic_ij$
                                                   sampleRegions(collection= samples_i,
                                                                 scale= 30,
@@ -118,11 +119,11 @@ for (i in 1:length(region_name)) {
     
     ## set prediction function 
     customRF$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
-      predict(modelFit, newdata)
+    predict(modelFit, newdata)
     customRF$prob <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
       
-      ## set data-structure functions 
-      customRF$sort <- function(x) x[order(x[,1]),]
+    ## set data-structure functions 
+    customRF$sort <- function(x) x[order(x[,1]),]
     customRF$levels <- function(x) x$reference
     
     ## set train control 
@@ -131,7 +132,7 @@ for (i in 1:length(region_name)) {
                             repeats= dcv_rep,
                             allowParallel = TRUE)
     
-    ## set a grid of parameters to be tested (half od default, default and double)
+    ## set a grid of parameters to be tested (half of default, default and double)
     tunegrid <- expand.grid(.mtry=c(round(sqrt(ncol(sample_ij)))/2, round(sqrt(ncol(sample_ij))), round(sqrt(ncol(sample_ij))*2)),
                             .ntree=c(100, 300))
     
@@ -140,7 +141,7 @@ for (i in 1:length(region_name)) {
     
     ## run n times
     for (k in 1:n_rep) {
-      print(paste0('running repetition ', k, ' of ', n_rep))
+      print(paste0('Training RF repetition ', k, ' of ', n_rep, ' (with 10 x 3 k-folds each)'))
       
       ## perform sub sample
       sub_sample <- sample_ij[sample(x= 1: nrow(sample_ij),
