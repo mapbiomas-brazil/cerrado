@@ -77,10 +77,10 @@ for (i in 1:length(region_name)) {
   
   ## get spectral signatures for a random year (repeat n times)
   for (j in 1:n_years) {
-    print(paste0('year ', j, ' of ', n_years))
+    print(paste0('year ', j, ' of ', n_years, ' ----> ', set_of_years[j]))
     
     ## filter mosaic mosaic for a random year
-    mosaic_ij <- mosaic_i$filter(ee$Filter$eq('year', sample(x= 2016:2021, size= 1)))$mosaic()$
+    mosaic_ij <- mosaic_i$filter(ee$Filter$eq('year', set_of_years[j]))$mosaic()$
       ## add auxiliary bands
       addBands(lon_sin)$
       addBands(lon_cos)$
@@ -89,10 +89,9 @@ for (i in 1:length(region_name)) {
     ## get spectral signatures from GEE and ingest locally 
     sample_ij <- as.data.frame(na.omit(ee_as_sf(mosaic_ij$
                                                   sampleRegions(collection= samples_i,
-                                                                scale= 10,
+                                                                scale= 30,
                                                                 geometries= TRUE,
-                                                                tileScale= 2), via = 'drive')))
-    
+                                                                tileScale= 16), via = 'drive')))
     
     ## remove description columns 
     sample_ij <- sample_ij[ , -which(names(sample_ij) %in% c("id","mapb", "geometry"))]
