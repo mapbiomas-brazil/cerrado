@@ -178,7 +178,7 @@ for (i in 1:length(region_name)) {
     tune_file_ij <- as.data.frame(cbind(mtry= round(mean(tune$mtry)), 
                                         ntree= round(mean(tune$ntree)), 
                                         region = region_name[i],
-                                        year = j))
+                                        year = set_of_years[j]))
     
     rm(tune)
     
@@ -195,7 +195,7 @@ for (i in 1:length(region_name)) {
                                          mean= aggregate(x=list(mean = imp$Overall), by=list(band= imp$band), FUN= 'mean')$mean,
                                          sd= aggregate(x=list(sd = imp$Overall), by=list(band= imp$band), FUN= 'sd')$sd,
                                          region= region_name[i],
-                                         year= j))
+                                         year= set_of_years[j]))
     
     rm(imp)
     
