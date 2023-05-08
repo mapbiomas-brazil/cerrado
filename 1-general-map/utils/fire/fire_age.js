@@ -1,18 +1,15 @@
 /** @description calculo do tempo após o fogo adaptado para  Cerrado
  - wallace.silva@ipam.org.br
 */
-var scars = 'projects/mapbiomas-workspace/public/collection6/mapbiomas-fire-collection1-annual-burned-coverage-1';
+var scars = 'projects/mapbiomas-workspace/FOGO_COL2/SUBPRODUTOS/mapbiomas-fire-collection2-annual-burned-coverage-v1';
 
 scars = ee.Image(scars)
-  .addBands(ee.Image(1).rename('burned_coverage_1984').byte())
-  .addBands(ee.ImageCollection('users/geomapeamentoipam/Colecao_fogo_v6_0')
-    .filter(ee.Filter.eq('year',2021))
-    .mosaic()
-    .rename('burned_coverage_2021'));
+  .addBands(ee.Image(1).rename('burned_coverage_1984').byte());
 
-var bandNames = ee.List.sequence(1984,2021,1);
+var bandNames = ee.List.sequence(1984,2022,1);
 
 print(bandNames);
+
 
 function fireAge (current, previous){
   
@@ -85,7 +82,7 @@ var visParams = {
 Map.addLayer(fireAgeImage,visParams,'idade do fogo');
 Map.addLayer(scars.gte(1),{},'scars');
 
-var description = 'users/dh-conciani/collection7/masks/fire_age';
+var description = 'users/barbarasilvaIPAM/collection8/masks/fire_age';
 
 var bands = fireAgeImage.bandNames().slice(2);
 
