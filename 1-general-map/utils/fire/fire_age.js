@@ -1,7 +1,7 @@
 /** @description calculo do tempo após o fogo adaptado para  Cerrado
  - wallace.silva@ipam.org.br
 */
-var scars = 'projects/mapbiomas-workspace/FOGO_COL2/SUBPRODUTOS/mapbiomas-fire-collection2-annual-burned-coverage-v1';
+var scars = 'projects/mapbiomas-workspace/public/collection7_1/mapbiomas-fire-collection2-annual-burned-coverage-1';
 
 scars = ee.Image(scars)
   .addBands(ee.Image(1).rename('burned_coverage_1984').byte());
@@ -73,7 +73,7 @@ var palette = [
 palette = palette[1];
 
 var visParams = {
-  bands:['classification_2020'],
+  bands:['classification_2021'],
   min:1,
   max:36,
   palette:palette.reverse()
