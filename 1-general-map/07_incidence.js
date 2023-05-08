@@ -1,21 +1,22 @@
+// -- -- -- -- 07_incidence
 // filter spurious transitions by using the number of changes, connections and mode reducer
-// for clarification write to dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br
 
 // set root imageCollection
-var root = 'users/dh-conciani/collection7/c7-general-post/';
+var root = 'users/barbarasilvaIPAM/collection8/c8-general-class-post/';
 
 // set version
-var input_version = '2';
-var output_version = '8';
+var input_version = '1';
+var output_version = '1';
 
 // define input file 
-var file_in = 'CERRADO_col7_gapfill_v' + input_version;
+var file_in = 'CERRADO_col8_gapfill_v' + input_version;
 
 // import mapbiomas color ramp
 var vis = {
     'min': 0,
-    'max': 49,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification6')
+    'max': 62,
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
 };
 
 // load input
@@ -35,16 +36,16 @@ var connected_nChanges = nChanges.connectedPixelCount({
 // compute the mode
 var mode = classification_remap.reduce(ee.Reducer.mode());
 
-// plot 
-// number of changes
+// plots
+// 1-number of changes
 Map.addLayer(nChanges, {palette: ["#C8C8C8", "#FED266", "#FBA713", "#cb701b", "#a95512", "#662000", "#cb181d"],
                                   min: 0, max: 15}, 'number of changes', false);
 
 Map.addLayer(connected_nChanges, {palette: ['green', 'yellow', 'orange', 'red'], min:0, max:10}, 'con. nChanges', false);
 
-// classification
+// 2-classification
 Map.addLayer(mode, vis, 'mode', false);
-Map.addLayer(classification.select(['classification_2021']), vis, 'classification');
+Map.addLayer(classification.select(['classification_2022']), vis, 'classification');
 
 // get border pixels (high geolocation RMSE) to be masked by the mode
 var border_mask = connected_nChanges.lte(6).and(nChanges.gt(12));
@@ -71,13 +72,13 @@ var incidentsMask = rect_border.blend(forest)
 
 // build correction
 classification = classification.blend(incidentsMask);
-Map.addLayer(classification.select(['classification_2021']), vis, 'rectified');
+Map.addLayer(classification.select(['classification_2022']), vis, 'rectified');
 
 // export as GEE asset
 Export.image.toAsset({
     'image': classification,
-    'description': 'CERRADO_col7_gapfill_incidence_v' + output_version,
-    'assetId': root + 'CERRADO_col7_gapfill_incidence_v' + output_version,
+    'description': 'CERRADO_col8_gapfill_incidence_v' + output_version,
+    'assetId': root + 'CERRADO_col8_gapfill_incidence_v' + output_version,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
