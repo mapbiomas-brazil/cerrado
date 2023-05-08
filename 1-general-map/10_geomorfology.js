@@ -1,5 +1,6 @@
+// -- -- -- -- 10_geomorfology
 // apply geomorfology filters
-// dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br
 
 var geometry2 = 
     /* color: #98ff00 */
@@ -275,6 +276,7 @@ var geometry2 =
            [-44.11954237024176, -5.608786959716654],
            [-44.10786939660895, -5.612887094142597],
            [-44.09688306848395, -5.618353895185125]]]]),
+    
     geometry = 
     /* color: #0b4a8b */
     /* shown: false */
@@ -340,13 +342,14 @@ var geometry2 =
            [-46.745855561046646, -10.291175247952351]]]]);
 
 // get collection 
-var classification = ee.Image('users/dh-conciani/collection7/c7-general-post/CERRADO_col7_gapfill_incidence_temporal_frequency_v20');
+var classification = ee.Image('users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_v1');
+print ('input', classification)
 
 // get geomorfology 
-var geomorfology = ee.Image('users/juandoblas/geomorfologia_IBGE_2009_250_raster_30m')
+var geomorfology = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/geomorfologia_IBGE_2009_250_raster_30m')
                       .updateMask(classification.select(0));
 
-//Map.addLayer(geomorfology.randomVisualizer(), {}, 'geomorfology')
+Map.addLayer(geomorfology.randomVisualizer(), {}, 'geomorfology')
 
 // get geometry 
 var geometry = ee.Image(1).clip(ee.FeatureCollection(
@@ -363,18 +366,18 @@ var geometry2 = ee.Image(1).clip(ee.FeatureCollection(
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 49,
-    'palette': palettes.get('classification6')
+    'max': 62,
+    'palette': palettes.get('classification7')
 };
 
 //Map.addLayer(geomorfology.randomVisualizer(), {}, 'geomorfology', false);
-Map.addLayer(classification.select(['classification_2021']), vis, 'classification 2021');
+Map.addLayer(classification.select(['classification_2022']), vis, 'classification 2022');
 
 // set recipe
 var recipe = ee.Image([]);
 
 // apply geomorfology filter to avoid that wetlands receive grassland class
-ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
+ee.List.sequence({'start': 1985, 'end': 2022}).getInfo()
   .forEach(function(year_i) {
     // get classification [i]
     var image_i = classification.select(['classification_' + year_i]);
@@ -398,7 +401,7 @@ Map.addLayer(tree_canopy, {palette: ['red', 'orange', 'yellow', 'green'], min:0,
 var recipe2 = ee.Image([]);
 
 // apply GEDI filter in a problematic transition betwen amazon and cerrado
-ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
+ee.List.sequence({'start': 1985, 'end': 2022}).getInfo()
   .forEach(function(year_i) {
     // get classification [i]
     var image_i = recipe.select(['classification_' + year_i]);
@@ -412,13 +415,14 @@ ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
   });
   
 // plot filtered
-Map.addLayer(recipe2.select(['classification_2021']), vis, 'filtered 2021');
+Map.addLayer(recipe2.select(['classification_2022']), vis, 'filtered 2022');
+print ('output', recipe2);
 
 // export as GEE asset
 Export.image.toAsset({
     'image': recipe2,
-    'description': 'CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_v20',
-    'assetId': 'users/dh-conciani/collection7/c7-general-post/CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_v20',
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v1',
+    'assetId': 'users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v1',
     'pyramidingPolicy': {
         '.default': 'mode'
     },
@@ -426,4 +430,3 @@ Export.image.toAsset({
     'scale': 30,
     'maxPixels': 1e13
 });
-
