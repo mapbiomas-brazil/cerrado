@@ -10,7 +10,7 @@ var visparams = {
 };
 
 // input version
-var version = '1'
+var version = '1';
 
 // Collection 
 var cerrado = ee.Image('users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v'+version);
