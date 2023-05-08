@@ -1,5 +1,6 @@
+// -- -- -- -- 06_gapFill
 // post-processing - fill gaps (nodata) with data from previous years
-// dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br
 
 // set the cerrado extent 
 var geometry = 
@@ -10,38 +11,36 @@ var geometry =
           [-40.31639240564828, -1.2109638051779688]]], null, false);
           
 // set metadata 
-var input_version = '2';
-var output_version = '2';
+var input_version = '1';
+var output_version = '1';
 
 // set directories
-var input = 'users/dh-conciani/collection7/c7-general';
-var output = 'users/dh-conciani/collection7/c7-general-post/';
-var filename = 'CERRADO_col7_gapfill_v';
+var input = 'users/barbarasilvaIPAM/collection8/c8-general-class';
+var output = 'users/barbarasilvaIPAM/collection8/c8-general-class-post/';
+var filename = 'CERRADO_col8_gapfill_v';
 
 // import classification 
 var image = ee.ImageCollection(input)
             .filterMetadata('version', 'equals', input_version)
             .mosaic();
 
-// discard zero
+// discard zero pixels in the image
 image = image.mask(image.neq(0));
 print('input classification', image);
 
 // get the mapbiomas color ramp
 var vis = {
     'min': 0,
-    'max': 49,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification6')
+    'max': 62,
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
 };
 
-Map.addLayer(image.select(['classification_2021']), vis, 'input');
+Map.addLayer(image.select(['classification_2022']), vis, 'input');
 
 // set the list of years to be filtered
-var years = ee.List.sequence({'start': 1985, 'end': 2021, step: 1}).getInfo();
+var years = ee.List.sequence({'start': 1985, 'end': 2022, step: 1}).getInfo();
 
-/**
- * User defined functions
- */
+// user defined functions
 var applyGapFill = function (image) {
 
     // apply the gap fill form t0 until tn
@@ -135,7 +134,7 @@ var imageFilledYear = applyGapFill(imagePixelYear);
 
 // check filtered image
 print ('output classification', imageFilledtnt0);
-Map.addLayer(imageFilledtnt0.select('classification_2019'), vis, 'filtered');
+Map.addLayer(imageFilledtnt0.select('classification_2022'), vis, 'filtered');
 
 // write metadata
 imageFilledtnt0 = imageFilledtnt0.set('vesion', output_version);
