@@ -1,158 +1,154 @@
-## Run smileRandomForest classifier - Mapbiomas Collection 7.0
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+# -- -- -- -- 04_getSignatures
+## Exported data is composed by spatialPoints with spectral signature values grouped by column
+## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
+# barbara.silva@ipam.org.br
 
-## import libraries
+## read libraries
 library(rgee)
-ee_Initialize()
+ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
-## define strings to be used as metadata
-samples_version <- '1'   # input training samples version
-output_version <-  '1'   # output classification version 
+## define strings to use as metadata (output)
+version <- "1"     ## version string
 
-## define hyperparameters for then rf classifier
-n_tree <- 300
+## define output directory
+dirout <- 'users/barbarasilvaIPAM/collection8/training/v1/'
 
-## define output asset
-output_asset <- 'users/dh-conciani/collection7/c7-rocky-general/'
+## biome
+biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
+cerrado <- biomes$updateMask(biomes$eq(4))
 
-## read landsat mosaic 
+## define mosaic input 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
 
-## import mosaic rules 
-rules <- read.csv('./_aux/mosaic_rules.csv')
+## get mosaic rules
+rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
 
-## define years to be classified
-years <- unique(mosaic$aggregate_array('year')$getInfo())
+## import classification regions
+regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector')
 
-## read area of interest
-aoi_vec <- ee$FeatureCollection('users/dh-conciani/collection7/rocky/masks/aoi_v1')
-aoi_img <- ee$Image(1)$clip(aoi_vec)
+## import sample points
+samples <- ee$FeatureCollection('users/barbarasilvaIPAM/collection8/sample/points/samplePoints_v1')
 
-## get predictor names to be used in the classification
+## time since last fire
+fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
+
+## define regions to extract spectral signatures (spatial operator)
+regions_list <- unique(regionsCollection$aggregate_array('mapb')$getInfo())
+
+## define years to extract spectral signatures (temporal operator)
+years <- 2022
+
+## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
 bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
                          sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
 
-## paste auxiliary bandnames
-aux_bands <- c('latitude', 'longitude_sin', 'longitude_cos', 'hand', 'amp_ndvi_3yr')
-
-## define assets
-### training samples (prefix string)
-training_dir <- 'users/dh-conciani/collection7/rocky/training/'
-
-## for each year
-for (j in 1:length(years)) {
-  print(paste0('----> ', years[j]))
-  
-  ## compute additional bands
-  geo_coordinates <- ee$Image$pixelLonLat()$updateMask(aoi_img$eq(1))
-  ## get latitude
-  lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
-  ## get longitude
-  lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
-  ## cosine
-  lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
-  
-  ## get heigth above nearest drainage
-  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
-    rename('hand')$
-    updateMask(aoi_img$eq(1))
-  
-  ## get the landsat mosaic for the current year 
-  mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
-    filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
-    mosaic()$select(bands)$
-    updateMask(aoi_img$eq(1))
-  
-  ## if the year is greater than 1986, get the 3yr NDVI amplitude
-  if (years[j] > 1986) {
-    print('Computing NDVI Amplitude (3yr)')
-    ## get previous year mosaic 
-    mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
-      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
-      mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$updateMask(aoi_img$eq(1))
-    ## get previous 2yr mosaic 
-    mosaic_i2 <- mosaic$filterMetadata('year', 'equals', years[j] - 2)$
-      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past2)$
-      mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$updateMask(aoi_img$eq(1))
+## for each region 
+for (i in 1:length(regions_list)) {
+  ## for each year
+  for (j in 1:length(years)) {
+    ## print status
+    print(paste0('region ' , regions_list[i] , ' || year ' , years[j]))
+    ## subset region
+    region_i <- regionsCollection$filterMetadata('mapb', "equals", regions_list[i])$geometry()
     
-    ## compute the minimum NDVI over dry season 
-    min_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_dry'),
-                                                mosaic_i1$select('ndvi_median_dry'),
-                                                mosaic_i2$select('ndvi_median_dry')))$min()
+    ## compute additional bands
+    geo_coordinates <- ee$Image$pixelLonLat()$clip(region_i)
+    ## get latitude
+    lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
+    ## get longitude
+    lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
+      sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
+    ## cosine
+    lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
+      cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
     
-    ## compute the mmaximum NDVI over wet season 
-    max_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_wet'),
-                                                mosaic_i1$select('ndvi_median_wet'),
-                                                mosaic_i2$select('ndvi_median_wet')))$max()
+    ## get heigth above nearest drainage
+    hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
+      clip(region_i)$rename('hand')
     
-    ## get the amplitude
-    amp_ndvi <- max_ndvi$subtract(min_ndvi)$rename('amp_ndvi_3yr')$updateMask(aoi_img$eq(1))
+    ## get the landsat mosaic for the current year 
+    mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
+      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
+      filterBounds(region_i)$
+      mosaic()$select(bands)
+    
+    ## if the year is greater than 1986, get the 3yr NDVI amplitude
+    if (years[j] > 1986) {
+      print('Computing NDVI Amplitude (3yr)')
+      ## get previous year mosaic 
+      mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
+        filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
+        mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$clip(region_i)
+      ## get previous 2yr mosaic 
+      mosaic_i2 <- mosaic$filterMetadata('year', 'equals', years[j] - 2)$
+        filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past2)$
+        mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$clip(region_i)
+      
+      ## compute the minimum NDVI over dry season 
+      min_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_dry'),
+                                                  mosaic_i1$select('ndvi_median_dry'),
+                                                  mosaic_i2$select('ndvi_median_dry')))$min()
+      
+      ## compute the mmaximum NDVI over wet season 
+      max_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_wet'),
+                                                  mosaic_i1$select('ndvi_median_wet'),
+                                                  mosaic_i2$select('ndvi_median_wet')))$max()
+      
+      ## get the amplitude
+      amp_ndvi <- max_ndvi$subtract(min_ndvi)$rename('amp_ndvi_3yr')$clip(region_i);
+      
+      ## get the time since last fire
+      fire_age_i <- fire_age$select(paste0('classification_', years[j]))$rename('fire_age')$clip(region_i)
+    }
+    
+    ## if the year[j] is lower than 1987, get null image as amp
+    if (years[j] < 1987){
+      amp_ndvi <- ee$Image(0)$rename('amp_ndvi_3yr')$clip(region_i)
+      fire_age_i <- ee$Image(5)$rename('fire_age')$clip(region_i)
+    }
+    
+    ## bind mapbiomas mosaic and auxiliary bands
+    mosaic_i <- mosaic_i$addBands(lat)$
+      addBands(lon_sin)$
+      addBands(lon_cos)$
+      addBands(hand)$
+      addBands(amp_ndvi)$
+      addBands(fire_age_i)$
+      addBands(ee$Image(years[j])$int16()$rename('year'))
+    
+    ## subset sample points for the region 
+    samples_ij <- samples$filterBounds(regionsCollection$filterMetadata('mapb', "equals", regions_list[i]))
+    print(paste0('number of points: ', samples_ij$size()$getInfo()))      
+    
+    ## extract signatures
+    #training_i <- samples_ij$map(function(feature) {
+    #  feature$set(mosaic_i$reduceRegion(reducer='mean', 
+    #                                    geometry= feature$geometry(),
+    #                                    scale=30))
+    #    }
+    #  )
+    
+    ## get training samples
+    training_i <- mosaic_i$sampleRegions(collection= samples_ij,
+                                         scale= 30,
+                                         geometries= TRUE,
+                                         tileScale= 2)
+    
+    ## remove NA or NULL from extracted data
+    training_i <- training_i$filter(ee$Filter$notNull(bands))
+    
+    ## build task to export data
+    task <- ee$batch$Export$table$toAsset(
+      training_i, paste0('train_col8_reg' , regions_list[i] , '_' , years[j] , '_v' , version),
+      paste0(dirout , 'train_col8_reg' , regions_list[i] , '_' , years[j] , '_v' , version))
+    
+    ## start task
+    task$start()
+    print ('========================================')
+    
   }
-  
-  ## if the year[j] is lower than 1987, get null image as amp
-  if (years[j] < 1987) {
-    amp_ndvi <- ee$Image(0)$rename('amp_ndvi_3yr')$updateMask(aoi_img$eq(1))
-  }
-  
-  ## bind mapbiomas mosaic and auxiliary bands
-  mosaic_i <- mosaic_i$addBands(lat)$
-    addBands(lon_sin)$
-    addBands(lon_cos)$
-    addBands(hand)$
-    addBands(amp_ndvi)
-  
-  ## get training samples
-  training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col7_rocky_', years[j], '_v1'))
-
-  ## train classifier
-  classifier <- ee$Classifier$smileRandomForest(numberOfTrees= n_tree)$
-    train(training_ij, 'class', c(bands, aux_bands))
-  
-  ## perform classification and mask only to region 
-  predicted <- mosaic_i$classify(classifier)$mask(mosaic_i$select('red_median'))
-  
-  ## add year as bandname
-  predicted <- predicted$rename(paste0('classification_', as.character(years[j])))$toInt8()
-  
-  ## set properties
-  predicted <- predicted$
-    set('collection', '7')$
-    set('version', output_version)$
-    set('biome', 'CERRADO')$
-    set('year', as.numeric(years[j]))
-  
-    ## stack classification
-  if (years[j] == 1985) {
-    stacked_classification <- predicted
-  } else {
-    stacked_classification <- stacked_classification$addBands(predicted)    
-  }
-  
-} ## end of year processing
-print('exporting stacked classification')
-
-## create filename
-file_name <- paste0('CERRADO_col7_rocky_v', output_version)
-
-## build task
-task <- ee$batch$Export$image$toAsset(
-  image= stacked_classification$toInt8(),
-  description= file_name,
-  assetId= paste0(output_asset, file_name),
-  scale= 30,
-  maxPixels= 1e13,
-  pyramidingPolicy= list('.default' = 'mode'),
-  region= aoi_vec$geometry()
-)
-
-## export 
-task$start()
-print ('------------> NEXT REGION --------->')
-
-print('end, now wait few hours and have fun :)')
+}
