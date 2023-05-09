@@ -1,4 +1,4 @@
-## select featureSpace and calibrate RF hyperparameters for each classification region
+## select featureSpace and calibrate RF hyperparameters for each classification region.
 ## dhemerson.costa@ipam.org.br
 
 ## load packages
