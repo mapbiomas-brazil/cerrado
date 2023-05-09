@@ -1,26 +1,29 @@
-## Run smileRandomForest classifier - Mapbiomas Collection 7.0
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+# -- -- -- -- 05_rfClassification
+## Run smileRandomForest classifier - Mapbiomas Collection 8.0
+# barbara.silva@ipam.org.br
 
-## import libraries
+
+## read libraries
 library(rgee)
 ee_Initialize()
+ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to be used as metadata
-samples_version <- '2'   # input training samples version
-output_version <-  '2'   # output classification version 
+samples_version <- '1'   # input training samples version
+output_version <-  '1'   # output classification version 
 
 ## define hyperparameters for then rf classifier
 n_tree <- 300
 
 ## define output asset
-output_asset <- 'users/dh-conciani/collection7/c7-general/'
+output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general/'
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
 
 ## import mosaic rules 
-rules <- read.csv('./_aux/mosaic_rules.csv')
+rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
@@ -29,7 +32,7 @@ years <- unique(mosaic$aggregate_array('year')$getInfo())
 regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector')
 
 ## time since last fire
-fire_age <- ee$Image('users/dh-conciani/collection7/masks/fire_age')
+fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
 
 ## define regions to be processed 
 regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
@@ -46,7 +49,7 @@ aux_bands <- c('latitude', 'longitude_sin', 'longitude_cos', 'hand', 'amp_ndvi_3
 
 ## define assets
 ### training samples (prefix string)
-training_dir <- 'users/dh-conciani/collection7/training/'
+training_dir <- 'users/barbarasilvaIPAM/collection8/training/'
 
 ### classification regions (imageCollection, one region per image)
 regions_ic <- ee$ImageCollection('users/dh-conciani/collection7/classification_regions/eachRegion')
@@ -127,14 +130,14 @@ for (i in 1:length(regions_list)) {
       addBands(fire_age_i)
     
     ## limit water samples only to 175 samples (avoid over-estimation)
-    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col7_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$eq("reference", 33))$
       filter(ee$Filter$eq("slope", 0))$
       filter(ee$Filter$eq("hand", 0))$
       limit(175)                        ## insert water samples limited to 175 
     
     ## merge filtered water with other classes
-    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col7_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$neq("reference", 33))$ ## remove water samples
       merge(water_samples)
     
@@ -153,7 +156,7 @@ for (i in 1:length(regions_list)) {
     
     ## set properties
     predicted <- predicted$
-      set('collection', '7')$
+      set('collection', '8')$
       set('version', output_version)$
       set('biome', 'CERRADO')$
       set('mapb', as.numeric(regions_list[i]))$
@@ -170,7 +173,7 @@ for (i in 1:length(regions_list)) {
   print('exporting stacked classification')
   
   ## create filename
-  file_name <- paste0('CERRADO_reg', regions_list[i], '_col7_v', output_version)
+  file_name <- paste0('CERRADO_reg', regions_list[i], '_col8_v', output_version)
   
   ## build task
   task <- ee$batch$Export$image$toAsset(
