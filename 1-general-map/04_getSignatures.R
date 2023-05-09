@@ -1,16 +1,18 @@
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+# -- -- -- -- 04_getSignatures
 ## Exported data is composed by spatialPoints with spectral signature values grouped by column
 ## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
+# barbara.silva@ipam.org.br
 
 ## read libraries
 library(rgee)
 ee_Initialize()
+ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to use as metadata (output)
-version <- "2"     ## version string
+version <- "1"     ## version string
 
 ## define output directory
-dirout <- 'users/dh-conciani/collection7/training/v2/'
+dirout <- 'users/barbarasilvaIPAM/collection8/training/v1/'
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -21,29 +23,29 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
   filterMetadata('biome', 'equals', 'CERRADO')
 
 ## get mosaic rules
-rules <- read.csv('./_aux/mosaic_rules.csv')
+rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
 
 ## import classification regions
 regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector')
 
 ## import sample points
-samples <- ee$FeatureCollection('users/dh-conciani/collection7/sample/points/samplePoints_v7')
+samples <- ee$FeatureCollection('users/barbarasilvaIPAM/collection8/sample/points/samplePoints_v1')
 
 ## time since last fire
-fire_age <- ee$Image('users/dh-conciani/collection7/masks/fire_age')
+fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
 
 ## define regions to extract spectral signatures (spatial operator)
 regions_list <- unique(regionsCollection$aggregate_array('mapb')$getInfo())
 
 ## define years to extract spectral signatures (temporal operator)
-years <- unique(mosaic$aggregate_array('year')$getInfo())
+years <- 2022
 
 ## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
 bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                        sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
 
 ## for each region 
 for (i in 1:length(regions_list)) {
@@ -142,8 +144,8 @@ for (i in 1:length(regions_list)) {
     
     ## build task to export data
     task <- ee$batch$Export$table$toAsset(
-      training_i, paste0('train_col7_reg' , regions_list[i] , '_' , years[j] , '_v' , version),
-      paste0(dirout , 'train_col7_reg' , regions_list[i] , '_' , years[j] , '_v' , version))
+      training_i, paste0('train_col8_reg' , regions_list[i] , '_' , years[j] , '_v' , version),
+      paste0(dirout , 'train_col8_reg' , regions_list[i] , '_' , years[j] , '_v' , version))
     
     ## start task
     task$start()
