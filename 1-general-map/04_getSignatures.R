@@ -6,13 +6,13 @@
 ## read libraries
 library(rgee)
 ee_Initialize()
-ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
+#ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to use as metadata (output)
 version <- "2"     ## version string
 
 ## define output directory
-dirout <- 'users/barbarasilvaIPAM/collection8/training/v1/'
+dirout <- 'users/barbarasilvaIPAM/collection8/training/v2/'
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
