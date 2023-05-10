@@ -31,6 +31,7 @@ regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classificatio
 
 ## define regions to be processed 
 regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
+regions_list = 17
 
 ### training samples (prefix string)
 training_dir <- 'users/barbarasilvaIPAM/collection8/training/'
@@ -91,7 +92,7 @@ for (i in 1:length(regions_list)) {
     ## compute the NDVI amplitude, following mosaic rules 
     ## if the year is greater than 1986, get the 3yr NDVI amplitude
     if (years[j] > 1986) {
-      print('Computing NDVI Amplitude (3yr)')
+      ##print('Computing NDVI Amplitude (3yr)')
       ## get previous year mosaic 
       mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
         filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
