@@ -1,58 +1,46 @@
-# -- -- -- -- 05_rfClassification
 ## Run smileRandomForest classifier - Mapbiomas Collection 8.0
-# barbara.silva@ipam.org.br
+## For clarification, write to <dhemerson.costa@ipam.org.br> 
 
-
-## read libraries
+## import libraries
 library(rgee)
 ee_Initialize()
-ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to be used as metadata
 samples_version <- '1'   # input training samples version
-output_version <-  '1'   # output classification version 
-
-## define hyperparameters for then rf classifier
-n_tree <- 300
-
-## define output asset
-output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general/'
+output_version <-  '2'   # output classification version 
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
 
-## import mosaic rules 
-rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
+## set the number of bands (with highest score) to be used in each region
+## actual rule uses 2/3 of the total ~(*66.6) descriptor
+n_bands <- round(length(mosaic$first()$bandNames()$getInfo()) / 100 * 66.6, digits= 0)
+
+## define output asset
+output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general/'
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
-## read classification regions (vetor)
-regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector')
+## import mosaic rules 
+rules <- read.csv('./_aux/mosaic_rules.csv')
 
-## time since last fire
-fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
+## read classification regions (vetor)
+regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
 ## define regions to be processed 
 regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
 
-## get predictor names to be used in the classification
-bands <- mosaic$first()$bandNames()$getInfo()
-
-## remove bands with 'cloud' or 'shade' into their names
-bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
-
-## paste auxiliary bandnames
-aux_bands <- c('latitude', 'longitude_sin', 'longitude_cos', 'hand', 'amp_ndvi_3yr', 'fire_age')
-
-## define assets
 ### training samples (prefix string)
 training_dir <- 'users/barbarasilvaIPAM/collection8/training/'
 
 ### classification regions (imageCollection, one region per image)
-regions_ic <- ee$ImageCollection('users/dh-conciani/collection7/classification_regions/eachRegion')
+regions_ic <- 'users/dh-conciani/collection7/classification_regions/eachRegion_v2_10m/'
+
+## read classification parameters
+param_bands <- read.csv('./_aux/bands.csv', sep= '')
+param_rf <- read.csv('./_aux/rf.csv', sep= '')
 
 ## for each region
 for (i in 1:length(regions_list)) {
@@ -60,7 +48,18 @@ for (i in 1:length(regions_list)) {
   ## get the vector for the regon [i]
   region_i_vec <- regions_vec$filterMetadata('mapb', 'equals', regions_list[i])$geometry()
   ## get the raster for the region [i]
-  region_i_ras = regions_ic$filterMetadata('mapb', 'equals', as.character(regions_list[i]))$mosaic()
+  region_i_ras = ee$Image(paste0(regions_ic, 'reg_', regions_list[i]))
+  
+  ## get variable importance for the region i
+  param_bands_i <- subset(param_bands, region == regions_list[i])
+  ## remove auxiliary bands from relational computation
+  param_bands_i <- subset(param_bands_i,  band != "hand" & band != 'longitude_sin' & band != 'longitude_cos')
+  ## get the most important bands, using thresholh cut 
+  bands <- levels(reorder(param_bands_i$band, -as.numeric(param_bands_i$mean)))[1:n_bands]
+  
+  ## get best classification parameters for the region i
+  n_tree <- subset(param_rf, region == regions_list[i])$ntree
+  n_mtry <- subset(param_rf, region == regions_list[i])$mtry
   
   ## compute static auxiliary bands
   geo_coordinates <- ee$Image$pixelLonLat()$clip(region_i_vec)
@@ -80,12 +79,14 @@ for (i in 1:length(regions_list)) {
   ## for each year
   for (j in 1:length(years)) {
     print(paste0('----> ', years[j]))
-    ## get the landsat mosaic for the current year 
-    mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
-      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
-      filterBounds(region_i_vec)$
-      mosaic()$select(bands)
     
+    ## get the sentinel mosaic for the current year 
+    mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
+      mosaic()$
+      updateMask(region_i_ras)$   # filter for the region
+      select(bands)               # select only relevant bands
+    
+    ## compute the NDVI amplitude, following mosaic rules 
     ## if the year is greater than 1986, get the 3yr NDVI amplitude
     if (years[j] > 1986) {
       print('Computing NDVI Amplitude (3yr)')
@@ -121,6 +122,7 @@ for (i in 1:length(regions_list)) {
       fire_age_i <- ee$Image(5)$rename('fire_age')$clip(region_i_vec)
     }
     
+    
     ## bind mapbiomas mosaic and auxiliary bands
     mosaic_i <- mosaic_i$addBands(lat)$
       addBands(lon_sin)$
@@ -130,26 +132,24 @@ for (i in 1:length(regions_list)) {
       addBands(fire_age_i)
     
     ## limit water samples only to 175 samples (avoid over-estimation)
-    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col1_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$eq("reference", 33))$
-      filter(ee$Filter$eq("slope", 0))$
       filter(ee$Filter$eq("hand", 0))$
       limit(175)                        ## insert water samples limited to 175 
     
     ## merge filtered water with other classes
-    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col1_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$neq("reference", 33))$ ## remove water samples
       merge(water_samples)
     
-    ## clip mosaic for the region
-    mosaic_i <- mosaic_i$updateMask(region_i_ras$eq(as.numeric(regions_list[i])))
-    
     ## train classifier
-    classifier <- ee$Classifier$smileRandomForest(numberOfTrees= n_tree)$
-      train(training_ij, 'reference', c(bands, aux_bands))
+    classifier <- ee$Classifier$smileRandomForest(
+      numberOfTrees= n_tree,
+      variablesPerSplit= n_mtry)$
+      train(training_ij, 'reference', bands)
     
     ## perform classification and mask only to region 
-    predicted <- mosaic_i$classify(classifier)$mask(mosaic_i$select('red_median'))
+    predicted <- mosaic_i$classify(classifier)$mask(mosaic_i$select(0))
     
     ## add year as bandname
     predicted <- predicted$rename(paste0('classification_', as.character(years[j])))$toInt8()
