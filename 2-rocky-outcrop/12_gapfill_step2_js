@@ -1,5 +1,6 @@
+// --- --- --- 12_gapfill_step2
 // post-processing - fill gaps (nodata) with data from previous years
-// dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br
 
 // set the cerrado extent 
 var geometry = /* color: #d63000 */ee.Geometry.Polygon(
@@ -23,18 +24,18 @@ var geometry = /* color: #d63000 */ee.Geometry.Polygon(
           [-40.751143875176396, -5.242628351093647]]]);
           
 // set metadata 
-var input_version = '2';
-var output_version = '2';
+var input_version = '1';
+var output_version = '1';
 
 // set directories
-var input = 'users/dh-conciani/collection7/c7-rocky-general';
-var output = 'users/dh-conciani/collection7/c7-rocky-general-post/';
-var filename = 'CERRADO_col7_rocky_gapfill_v';
+var input = 'projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/general-class/CERRADO_col8_rocky_v1';
+var output = 'projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/general-class-post/';
+var filename = 'CERRADO_col8_rocky_gapfill_v';
 
 // import classification 
-var image = ee.ImageCollection(input)
-            .filterMetadata('version', 'equals', input_version)
-            .mosaic();
+var image = ee.Image(input)
+            //.filterMetadata('version', 'equals', input_version)
+            //.mosaic();
 
 // mask and discard values equal to zero
 image = image.mask(image.neq(0));
@@ -43,14 +44,14 @@ print('input classification', image);
 // get the mapbiomas color ramp
 var vis = {
     'min': 0,
-    'max': 49,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification6')
+    'max': 62,
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
 };
 
 Map.addLayer(image.select(['classification_2021']), vis, 'input');
 
 // set the list of years to be filtered
-var years = ee.List.sequence({'start': 1985, 'end': 2021, step: 1}).getInfo();
+var years = ee.List.sequence({'start': 1985, 'end': 2022, step: 1}).getInfo();
 
 /**
  * User defined functions
