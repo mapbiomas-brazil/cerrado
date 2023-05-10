@@ -9,7 +9,7 @@ ee_Initialize()
 ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to use as metadata (output)
-version <- "1"     ## version string
+version <- "2"     ## version string
 
 ## define output directory
 dirout <- 'users/barbarasilvaIPAM/collection8/training/v1/'
@@ -38,7 +38,7 @@ fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
 regions_list <- unique(regionsCollection$aggregate_array('mapb')$getInfo())
 
 ## define years to extract spectral signatures (temporal operator)
-years <- 2022
+years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
