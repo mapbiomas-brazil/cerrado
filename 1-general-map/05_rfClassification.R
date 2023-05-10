@@ -1,5 +1,5 @@
 ## Run smileRandomForest classifier - Mapbiomas Collection 8.0
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+## For clarification, write to <dhemerson.costa@ipam.org.br> and/or <barbara.silva@ipam.org.br>
 
 ## import libraries
 library(rgee)
@@ -132,13 +132,13 @@ for (i in 1:length(regions_list)) {
       addBands(fire_age_i)
     
     ## limit water samples only to 175 samples (avoid over-estimation)
-    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col1_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$eq("reference", 33))$
       filter(ee$Filter$eq("hand", 0))$
       limit(175)                        ## insert water samples limited to 175 
     
     ## merge filtered water with other classes
-    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col1_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$neq("reference", 33))$ ## remove water samples
       merge(water_samples)
     
