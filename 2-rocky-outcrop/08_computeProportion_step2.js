@@ -1,14 +1,15 @@
+// -- -- -- -- 08_computeProportion_step2
 // compute area to sort samples - second phase
-// dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br
 
 // // input metadata
-var version = '2';
+var version = '1';
 
 // define classes to be assessed
 var classes = [3, 4, 11, 12, 15, 19, 21, 29, 33];
 
 // output directory
-var dirout = 'users/dh-conciani/collection7/rocky/sample/area/';
+var dirout = 'projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/sample/area/';
 
 // area of interest for rocky outcrop
 var aoi = ee.Image(1).clip(ee.FeatureCollection('users/dh-conciani/collection7/rocky/masks/aoi_v1'));
@@ -17,8 +18,8 @@ var aoi = ee.Image(1).clip(ee.FeatureCollection('users/dh-conciani/collection7/r
 var rocky = ee.Image('users/dh-conciani/collection7/c7-rocky-general-post/CERRADO_col7_rocky_gapfill_frequency_spatial_v1')
               .select(['classification_2021']);
 
-// stable pixels collection 6
-var stable = ee.Image('users/dh-conciani/collection7/masks/cerrado_stablePixels_1985_2020_v3')
+// stable pixels collection 7.1
+var stable = ee.Image('users/barbarasilvaIPAM/collection8/masks/cerrado_stablePixels_1985_2021_v1')
                 // insert rocky outcrop 
                 .blend(rocky.updateMask(rocky.eq(29)))
                 .updateMask(aoi.eq(1));
@@ -27,8 +28,8 @@ var stable = ee.Image('users/dh-conciani/collection7/masks/cerrado_stablePixels_
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 49,
-    'palette': palettes.get('classification6')
+    'max': 62,
+    'palette': palettes.get('classification7')
 };
 
 // get cerrado biome
@@ -53,8 +54,8 @@ var getArea = function(feature) {
                                       reducer: ee.Reducer.sum(),
                                       geometry: feature.geometry(),
                                       scale: 30,
-                                      maxPixels: 1e13 }
-                                    ).get('area')
+                                      maxPixels: 1e13
+                                      }).get('area')
                                   )
                               ); // end of set
                           }); // end of class_j function
