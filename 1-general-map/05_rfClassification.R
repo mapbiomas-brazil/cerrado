@@ -76,6 +76,8 @@ for (i in 1:length(regions_list)) {
   hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
     clip(region_i_vec)$rename('hand')
   
+  fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
+  
   ## for each year
   for (j in 1:length(years)) {
     print(paste0('----> ', years[j]))
