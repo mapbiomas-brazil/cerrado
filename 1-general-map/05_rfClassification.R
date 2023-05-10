@@ -18,7 +18,7 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
 n_bands <- round(length(mosaic$first()$bandNames()$getInfo()) / 100 * 66.6, digits= 0)
 
 ## define output asset
-output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general/'
+output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general-class/'
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
@@ -31,7 +31,6 @@ regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classificatio
 
 ## define regions to be processed 
 regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
-regions_list = 17
 
 ### training samples (prefix string)
 training_dir <- 'users/barbarasilvaIPAM/collection8/training/'
