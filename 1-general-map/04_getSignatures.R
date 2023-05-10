@@ -26,7 +26,7 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
 rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
 
 ## import classification regions
-regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector')
+regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
 ## import sample points
 samples <- ee$FeatureCollection('users/barbarasilvaIPAM/collection8/sample/points/samplePoints_v1')
