@@ -6,7 +6,7 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '1'   # input training samples version
+samples_version <- '2'   # input training samples version
 output_version <-  '2'   # output classification version 
 
 ## read landsat mosaic 
