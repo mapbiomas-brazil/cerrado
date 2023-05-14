@@ -3,11 +3,11 @@
 // barbara.silva@ipam.org.br
 
 // set root imageCollection
-var root = 'users/barbarasilvaIPAM/collection8/c8-general-class-post/';
+var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
 
 // set version
-var input_version = '1';
-var output_version = '1';
+var input_version = '2';
+var output_version = '2';
 
 // define input file 
 var file_in = 'CERRADO_col8_gapfill_v' + input_version;
