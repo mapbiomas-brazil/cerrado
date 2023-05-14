@@ -3,13 +3,14 @@
 // barbara.silva@ipam.org.br
 
 // set root directory 
-var root = 'users/barbarasilvaIPAM/collection8/c8-general-class-post/';
+var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+
+// set metadata 
+var version_input = '2'
+var version_out = '2';
 
 // set file to be processed
-var file_in = 'CERRADO_col8_gapfill_incidence_v1';
-
-// set metadata to export 
-var version_out = '1';
+var file_in = 'CERRADO_col8_gapfill_incidence_v'+version_input;
 
 // import mapbiomas color ramp
 var vis = {
