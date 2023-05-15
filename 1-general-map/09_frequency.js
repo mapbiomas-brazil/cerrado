@@ -2,14 +2,15 @@
 // frequency filter 
 // barbara.silva@ipam.org.br
 
-// define root 
-var root = 'users/barbarasilvaIPAM/collection8/c8-general-class-post/';
+// set root directory 
+var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+
+// set metadata 
+var version_input = '2'
+var version_out = '2';
 
 // define input file 
-var file_in = 'CERRADO_col8_gapfill_incidence_temporal_v1';
-
-// define output version 
-var version_out = 1;
+var file_in = 'CERRADO_col8_gapfill_incidence_temporal_v'+version_input;
 
 // load classification
 var classification = ee.Image(root + file_in);
