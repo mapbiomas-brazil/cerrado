@@ -39,11 +39,13 @@ var alertas_image = ee.Image(1).clip(alertas);
 Map.addLayer(sad_image, {palette: ['orange'], min:0, max:1}, 'SAD');
 Map.addLayer(alertas_image, {palette: ['yellow'], min:0, max: 1}, 'ALERTA');
 
+var dirout = 'projects/ee-ipam-cerrado/assets/Collection_8/masks/';
+
 // export
 Export.image.toAsset({
 		image: sad_image,
     description: 'sad-image-21_22',
-    assetId: 'export/sad-image-21_22',
+    assetId: dirout+'sad-image-21_22',
     region: geometry,
     scale: 30,
     maxPixels: 1e13,
@@ -53,7 +55,7 @@ Export.image.toAsset({
 Export.image.toAsset({
 		image: alertas_image,
     description: 'alerta-image-16-22',
-    assetId: 'export/alerta-image-16-22',
+    assetId: dirout+'alerta-image-16-22',
     region: geometry,
     scale: 30,
     maxPixels: 1e13,
