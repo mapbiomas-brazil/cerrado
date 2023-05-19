@@ -11,7 +11,7 @@ var CERRADO_simpl =
           [-40.6622201746899, -1.8506184138463584]]], null, false);
 
 // string to identify the output version
-var version_out = '1'
+var version_out = '2';
 
 // import the color ramp module from mapbiomas 
 var palettes = require('users/mapbiomas/modules:Palettes.js');
@@ -33,7 +33,7 @@ colecao71 = ee.ImageCollection(colecao71)
   .filter(ee.Filter.eq('version','0-29'))
   .mosaic();
 
-print ("Collection 7.1", colecao71)
+print ("Collection 7.1", colecao71);
   
 // import data to mask stable pixels 
 // PROBIO
@@ -64,7 +64,7 @@ var SEMA_TO = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR');
 
 // global tree canopy (Lang et al, 2022) http://arxiv.org/abs/2204.08322
 var tree_canopy = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
-Map.addLayer(tree_canopy, {palette: ['red', 'orange', 'yellow', 'green'], min:0, max:30}, 'tree canopy');
+Map.addLayer(tree_canopy, {palette: ['red', 'orange', 'yellow', 'green'], min:0, max:30}, 'tree canopy', false);
 
 // ***** end of products to filter stable samples //
 
@@ -202,6 +202,13 @@ var referenceMapRef = referenceMapRef.where(SEMA_TO.eq(11).and(referenceMapRef.e
 // discard masked pixels
 var referenceMapRef = referenceMapRef.updateMask(referenceMapRef.neq(27));
 
+// // mask deforestations in Alerta
+var alerta = ee.Image('projects/ee-ipam-cerrado/assets/Collection_8/masks/alerta-image-16-22').unmask(0);
+var referenceMapRef = referenceMapRef.updateMask(alerta.neq(1));
+
+var sad = ee.Image('projects/ee-ipam-cerrado/assets/Collection_8/masks/sad-image-21_22').unmask(0);
+var referenceMapRef = referenceMap.updateMask(sad.neq(1));
+
 // plot correctred stable samples
 Map.addLayer(referenceMapRef, vis, 'filtered by basemaps', false);
 
@@ -217,10 +224,9 @@ var gedi_filtered = referenceMapRef.where(referenceMapRef.eq(3).and(tree_canopy.
                                    .where(referenceMapRef.eq(33).and(tree_canopy.gt(0)), 50);
 
 // plot map                               
-Map.addLayer(gedi_filtered, vis, 'filtered gedi');
-
 // remove masked values
 var stable_pixels = gedi_filtered.updateMask(gedi_filtered.neq(50));
+Map.addLayer(stable_pixels, vis, 'filtered gedi');
 
  // export to workspace asset
 Export.image.toAsset({
