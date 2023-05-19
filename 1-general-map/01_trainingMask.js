@@ -1,6 +1,6 @@
 // -- -- -- -- 01_trainingMask
-// ***** generate training msk based in stable pixels from mapbiomas collection 7.1, reference maps and GEDI
-//barbara.silva@ipam.org.br
+// ***** generate training msk based in stable pixels from mapbiomas collection 8 ,reference maps and GEDI
+//barbara.silva@ipam.org.br // dhemerson.costa@ipam.org.br
 
 // set area of interest 
 var CERRADO_simpl = 
