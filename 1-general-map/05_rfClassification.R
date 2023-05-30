@@ -84,6 +84,7 @@ for (i in 1:length(regions_list)) {
     
     ## get the sentinel mosaic for the current year 
     mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
+      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
       mosaic()$
       updateMask(region_i_ras)$   # filter for the region
       select(bands)               # select only relevant bands
