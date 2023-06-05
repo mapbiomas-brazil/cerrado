@@ -10,23 +10,62 @@ library(reshape2)
 ## initialize
 ee_Initialize()
 
-## set directories
-# 'projects/mapbiomas-workspace/public/collection6/'
-# 'users/dhconciani/backup-c6/general-map-ft/'
-file_path <- 'users/dh-conciani/collection7/c7-general-post/'
-
-##  define files to be computed
-# 'mapbiomas_collection60_integration_v1'
-# 'CERRADO_col6_gapfill_incid_temporal_spatial_freq_v8'
-file_name <- c(#'CERRADO_col7_gapfill_v1',
-               #'CERRADO_col7_gapfill_incidence_v1',
-               #'CERRADO_col7_gapfill_incidence_temporal_v1',
-               #'CERRADO_col7_gapfill_incidence_temporal_v2',
-               #'CERRADO_col7_gapfill_incidence_temporal_spatial_v2',
-               #'CERRADO_col7_gapfill_incidence_temporal_spatial_v3',
-               #'CERRADO_col7_gapfill_incidence_temporal_v8',
-                'CERRADO_col7_gapfill_incidence_temporal_v20',
-                'CERRADO_col7_gapfill_incidence_temporal_v21')
+## set files to be computed
+file_name <- c("projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_v0",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_v0",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_v0",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_v0",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v0",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v0",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_v1",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_v1",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_v1",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_v1",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v1",
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v1",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_v2",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_v2",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_v2",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_v2",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v2",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v2",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_v3",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_v3",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_v3",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_v3",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v3",
+               "projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v3",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_v5",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v5",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_v5",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v5",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v5",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_v6",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v6",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_v6",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v6",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v6",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_v7",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v7",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v7",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v8",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_v8",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v8",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v8",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v9",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_v9",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v9",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v9",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v10",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v10",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v11",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v11",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v12",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v12",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_v0-0",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_v0-1",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v0-0",
+               "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v0-1")
 
 
 ## set output path (local)
@@ -48,7 +87,7 @@ selectClasses = c(
 ) 
 
 ## get classification regions
-regions <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector')
+regions <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 regions_list <- sort(regions$aggregate_array('mapb')$getInfo())
 
 ## set years to be processed
@@ -70,7 +109,7 @@ classes <- ee$Dictionary(list(
 for (i in 1:length(unique(file_name))) {
   print(paste0('processing file --> ', file_name[i]))
   ## read file [i]
-  collection <- ee$Image(paste0(file_path, file_name[i]))
+  collection <- ee$Image(file_name[i])
   
   ## set recipes
   recipe_metrics <- as.data.frame(NULL)
@@ -125,7 +164,7 @@ for (i in 1:length(unique(file_name))) {
       ## subset by considering classes that have reference points
       toCompute <- subset(toCompute, predicted %in% unique(toCompute$predicted)[
         which(unique(toCompute$predicted) %in% unique(toCompute$reference))
-        ]
+      ]
       )
       
       ## compute confusion matrix
