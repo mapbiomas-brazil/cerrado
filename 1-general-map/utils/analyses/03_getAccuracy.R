@@ -1,5 +1,4 @@
-## get accuracy for test versions in the mapbiomas collection 8
-## dhemerson.costa@ipam.org.br
+## get accuracy for test version in the mapbiomas collection 7
 
 ## get libraries
 library(rgee)
@@ -68,6 +67,8 @@ file_name <- c("projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-po
                "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v0-1")
 
 
+file_name <- file_name[1]
+
 ## set output path (local)
 output <- './table/accuracy/'
 
@@ -99,10 +100,10 @@ classes <- ee$Dictionary(list(
   "Cultura Perene"= 21,           
   "Cultura Semi-Perene"= 21,      
   "Pastagem Cultivada"= 21,       
-  "Formação Florestal"= 3,
+  "Forma\u00e7\u00e3o Florestal"= 3,
   "Rio, Lago e Oceano"= 33,
-  "Formação Campestre"= 12,
-  "Formação Savânica"= 4)
+  "Forma\u00e7\u00e3o Campestre"= 12,
+  "Forma\u00e7\u00e3o Sav\u00e2nica"= 4)
 )
 
 ## for each file
