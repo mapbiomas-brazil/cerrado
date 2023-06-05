@@ -1,4 +1,4 @@
-## get accuracy for test version in the mapbiomas collection 7
+## get accuracy for test version in the mapbiomas collection 8
 
 ## get libraries
 library(rgee)
@@ -66,9 +66,6 @@ file_name <- c("projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-po
                "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v0-0",
                "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v0-1")
 
-
-file_name <- file_name[1]
-
 ## set output path (local)
 output <- './table/accuracy/'
 
@@ -100,10 +97,10 @@ classes <- ee$Dictionary(list(
   "Cultura Perene"= 21,           
   "Cultura Semi-Perene"= 21,      
   "Pastagem Cultivada"= 21,       
-  "Forma\u00e7\u00e3o Florestal"= 3,
+  "Formação Florestal"= 3,
   "Rio, Lago e Oceano"= 33,
-  "Forma\u00e7\u00e3o Campestre"= 12,
-  "Forma\u00e7\u00e3o Sav\u00e2nica"= 4)
+  "Formação Campestre"= 12,
+  "Formação Savânica"= 4)
 )
 
 ## for each file
@@ -122,8 +119,8 @@ for (i in 1:length(unique(file_name))) {
     print(paste0('processing year -->', years[j]))
     
     collection_ij <- collection$select(paste0('classification_', years[j]))$
-      remap(c(3, 4, 5, 11, 12, 29, 15, 19, 39, 20, 40, 41, 46, 47, 48, 21, 23, 24, 30, 25, 33, 31),
-            c(3, 4, 3, 12, 12, 25, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 25, 25, 25, 25, 33, 33))$
+      remap(c(3, 4, 5, 11, 12, 29, 15, 19, 39, 20, 40, 41, 46, 47, 48, 21, 23, 24, 30, 25, 33, 31, 29),
+            c(3, 4, 3, 12, 12, 25, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 25, 25, 25, 25, 33, 33, 12))$
       rename(paste0('classification_', years[j]))
     
     ## get validation points
@@ -168,6 +165,12 @@ for (i in 1:length(unique(file_name))) {
       ]
       )
       
+      ## the same but using inverse logic
+      toCompute <- subset(toCompute, reference %in% unique(toCompute$reference)[
+        which(unique(toCompute$reference) %in% unique(toCompute$predicted))
+      ]
+      )
+
       ## compute confusion matrix
       confusion <- confusionMatrix(data = as.factor(toCompute$predicted),
                                    reference = as.factor(toCompute$reference))
@@ -181,13 +184,13 @@ for (i in 1:length(unique(file_name))) {
       metrics$variable <- row.names(metrics)
       metrics$region <- unique(regions_list)[k]
       metrics$year <- years[j]
-      metrics$file <- file_name[i]
+      metrics$file <- strsplit(file_name[i], "/")[[1]][length(strsplit(file_name[i], "/")[[1]])]
       
       ## get confusion table
       confusionTable <- as.data.frame(confusion$table)
       confusionTable$region <- unique(regions_list)[k]
       confusionTable$year <- years[j]
-      confusionTable$file <- file_name[i]
+      confusionTable$file <- strsplit(file_name[i], "/")[[1]][length(strsplit(file_name[i], "/")[[1]])]
       
       ## bind data 
       recipe_metrics <- rbind(recipe_metrics, metrics)
@@ -196,7 +199,7 @@ for (i in 1:length(unique(file_name))) {
   }
   ## save file results
   print('exporting results')
-  write.csv(recipe_metrics, file= paste0(output, 'metrics_', file_name[i], '.csv'))
-  write.csv(recipe_table, file= paste0(output, 'table_', file_name[i], '.csv'))
+  write.csv(recipe_metrics, file= paste0(output, 'metrics_', strsplit(file_name[i], "/")[[1]][length(strsplit(file_name[i], "/")[[1]])], '.csv'))
+  write.csv(recipe_table, file= paste0(output, 'table_', strsplit(file_name[i], "/")[[1]][length(strsplit(file_name[i], "/")[[1]])], '.csv'))
 }
 print('done, enjoy :)')
