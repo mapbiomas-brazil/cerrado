@@ -1,4 +1,4 @@
-## get accuracy for test version in the mapbiomas collection 7
+## get accuracy for test versions in the mapbiomas collection 8
 ## dhemerson.costa@ipam.org.br
 
 ## get libraries
