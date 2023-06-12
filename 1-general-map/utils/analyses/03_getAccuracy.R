@@ -5,12 +5,14 @@ library(rgee)
 library(reticulate)
 library(caret)
 library(reshape2)
+library(tools)
 
 ## initialize
 ee_Initialize()
 
 ## set files to be computed
-file_name <- c("projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_v0",
+file_name <- c(
+               "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_v0",
                "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_v0",
                "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_v0",
                "projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_v0",
@@ -65,9 +67,17 @@ file_name <- c("projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-po
                "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_v0-1",
                "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v0-0",
                "projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_v0-1")
+               
 
 ## set output path (local)
 output <- './table/accuracy/'
+
+## remove files already processed 
+file_name <- file_name[- which(
+  sapply(file_name, function(x) tail(strsplit(x, "/")[[1]], 1)) 
+  %in% 
+    file_path_sans_ext(unique(sub("^[^_]*_", "", list.files(output)))))]
+
 
 ## import validation points
 validation_points = ee$FeatureCollection('projects/mapbiomas-workspace/VALIDACAO/MAPBIOMAS_100K_POINTS_utf8');
