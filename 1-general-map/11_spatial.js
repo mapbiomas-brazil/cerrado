@@ -6,7 +6,7 @@
 var root = 'users/barbarasilvaIPAM/collection8/c8-general-class-post/';
 
 // define input file 
-var file_in = 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v1';
+var file_in = 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v1';
 
 // define output version 
 var version_out = 1;
@@ -119,8 +119,8 @@ print ('output', container)
 // export as GEE asset
 Export.image.toAsset({
     'image': container,
-    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v' + version_out,
-    'assetId': root + 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v' + version_out,
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v' + version_out,
+    'assetId': root + 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v' + version_out,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
