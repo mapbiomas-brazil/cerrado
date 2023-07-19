@@ -421,8 +421,8 @@ print ('output', recipe2);
 // export as GEE asset
 Export.image.toAsset({
     'image': recipe2,
-    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v1',
-    'assetId': 'users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_v1',
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v1',
+    'assetId': 'users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v1',
     'pyramidingPolicy': {
         '.default': 'mode'
     },
