@@ -3,13 +3,13 @@
 // barbara.silva@ipam.org.br
 
 // define root
-var root = 'projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/general-class-post/';
+var root = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/';
 
 // define input file 
-var file_in = 'CERRADO_col8_rocky_gapfill_frequency_v1';
+var file_in = 'CERRADO_col8_rocky_gapfill_frequency_v4';
 
 // define output version 
-var version_out = 1;
+var version_out = 4;
 
 // read image
 var classification = ee.Image(root + file_in);
