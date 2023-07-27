@@ -11,12 +11,12 @@ var geometry =
           [-40.31639240564828, -1.2109638051779688]]], null, false);
           
 // set metadata 
-var input_version = '2';
-var output_version = '2';
+var input_version = '3';
+var output_version = '3';
 
 // set directories
 var input = 'users/barbarasilvaIPAM/collection8/c8-general-class';
-var output = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+var output = 'projects/ee-barbarasilvaipam/assets/collection8/general-class-post/';
 var filename = 'CERRADO_col8_gapfill_v';
 
 // import classification 
