@@ -6,7 +6,7 @@
 var file_in = ee.FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/area/stable_v3');
 
 // rocky outcrop samples
-var rocky_samples = ee.FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/afloramento_collect_v6')
+var rocky_samples = ee.FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/afloramento_collect_v5')
         // insert reference class [29] following the mapbiomas schema
         .map(function(feature) {
           return feature.set({'class': '29'}).select(['class']);
