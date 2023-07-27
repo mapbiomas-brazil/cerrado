@@ -3,23 +3,23 @@
 // barbara.silva@ipam.org.br
 
 // // input metadata
-var version = '1';
+var version = '4';
 
 // define classes to be assessed
 var classes = [3, 4, 11, 12, 15, 19, 21, 29, 33];
 
 // output directory
-var dirout = 'projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/sample/area/';
+var dirout = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/sample/area/';
 
 // area of interest for rocky outcrop
-var aoi = ee.Image(1).clip(ee.FeatureCollection('users/dh-conciani/collection7/rocky/masks/aoi_v1'));
+var aoi = ee.Image(1).clip(ee.FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5'));
 
 // rocky ouytcrop
-var rocky = ee.Image('users/dh-conciani/collection7/c7-rocky-general-post/CERRADO_col7_rocky_gapfill_frequency_spatial_v1')
+var rocky = ee.Image('projects/ee-barbarasilvaipam/assets/collection8-rocky/general-class-post/CERRADO_col8_rocky_gapfill_frequency_spatial_v4')
               .select(['classification_2021']);
 
 // stable pixels collection 7.1
-var stable = ee.Image('users/barbarasilvaIPAM/collection8/masks/cerrado_stablePixels_1985_2021_v1')
+var stable = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/masks/cerrado_stablePixels_1985_2021_v2')
                 // insert rocky outcrop 
                 .blend(rocky.updateMask(rocky.eq(29)))
                 .updateMask(aoi.eq(1));
