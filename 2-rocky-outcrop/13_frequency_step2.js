@@ -1,15 +1,15 @@
-// 13_frequency_step2
+// --- --- --- 13_frequency_step2
 // frequency filter 
 // barbara.silva@ipam.org.br
 
 // define root 
-var root = 'projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/general-class-post/';
+var root = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/';
 
 // define input file 
-var file_in = 'CERRADO_col8_rocky_gapfill_v1';
+var file_in = 'CERRADO_col8_rocky_gapfill_v4';
 
 // define output version 
-var version_out = 1;
+var version_out = 4;
 
 // load classification
 var classification = ee.Image(root + file_in);
@@ -31,11 +31,11 @@ var filterFreq = function(image) {
 
   // get per class frequency 
   var rocky = image.eq(29).expression(exp);
-  Map.addLayer(rocky, {palette:['purple', 'red', 'orange', 'yellow', 'green', 'darkgreen'], min:20, max:70}, 'freq')
+  Map.addLayer(rocky, {palette:['purple', 'red', 'orange', 'yellow', 'green', 'darkgreen'], min:20, max:70}, 'freq');
 
   // stabilize rocky when:
   var filtered = ee.Image(0).where(rocky.gte(90), 29)
-                            .where(rocky.lt(90), 99)
+                            .where(rocky.lt(90), 99);
 
   // get only pixels to be filtered
   filtered = filtered.updateMask(filtered.neq(0));
@@ -47,9 +47,9 @@ var filterFreq = function(image) {
 var classification_filtered = filterFreq(classification);
 
 // plot
-Map.addLayer(classification.select(['classification_2021']), vis, 'classification');
+Map.addLayer(classification.select(['classification_2022']), vis, 'classification');
 Map.addLayer(classification_filtered.select(['classification_2021']), vis, 'filtered');
-print ('output image', classification_filtered)
+print ('output image', classification_filtered);
 
 // export as GEE asset
 Export.image.toAsset({
@@ -63,5 +63,3 @@ Export.image.toAsset({
     'scale': 30,
     'maxPixels': 1e13
 });
-
-//Map.addLayer(table)
