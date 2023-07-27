@@ -342,7 +342,7 @@ var geometry2 =
            [-46.745855561046646, -10.291175247952351]]]]);
 
 // get collection 
-var classification = ee.Image('users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_v1');
+var classification = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_v14');
 print ('input', classification)
 
 // get geomorfology 
@@ -421,8 +421,8 @@ print ('output', recipe2);
 // export as GEE asset
 Export.image.toAsset({
     'image': recipe2,
-    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v1',
-    'assetId': 'users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v1',
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v14',
+    'assetId': 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v14',
     'pyramidingPolicy': {
         '.default': 'mode'
     },
