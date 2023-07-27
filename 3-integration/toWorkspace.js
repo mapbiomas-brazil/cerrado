@@ -1,6 +1,6 @@
-/**
- * Script modelo para padronização dos assets do Mapbiomas~
- */
+// -- -- -- -- 13_toWorkspace
+// Script modelo para padronização dos assets do Mapbiomas~
+// barbara.silva@ipam.org.br
 
 // geometria para corrigir campo para afloramento 
 var geometry_mask = ee.Image(1).clip(ee.FeatureCollection(ee.Geometry.MultiPolygon(
@@ -104,33 +104,35 @@ var wetland_to_grassland2 = ee.Image(1).clip(ee.FeatureCollection(ee.Geometry.Mu
           [-45.15637279017473, -16.44312725862372],
           [-45.1714789913466, -16.366718996670713]]])));
 
-var palette = require('users/mapbiomas/modules:Palettes.js').get('classification6');
+var palette = require('users/mapbiomas/modules:Palettes.js').get('classification7');
 
 // Defina seu asset de entrada
-var assetInput = 'users/dh-conciani/collection7/c7-general-post';
-var file_name = 'CERRADO_col7_native9_rocky3';
+var assetInput = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/';
+var file_name = 'CERRADO_col8_native14_rocky4';
 
 // Carregue a sua coleção aqui
 var collection = ee.Image(assetInput + '/' + file_name);
+Map.addLayer (collection, {}, "input data");
 
 // Defina seu asset de saída
-var assetOutput = 'projects/mapbiomas-workspace/COLECAO7/classificacao';
+var assetOutput = 'projects/mapbiomas-workspace/COLECAO8/classificacao';
 
 // Defina a versão de saída
-var outputVersion = '3';
+var outputVersion = '14';
 
 // Defina o id de lançamento da coleção mapbiomas
-var collectionId = 7.0;
+var collectionId = 8.0;
 
 // Se for bioma use este.
 var theme = { 'type': 'biome', 'name': 'CERRADO' };
+
 // Se for tema transversal use este.
 // var theme = { 'type': 'theme', 'name': 'INFRAURBANA'};
 
 // Defina a fonte produto do dado
 var source = 'ipam';
 
-// Todos os anos mapeados na coleção 6
+// Todos os anos mapeados na coleção 8
 var years = [
     '1985', '1986', '1987', '1988',
     '1989', '1990', '1991', '1992',
@@ -141,7 +143,7 @@ var years = [
     '2009', '2010', '2011', '2012',
     '2013', '2014', '2015', '2016',
     '2017', '2018', '2019', '2020',
-    '2021'
+    '2021', '2022'
 ];
 
 // Boundary box de todo o Brasil
@@ -165,16 +167,16 @@ years.forEach(
 
         imageYear = imageYear
             .set('territory', 'BRAZIL')
-            .set('biome', 'CERRADO')
-            .set('year', parseInt(year, 10))
-            .set('version', outputVersion)
-            .set('collection', collectionId)
-            .set('source', source)
-            .set('description', 'native9_rocky3');
+            .set('biome', 'CERRADO')
+            .set('collection_id', collectionId)
+            .set('version', outputVersion)
+            .set('source', source)
+            .set('year', parseInt(year, 10))
+            .set('description', 'native3_rocky4_versionB');
 
         var vis = {
             'min': 0,
-            'max': 49,
+            'max': 62,
             'palette': palette,
             'format': 'png'
         };
@@ -197,26 +199,30 @@ years.forEach(
 
         // remap 21 into UCs to 15
         imageYear = imageYear.where(imageYear.eq(21).and(pa.eq(1)), 15);
+       
         // remap 12 into mask to 29
-        imageYear = imageYear.where(imageYear.eq(12).and(geometry_mask.eq(1)), 29);
+        // imageYear = imageYear.where(imageYear.eq(12).and(geometry_mask.eq(1)), 29);
         
         // remap 11 into mask to 12
-        imageYear = imageYear.where(imageYear.eq(11).and(wetland_to_grassland.eq(1)), 12);
-        imageYear = imageYear.where(imageYear.eq(11).and(wetland_to_grassland2.eq(1)), 12);
+        // imageYear = imageYear.where(imageYear.eq(11).and(wetland_to_grassland.eq(1)), 12);
+        // imageYear = imageYear.where(imageYear.eq(11).and(wetland_to_grassland2.eq(1)), 12);
 
-        
+
         Map.addLayer(imageYear, vis, theme.name + ' ' + year, false);
-
+        //print ('output', imageYear)
+        
         Export.image.toAsset({
             'image': imageYear,
             'description': name,
             'assetId': assetOutput + '/' + name,
-            'pyramidingPolicy': {
-                '.default': 'mode'
-            },
+            'pyramidingPolicy': {'.default': 'mode'},
             'region': geometry,
             'scale': 30,
             'maxPixels': 1e13
         });
     }
 );
+
+var cerrado =  ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019').filter(ee.Filter.eq('Bioma','Cerrado'));
+var line = ee.Image().paint(cerrado,'empty',3).visualize({palette:'FF0000'});
+Map.addLayer(line, {min:0, max:1}, 'Cerrado limit');
