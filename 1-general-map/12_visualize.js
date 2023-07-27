@@ -10,10 +10,10 @@ var visparams = {
 };
 
 // input version
-var version = '1';
+var version = '14';
 
 // Collection 
-var cerrado = ee.Image('users/barbarasilvaIPAM/collection8/c8-general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v'+version);
+var cerrado = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v'+version);
 print ("Cerrado Col.8 - Version "+version, cerrado);
 Map.addLayer(cerrado, {}, "Cerrado Col.8 - Version "+version, false);
 
