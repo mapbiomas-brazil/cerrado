@@ -3,7 +3,7 @@
 // barbara.silva@ipam.org.br
 
 // import files
-var native = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v3');
+var native = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v14');
 var rocky = ee.Image('projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/CERRADO_col8_rocky_gapfill_frequency_spatial_v4');
 
 // --- --- -- 
@@ -89,8 +89,8 @@ var root = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/ge
 // export as GEE asset
 Export.image.toAsset({
     'image': recipe,
-    'description': 'CERRADO_col8_native3_rocky4',
-    'assetId': root + 'CERRADO_col8_native3_rocky4',
+    'description': 'CERRADO_col8_native14_rocky4',
+    'assetId': root + 'CERRADO_col8_native14_rocky4',
     'pyramidingPolicy': {
         '.default': 'mode'
     },
