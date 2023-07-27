@@ -1,40 +1,60 @@
+// -- -- -- -- 05_gapFill
 // post-processing - fill gaps (nodata) with data from previous years
-// dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br
 
 // set the cerrado extent 
-var geometry = /* color: #d63000 */ee.Geometry.Polygon(
-        [[[-41.454268875176396, -3.8408294836238586],
-          [-48.35368293767639, -6.728580548717192],
-          [-49.54020637517639, -12.874602282892456],
-          [-54.76969856267639, -16.19212902307339],
-          [-58.15348762517639, -20.857404925423417],
-          [-56.70329231267639, -22.287703371831345],
-          [-52.22087043767639, -17.747252774738367],
-          [-48.66130012517639, -16.78206415774492],
-          [-47.25505012517639, -21.103595726234143],
-          [-45.673018875176396, -20.939513574588286],
-          [-42.684737625176396, -19.78596353889332],
-          [-43.256026687676396, -16.82413317412088],
-          [-45.673018875176396, -16.697898193387662],
-          [-46.81559700017639, -14.58212642619072],
-          [-44.618331375176396, -12.83175809601715],
-          [-43.695479812676396, -9.599265485378123],
-          [-46.156417312676396, -7.208406685796306],
-          [-40.751143875176396, -5.242628351093647]]]);
-          
+var geometry = ee.Geometry.Polygon (
+[[[-41.37543452290266,-3.6773987041014786],
+  [-48.273939094899134,-6.563020899300923],
+  [-48.24659702837338,-9.798906539350297],
+  [-49.46053964500549,-12.7089177827255],
+  [-50.59234499311172,-14.49329620462519],
+  [-52.64207960438195,-15.181085022681668],
+  [-57.59252323349536,-14.986692873017187],
+  [-58.242578606836716,-15.943307480893033],
+  [-57.146197800223625,-16.910053753329763],
+  [-57.141504574451865,-17.917776362571292],
+  [-57.07361219664365,-18.673685045570164],
+  [-57.35785649393868,-19.512827252680655],
+  [-58.06505073320582,-20.692941488617265],
+  [-56.61596440610372,-22.122773040137734],
+  [-54.382244055542735,-19.809042125463858],
+  [-53.69411037204978,-18.28747883455363],
+  [-52.46842999860558,-17.5502256029074],
+  [-49.34009411498674,-16.889662647042297],
+  [-48.55759401802354,-17.823527949886824],
+  [-48.028130117601854,-18.322928900186156],
+  [-47.8811414334333,-19.631023180971603],
+  [-47.7402397960028,-20.315912186663887],
+  [-47.178597239902444,-20.93821466886093],
+  [-46.420962681797846,-21.094287228232602],
+  [-45.598267298001325,-20.774496578697853],
+  [-42.99747272243816,-19.70487946455934],
+  [-42.57451633581474,-18.60373760975882],
+  [-42.24564900325984,-16.06000100035008],
+  [-42.358140276276764,-15.055560224012149],
+  [-43.07074399890996,-15.110935176172486],
+  [-43.69689718392297,-15.546162902310774],
+  [-45.15858205402829,-17.243566398567214],
+  [-45.59698997709771,-16.532881370042322],
+  [-46.7381011219985,-14.416834035054313],
+  [-44.541873088239804,-12.667054102327889],
+  [-43.61838110815923,-9.434881068955413],
+  [-46.07753196667198,-7.043265545851765],
+  [-40.66218289953771,-5.178029098641075],
+  [-41.37543452290266,-3.6773987041014786]]]);
+  
 // set metadata 
-var input_version = '1';
-var output_version = '1';
+var input_version = '3';
+var output_version = '3';
 
 // set directories
-var input = 'users/dh-conciani/collection7/c7-rocky-general';
-var output = 'users/dh-conciani/collection7/c7-rocky-general-post/';
-var filename = 'CERRADO_col7_rocky_gapfill_v';
+var input = 'projects/ee-barbarasilvaipam/assets/collection8-rocky/general-class/CERRADO_col8_rocky_v3';
+var output = 'projects/ee-barbarasilvaipam/assets/collection8-rocky/general-class-post/';
+var filename = 'CERRADO_col8_rocky_gapfill_v';
 
 // import classification 
-var image = ee.ImageCollection(input)
-            .filterMetadata('version', 'equals', input_version)
-            .mosaic();
+var image = ee.Image(input);
 
 // mask and discard values equal to zero
 image = image.mask(image.neq(0));
@@ -43,14 +63,14 @@ print('input classification', image);
 // get the mapbiomas color ramp
 var vis = {
     'min': 0,
-    'max': 49,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification6')
+    'max': 62,
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
 };
 
-Map.addLayer(image.select(['classification_2021']), vis, 'input');
+Map.addLayer(image.select(['classification_2022']), vis, 'input');
 
 // set the list of years to be filtered
-var years = ee.List.sequence({'start': 1985, 'end': 2021, step: 1}).getInfo();
+var years = ee.List.sequence({'start': 1985, 'end': 2022, step: 1}).getInfo();
 
 /**
  * User defined functions
@@ -148,7 +168,7 @@ var imageFilledYear = applyGapFill(imagePixelYear);
 
 // check filtered image
 print ('output classification', imageFilledtnt0);
-Map.addLayer(imageFilledtnt0.select('classification_2021'), vis, 'filtered');
+Map.addLayer(imageFilledtnt0.select('classification_2022'), vis, 'filtered');
 
 // write metadata
 imageFilledtnt0 = imageFilledtnt0.set('vesion', output_version);
