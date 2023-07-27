@@ -1,18 +1,18 @@
 // -- -- -- -- 02_computeProportion
-// ****** compute area by ecoregion to be used as reference to estimate samples distribution 
-//barbara.silva@ipam.org.br
+// compute area by ecoregion to be used as reference to estimate samples distribution 
+// barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
 
 // input metadata
-var version = '1';
+var version = '2';
 
 // define classes to be assessed
 var classes = [3, 4, 11, 12, 15, 19, 21, 25, 33];
 
 // output directory
-var dirout = 'users/barbarasilvaIPAM/collection8/sample/area';
+var dirout = 'projects/ee-barbarasilvaipam/assets/collection8/sample/area';
 
 // cerrado classification regions
-var regionsCollection = ee.FeatureCollection('users/dh-conciani/collection7/classification_regions/vector');
+var regionsCollection = ee.FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2');
 
 // set option (avaliable are 'year' or 'stable')
 var option = 'year' ; 
@@ -24,14 +24,11 @@ if (option == 'year') {
   var year = '2000';
   
   // load collection 7.1 
-  var mapbiomas = ee.ImageCollection('projects/mapbiomas-workspace/COLECAO7/integracao')
-                  .filter(ee.Filter.eq('version','0-29'))
-                  .mosaic()
-                  .select('classification_'+  year);
+  var mapbiomas = ee.Image('projects/mapbiomas-workspace/public/collection7_1/mapbiomas_collection71_integration_v1');
 }
 
 if (option == 'stable') {
-  var mapbiomas = ee.Image('users/barbarasilvaIPAM/collection8/masks/cerrado_stablePixels_1985_2021_v1');
+  var mapbiomas = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/masks/cerrado_stablePixels_1985_2021_v2');
 }
 
 // define function to compute area (skm)
