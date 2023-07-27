@@ -1,6 +1,6 @@
 // -- -- -- -- 01_trainingMask
-// ***** generate training msk based in stable pixels from mapbiomas collection 8 ,reference maps and GEDI
-//barbara.silva@ipam.org.br // dhemerson.costa@ipam.org.br
+// generate training mask based in stable pixels from mapbiomas collection 8, reference maps and GEDI
+// barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
 
 // set area of interest 
 var CERRADO_simpl = 
@@ -68,7 +68,7 @@ Map.addLayer(tree_canopy, {palette: ['red', 'orange', 'yellow', 'green'], min:0,
 
 // ***** end of products to filter stable samples //
 
-// ***** remap collection 7.1 using legend that cerrado team maps 
+// remap collection 7.1 using legend that cerrado team maps 
 var colList = ee.List([]);
 var col71remap = colecao71.select('classification_1985').remap(
                   [3, 4, 5, 11, 12, 29, 15, 39, 20, 40, 41, 46, 47, 48, 21, 23, 24, 30, 25, 33, 31],
@@ -96,7 +96,7 @@ for (var i_ano=0;i_ano<anos.length; i_ano++){
   colList = colList.add(col71flor.int8());
 }
 
-// ***** start function to compute invariant pixels from 1985 to 2020
+// ***** start function to compute invariant pixels from 1985 to 2021
 var collection = ee.ImageCollection(colList);
 
 var unique = function(arr) {
@@ -202,7 +202,7 @@ var referenceMapRef = referenceMapRef.where(SEMA_TO.eq(11).and(referenceMapRef.e
 // discard masked pixels
 var referenceMapRef = referenceMapRef.updateMask(referenceMapRef.neq(27));
 
-// // mask deforestations in Alerta
+// // mask deforestations in MapBiomas Alerta
 var alerta = ee.Image('projects/ee-ipam-cerrado/assets/Collection_8/masks/alerta-image-16-22').unmask(0);
 var referenceMapRef = referenceMapRef.updateMask(alerta.neq(1));
 
@@ -212,7 +212,7 @@ var referenceMapRef = referenceMap.updateMask(sad.neq(1));
 // plot correctred stable samples
 Map.addLayer(referenceMapRef, vis, 'filtered by basemaps', false);
 
-// filter pixels by using GEDi derived tree canopy
+// filter pixels by using GEDI derived tree canopy
 var gedi_filtered = referenceMapRef.where(referenceMapRef.eq(3).and(tree_canopy.lt(8)), 50)
                                    .where(referenceMapRef.eq(4).and(tree_canopy.lte(2)), 50)
                                    .where(referenceMapRef.eq(4).and(tree_canopy.gte(12)), 50)
