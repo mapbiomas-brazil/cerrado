@@ -103,14 +103,6 @@ for (j in 1:length(years)) {
   samples_ij <- samples
   print(paste0('number of points: ', samples_ij$size()$getInfo()))      
   
-  ## extract signatures
-  #training_i <- samples_ij$map(function(feature) {
-  #  feature$set(mosaic_i$reduceRegion(reducer='mean', 
-  #                                    geometry= feature$geometry(),
-  #                                    scale=30))
-  #    }
-  #  )
-  
   ## get training samples
   training_i <- mosaic_i$sampleRegions(collection= samples_ij,
                                        scale= 30,
