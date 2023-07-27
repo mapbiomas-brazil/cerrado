@@ -9,7 +9,7 @@ var root = 'projects/ee-barbarasilvaipam/assets/collection8-rocky/general-class-
 var file_in = 'CERRADO_col8_rocky_gapfill_frequency_v3';
 
 // define output version 
-var version_out = 3;
+var version_out = 4;
 
 // read image
 var classification = ee.Image(root + file_in);
