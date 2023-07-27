@@ -1,5 +1,6 @@
+## -- -- -- -- 05_rfClassification
 ## Run smileRandomForest classifier - Mapbiomas Collection 8.0
-## For clarification, write to <dhemerson.costa@ipam.org.br> and/or <barbara.silva@ipam.org.br>
+## dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
 
 ## import libraries
 library(rgee)
