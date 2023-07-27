@@ -1,19 +1,20 @@
+## -- -- -- -- 04_rfClassification
 ## Run smileRandomForest classifier - Mapbiomas Collection 7.0
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+## barbara.silva@ipam.org.br 
 
 ## import libraries
 library(rgee)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '1'   # input training samples version
-output_version <-  '1'   # output classification version 
+samples_version <- '3'   # input training samples version
+output_version <-  '3'   # output classification version 
 
 ## define hyperparameters for then rf classifier
 n_tree <- 300
 
 ## define output asset
-output_asset <- 'users/dh-conciani/collection7/c7-rocky-general/'
+output_asset <- 'projects/ee-barbarasilvaipam/assets/collection8-rocky/general-class/'
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
@@ -26,7 +27,7 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## read area of interest
-aoi_vec <- ee$FeatureCollection('users/dh-conciani/collection7/rocky/masks/aoi_v1')
+aoi_vec <- ee$FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/masks/aoi_v3')
 aoi_img <- ee$Image(1)$clip(aoi_vec)
 
 ## get predictor names to be used in the classification
@@ -41,7 +42,7 @@ aux_bands <- c('latitude', 'longitude_sin', 'longitude_cos', 'hand', 'amp_ndvi_3
 
 ## define assets
 ### training samples (prefix string)
-training_dir <- 'users/dh-conciani/collection7/rocky/training/'
+training_dir <- 'projects/ee-barbarasilvaipam/assets/collection8-rocky/training/'
 
 ## for each year
 for (j in 1:length(years)) {
@@ -108,7 +109,7 @@ for (j in 1:length(years)) {
     addBands(amp_ndvi)
   
   ## get training samples
-  training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col7_rocky_', years[j], '_v1'))
+  training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_rocky_', years[j], '_v3'))
 
   ## train classifier
   classifier <- ee$Classifier$smileRandomForest(numberOfTrees= n_tree)$
@@ -138,7 +139,7 @@ for (j in 1:length(years)) {
 print('exporting stacked classification')
 
 ## create filename
-file_name <- paste0('CERRADO_col7_rocky_v', output_version)
+file_name <- paste0('CERRADO_col3_rocky_v', output_version)
 
 ## build task
 task <- ee$batch$Export$image$toAsset(
