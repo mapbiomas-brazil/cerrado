@@ -128,8 +128,8 @@ for (j in 1:length(years)) {
   
   ## build task to export data
   task <- ee$batch$Export$table$toAsset(
-    training_i, paste0('train_col7_rocky_', years[j] , '_v' , version),
-    paste0(dirout , 'train_col7_rocky_', years[j] , '_v' , version))
+    training_i, paste0('train_col8_rocky_', years[j] , '_v' , version),
+    paste0(dirout , 'train_col8_rocky_', years[j] , '_v' , version))
   
   ## start task
   task$start()
