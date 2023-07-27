@@ -16,7 +16,7 @@ Map.addLayer(aoi, {palette:['red', 'blue'], min:1, max:2}, 'Sampling AOI');
 var version = '4';  // label string
 
 // define output
-var output = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/sample/area/';
+var output = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/sample/points/';
 
 // define classes to generate samples
 var classes = [3, 4, 11, 12, 15, 19, 21, 29, 33];
