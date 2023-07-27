@@ -3,9 +3,25 @@
 // barbara.silva@ipam.org.br
 
 // import files
-var native = ee.Image('projects/ee-ipam-cerrado/assets/Collection_8/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v0');
-var rocky = ee.Image('projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/general-class-post/CERRADO_col8_rocky_gapfill_frequency_v1');
-var biome = ee.Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster');
+var native = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v3');
+var rocky = ee.Image('projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/CERRADO_col8_rocky_gapfill_frequency_spatial_v4');
+
+// --- --- -- 
+// convert biome mask
+var native_2021 = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v3')
+                    .select('classification_2021');
+
+var geometry = native_2021.geometry();
+var scale = 30;
+
+var emptyImage = ee.Image.constant(0).byte()
+  .reproject(native_2021.projection().scale(scale, scale))
+  .clip(geometry);
+
+var mappedImage = emptyImage.where(native_2021, 4);
+
+var biomes = ee.Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster');
+var biome = mappedImage;
 
 // import mapbiomas color ramp
 var vis = {
@@ -68,13 +84,13 @@ Map.addLayer(recipe.select(['classification_2010']), vis, 'integrated');
 print('ouput image', recipe);
 
 // set output directory
-var root = 'projects/ee-ipam-cerrado/assets/Collection_8/rocky-outcrop/general-class-post/';
+var root = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/';
 
 // export as GEE asset
 Export.image.toAsset({
     'image': recipe,
-    'description': 'CERRADO_col8_native1_rocky1',
-    'assetId': root + 'CERRADO_col8_native1_rocky1',
+    'description': 'CERRADO_col8_native3_rocky4',
+    'assetId': root + 'CERRADO_col8_native3_rocky4',
     'pyramidingPolicy': {
         '.default': 'mode'
     },
