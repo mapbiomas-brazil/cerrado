@@ -4,7 +4,7 @@
 
 
 // // input metadata
-var version = '4';
+var version = '3';
 
 // define classes to be assessed
 var classes = [3, 4, 11, 12, 15, 19, 21, 33];
