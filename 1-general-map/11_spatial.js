@@ -3,13 +3,13 @@
 // barbara.silva@ipam.org.br
 
 // define root
-var root = 'users/barbarasilvaIPAM/collection8/c8-general-class-post/';
+var root = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/';
 
 // define input file 
-var file_in = 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v1';
+var file_in = 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_v14';
 
 // define output version 
-var version_out = 1;
+var version_out = 14;
 
 // read image
 var classification = ee.Image(root + file_in);
@@ -26,7 +26,6 @@ var vis = {
 
 // plot  input version
 Map.addLayer(classification.select(['classification_2010']), vis, 'input 2010');
-
 
 // create an empty container
 var filtered = ee.Image([]);
@@ -119,8 +118,8 @@ print ('output', container)
 // export as GEE asset
 Export.image.toAsset({
     'image': container,
-    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v' + version_out,
-    'assetId': root + 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v' + version_out,
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v1' + version_out,
+    'assetId': root + 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v1' + version_out,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
