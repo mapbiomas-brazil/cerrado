@@ -117,8 +117,17 @@ print('grassland', training.filterMetadata('class', 'equals', 12).size());
 print('agriculture', training.filterMetadata('class', 'equals', 19).size());
 print('rocky', training.filterMetadata('class', 'equals', 29).size());
 
+// convert the 'class' column to integers
+var trainingSamplesFixed = training.map(function(feature) {
+  var classValue = ee.Number.parse(feature.get('class'));
+  return feature.set('class', classValue);
+});
+
+// check if the conversion was done correctly
+print(trainingSamplesFixed.first());
+
 // export as GEE asset
-Export.table.toAsset({'collection': training,
+Export.table.toAsset({'collection': trainingSamplesFixed,
                       'description': 'samplePoints_v' + version,
                       'assetId':  output + 'samplePoints_v' + version
                       }
