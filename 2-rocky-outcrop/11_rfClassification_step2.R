@@ -27,7 +27,7 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## read area of interest
-aoi_img <- ee$Image('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5')
+aoi_img <- ee$Image('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5-image')
 
 ## get predictor names to be used in the classification
 bands <- mosaic$first()$bandNames()$getInfo()
