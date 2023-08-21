@@ -1,28 +1,29 @@
-// get samples of rocky outcrop 
-// dhemerson.costa@ipam.org.br
+// -- -- -- -- 01_trainingMask
+// get samples of rocky outcrop
+// barbara.silva@ipam.org.br
+
 
 // // input metadata
-var version = '1';
+var version = '3';
 
 // define classes to be assessed
 var classes = [3, 4, 11, 12, 15, 19, 21, 33];
 
 // output directory
-var dirout = 'users/dh-conciani/collection7/rocky/sample/area/';
+var dirout = 'users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/area/';
 
 // area of interest for rocky outcrop
-var aoi = ee.Image(1).clip(ee.FeatureCollection('users/dh-conciani/collection7/rocky/masks/aoi_v1'));
 
 // stable pixels collection 6
-var stable = ee.Image('users/dh-conciani/collection7/masks/cerrado_stablePixels_1985_2020_v3')
+var stable = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/masks/cerrado_stablePixels_1985_2021_v2')
                 .updateMask(aoi.eq(1));
 
 // import the color ramp module from mapbiomas 
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 49,
-    'palette': palettes.get('classification6')
+    'max': 62,
+    'palette': palettes.get('classification7')
 };
 
 // get cerrado biome
@@ -66,3 +67,4 @@ Map.addLayer(stable, vis, 'stable');
 Export.table.toAsset({'collection': computed_obj, 
                       'description': 'stable_v' + version,
                       'assetId': dirout + 'stable_v' + version});
+                      

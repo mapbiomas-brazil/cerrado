@@ -1,16 +1,17 @@
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+## --- --- --- 10_getSignatures_step2
 ## Exported data is composed by spatialPoints with spectral signature values grouped by column
 ## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
+## barbara.silva@ipam.org.br
 
 ## read libraries
 library(rgee)
 ee_Initialize()
 
 ## define strings to use as metadata
-version <- "2"     ## version string
+version <- "4"     ## version string
 
 ## define output directory
-dirout <- 'users/dh-conciani/collection7/rocky/training/v2/'
+dirout <- 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/training/v4/'
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -24,7 +25,7 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
 rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## get samples
-samples<- ee$FeatureCollection('users/dh-conciani/collection7/rocky/sample/points/samplePoints_v2')
+samples<- ee$FeatureCollection('projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/sample/points/samplePoints_v4')
 
 ## define years to extract spectral signatures (temporal operator)
 years <- unique(mosaic$aggregate_array('year')$getInfo())
@@ -102,14 +103,6 @@ for (j in 1:length(years)) {
   samples_ij <- samples
   print(paste0('number of points: ', samples_ij$size()$getInfo()))      
   
-  ## extract signatures
-  #training_i <- samples_ij$map(function(feature) {
-  #  feature$set(mosaic_i$reduceRegion(reducer='mean', 
-  #                                    geometry= feature$geometry(),
-  #                                    scale=30))
-  #    }
-  #  )
-  
   ## get training samples
   training_i <- mosaic_i$sampleRegions(collection= samples_ij,
                                        scale= 30,
@@ -122,8 +115,8 @@ for (j in 1:length(years)) {
   ## build task to export data
   task <- ee$batch$Export$table$toAsset(
    training_i, 
-    paste0('train_col7_rocky_', years[j] , '_v' , version),
-    paste0(dirout , 'train_col7_rocky_', years[j] , '_v' , version)
+    paste0('train_col8_rocky_', years[j] , '_v' , version),
+    paste0(dirout , 'train_col8_rocky_', years[j] , '_v' , version)
     )
   
   ## start task

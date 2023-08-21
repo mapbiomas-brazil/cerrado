@@ -1,16 +1,33 @@
+// --- --- --- 15_integrate 
 // integrate rocky-outcrop over cerrado native vegetation
-// dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br
 
 // import files
-var native = ee.Image('users/dh-conciani/collection7/c7-general-post/CERRADO_col7_gapfill_incidence_temporal_frequency_geomorfology_spatial_v9');
-var rocky = ee.Image('users/dh-conciani/collection7/c7-rocky-general-post/CERRADO_col7_rocky_gapfill_frequency_spatial_v3');
-var biome = ee.Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster');
+var native = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v14');
+var rocky = ee.Image('projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/CERRADO_col8_rocky_gapfill_frequency_spatial_v4');
+
+// --- --- -- 
+// convert biome mask
+var native_2021 = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v3')
+                    .select('classification_2021');
+
+var geometry = native_2021.geometry();
+var scale = 30;
+
+var emptyImage = ee.Image.constant(0).byte()
+  .reproject(native_2021.projection().scale(scale, scale))
+  .clip(geometry);
+
+var mappedImage = emptyImage.where(native_2021, 4);
+
+var biomes = ee.Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster');
+var biome = mappedImage;
 
 // import mapbiomas color ramp
 var vis = {
       min:0,
-      max:49,
-      palette: require('users/mapbiomas/modules:Palettes.js').get('classification6'),
+      max:62,
+      palette: require('users/mapbiomas/modules:Palettes.js').get('classification7'),
     };
 
 // create recipe
@@ -28,7 +45,7 @@ var geometry_veadeiros =
 var mask = biome.updateMask(biome.eq(4)).where(geometry_veadeiros.eq(1), 1);
 
 // integrate
-ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
+ee.List.sequence({'start': 1985, 'end': 2022}).getInfo()
   .forEach(function(year_i) {
     // get year i
     var native_i = native.select(['classification_' + year_i]);
@@ -64,16 +81,16 @@ ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
 // plot
 Map.addLayer(native.select(['classification_2010']), vis, 'native');
 Map.addLayer(recipe.select(['classification_2010']), vis, 'integrated');
-print(recipe);
+print('ouput image', recipe);
 
 // set output directory
-var root = 'users/dh-conciani/collection7/c7-general-post/';
+var root = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class-post/';
 
 // export as GEE asset
 Export.image.toAsset({
     'image': recipe,
-    'description': 'CERRADO_col7_native9_rocky3',
-    'assetId': root + 'CERRADO_col7_native9_rocky3',
+    'description': 'CERRADO_col8_native14_rocky4',
+    'assetId': root + 'CERRADO_col8_native14_rocky4',
     'pyramidingPolicy': {
         '.default': 'mode'
     },

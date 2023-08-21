@@ -1,14 +1,15 @@
+// --- --- --- 07_spatial
 // spatial filter - minimum area
-// dhemerson.costa@ipam.org.br
+// barbara.silva@ipam.org.br 
 
 // define root
-var root = 'users/dh-conciani/collection7/c7-rocky-general-post/';
+var root = 'projects/ee-barbarasilvaipam/assets/collection8-rocky/general-class-post/';
 
 // define input file 
-var file_in = 'CERRADO_col7_rocky_gapfill_frequency_v1';
+var file_in = 'CERRADO_col8_rocky_gapfill_frequency_v3';
 
 // define output version 
-var version_out = 1;
+var version_out = 4;
 
 // read image
 var classification = ee.Image(root + file_in);
@@ -19,8 +20,8 @@ var filter_size = 6;
 // import mapbiomas color ramp
 var vis = {
       min:0,
-      max:49,
-      palette: require('users/mapbiomas/modules:Palettes.js').get('classification6'),
+      max:62,
+      palette: require('users/mapbiomas/modules:Palettes.js').get('classification7'),
     };
 
 // plot  input version
@@ -31,7 +32,7 @@ Map.addLayer(classification.select(['classification_2010']), vis, 'input 2010');
 var filtered = ee.Image([]);
 
 // apply filter
-ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
+ee.List.sequence({'start': 1985, 'end': 2022}).getInfo()
       .forEach(function(year_i) {
         // compute the focal model
         var focal_mode = classification.select(['classification_' + year_i])
@@ -63,7 +64,7 @@ Map.addLayer(filtered.select(['classification_2010']), vis, 'filtered 2010 - rou
 var recipe = ee.Image([]);
 
 // apply filter
-ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
+ee.List.sequence({'start': 1985, 'end': 2022}).getInfo()
       .forEach(function(year_i) {
         // compute the focal model
         var focal_mode = filtered.select(['classification_' + year_i])
@@ -94,8 +95,8 @@ Map.addLayer(recipe.select(['classification_2010']), vis, 'filtered 2010 - round
 // export as GEE asset
 Export.image.toAsset({
     'image': recipe,
-    'description': 'CERRADO_col7_rocky_gapfill_frequency_spatial_v' + version_out,
-    'assetId': root + 'CERRADO_col7_rocky_gapfill_frequency_spatial_v' + version_out,
+    'description': 'CERRADO_col8_rocky_gapfill_frequency_spatial_v' + version_out,
+    'assetId': root + 'CERRADO_col8_rocky_gapfill_frequency_spatial_v' + version_out,
     'pyramidingPolicy': {
         '.default': 'mode'
     },

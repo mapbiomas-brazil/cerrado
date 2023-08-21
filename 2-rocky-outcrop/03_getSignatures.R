@@ -1,16 +1,17 @@
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+## --- --- --- 03_getSignatures
 ## Exported data is composed by spatialPoints with spectral signature values grouped by column
 ## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
+## barbara.silva@ipam.org.br
 
 ## read libraries
 library(rgee)
 ee_Initialize()
 
 ## define strings to use as metadata
-version <- "1"     ## version string
+version <- "3"     ## version string
 
 ## define output directory
-dirout <- 'users/dh-conciani/collection7/rocky/training/v1/'
+dirout <- 'projects/ee-barbarasilvaipam/assets/collection8-rocky/training/v3/'
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -24,9 +25,9 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
 rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## non rocky samples
-samples_non_rocky <- ee$FeatureCollection('users/dh-conciani/collection7/rocky/sample/points/samplePoints_v1')
+samples_non_rocky <- ee$FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/point/samplePoints_v3')
 ## rocky outcrop
-samples_rocky <- ee$FeatureCollection('users/dh-conciani/collection7/rocky/sample/afloramento_collect_v1')$
+samples_rocky <- ee$FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/afloramento_collect_v5')$
   ##insert class number based on mapbiomas
   map(function(feature) {
     return(feature$set(list('class' = 29)))
@@ -127,8 +128,8 @@ for (j in 1:length(years)) {
   
   ## build task to export data
   task <- ee$batch$Export$table$toAsset(
-    training_i, paste0('train_col7_rocky_', years[j] , '_v' , version),
-    paste0(dirout , 'train_col7_rocky_', years[j] , '_v' , version))
+    training_i, paste0('train_col8_rocky_', years[j] , '_v' , version),
+    paste0(dirout , 'train_col8_rocky_', years[j] , '_v' , version))
   
   ## start task
   task$start()

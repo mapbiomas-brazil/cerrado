@@ -20,20 +20,22 @@ readData <- function (path) {
   ## start file reading
   for (k in 1:length(files)) {
     ## read raw file
-    x <- read.csv(files[k], dec=',', sep=',', encoding="UTF-8")
+    x <- read.csv(files[k], dec='.', sep=',', encoding="UTF-8")
     
     ## build data frame
     y <- as.data.frame(cbind(
-      year = rownames(x),
-      accuracy = paste0(x$X.U.FEFF.Ano, '.', x$Acurácia),
-      area_discordance = paste0(x$Discordância.de.Área, '.', x$Discordância.de.Alocação),
-      allocation_discordance = paste0(x$X, '.', x$Y),
+      year = as.numeric(x$Ano),
+      accuracy = as.numeric(x$Acurácia),
+      area_discordance = as.numeric(x$Discordância.de.Área),
+      allocation_discordance = as.numeric(x$Discordância.de.Alocação),
+      
       ## parse collection string
       collection = rep(sapply(strsplit(
           file_path_sans_ext(
             list.files(path)),
           split='_', fixed=TRUE),
           function(x) (x[1]))[k], nrow(x)),
+      
       ## parse level string
       level = rep(sapply(strsplit(
           file_path_sans_ext(
@@ -53,31 +55,34 @@ readData <- function (path) {
 data <- readData(path= './table/')
 
 ## rename collections
-data$collection <- gsub('col31', '3.1',
-                        gsub('col41', '4.1',
+data$collection <- gsub('col3.1', '3.1',
+                        gsub('col4.1', '4.1',
                             gsub('col5', '5',
                                gsub('col6', '6',
-                                    gsub('col7', '7',
-                                         data$collection)))))
+                                    gsub('col7.1', '7.1',
+                                         gsub('col8', '8',
+                                         data$collection))))))
 
 ## rename levels
 data$level <- gsub('nv1', 'Level-1',
                    gsub('nv3', 'Level-3',
                         data$level))
 
+library(scales)
+
 ## plot accuracy
 ggplot(data, mapping= aes(x=as.numeric(year), y= as.numeric(accuracy),
                           colour= collection, group=collection)) +
   geom_line(size=1, alpha=0.7) + 
-  geom_point(size=2) +
-  scale_colour_manual('Collection', values=c('red', 'orange', 'purple', 'darkgreen')) +
-  facet_wrap(~level, ncol=1, nrow=2, scales='free_y') +
-  xlab(NULL) +
-  ylab('Global acc.') +
-  theme_bw()
+  geom_line(size=4, alpha=0.1) + 
+  
+  #geom_point(size=2) +
+  scale_colour_manual('Collection', values=c('blue', 'cyan', 'violet', 'gray80', 'orange','red3')) +
+  facet_wrap(~level, ncol=2, nrow=1, scales='free_y') +
+  ylab('Global accuracy') +
+  xlab('year') +
+  theme_bw() +
+  scale_x_continuous(limits = c(1985, NA))
 
 ## compute means
 aggregate(x=list(value=as.numeric(data$accuracy)), by=list(collection=data$collection, level= data$level), FUN='mean')
-
-## collection 6
-col6 <- subset(data, collection == '6' & level == 'Level-3')

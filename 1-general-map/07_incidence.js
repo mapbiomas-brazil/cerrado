@@ -1,15 +1,17 @@
+// -- -- -- -- 07_incidence
 // filter spurious transitions by using the number of changes, connections and mode reducer
-// for clarification write to dhemerson.costa@ipam.org.br
+// felipe.lenti@ipam.org.br
 
 // set root imageCollection
-var root = 'users/dh-conciani/collection7/c7-general-post/';
-
+var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+var out = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
 // set version
-var input_version = '2';
-var output_version = '8';
+var input_version = '1';
+var output_version = '1';
+var thresh_events = 11;
 
 // define input file 
-var file_in = 'CERRADO_col7_gapfill_v' + input_version;
+var file_in = 'CERRADO_col8_gapfill_v' + input_version;
 
 // import mapbiomas color ramp
 var vis = {
@@ -21,63 +23,89 @@ var vis = {
 // load input
 var classification = ee.Image(root + file_in);
 
+//aggregate as Anthropic or Natural
+//Aggregating Mapbiomas legend
+var k_original = [
+    3, 4, 5,//forest, savnna, mangrove
+    11, 12, 13,//wetlands, grasslands and other non-forest formation
+    15,//pasture
+    30,//saltflat
+    19, 39, 20, 40, 62, 41, 36, 46, 47, 48,//agriculture
+    9,//planted forest
+    21,//mosaic of uses
+    23, 24, 30, 25,//non vegetated areas
+    33, 31, //water bodies
+    27 //non observed
+    ]; 
+    
+// The expected output classes of the mapAggregation method:
+//1 = anthropic use; 2 = natural vegetation; 0 = not vegetated classes
+var k_aggregate = [
+    2, 2, 2,//forest, savnna, mangrove
+    2, 2, 2,//wetlands, grasslands and other non-forest formation
+    1,//pasture
+    0,//saltflat
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//agriculture
+    1,//planted forest
+    1,//mosaic of uses
+    1, 1, 1, 1,//non vegetated areas
+    0, 0, //water bodies
+    0 //non observed
+    ];
+
 // remove wetlands from incidents filter
 var classification_remap = classification.updateMask(classification.neq(11));
 
-// compute number of classes and changes 
-var nChanges = classification_remap.reduce(ee.Reducer.countRuns()).subtract(1).rename('number_of_changes');
+var classification_aggr = ee.Image([]);
 
+ee.List.sequence({'start': 1985, 'end': 2021}).getInfo()
+    .forEach(function(year_i) {
+      // get year [i]
+      var classification_i = classification_remap.select(['classification_' + year_i])
+        // remap
+        .remap(k_original,
+               k_aggregate)
+               .rename('classification_' + year_i);
+               // insert into classification
+               classification_aggr = classification_aggr.addBands(classification_i);
+    });
+    classification_aggr = classification_aggr.updateMask(classification_aggr.neq(0));
+// compute number of classes and changes 
+var nChanges = classification_aggr.reduce(ee.Reducer.countRuns()).subtract(1).rename('number_of_changes');
 // get the count of connections
 var connected_nChanges = nChanges.connectedPixelCount({
-      'maxSize': 100, 
-      'eightConnected': false});
+      'maxSize': 20, 
+      'eightConnected': true});
 
 // compute the mode
-var mode = classification_remap.reduce(ee.Reducer.mode());
+var mode = classification.reduce(ee.Reducer.mode());
+var mode_agg = classification_aggr.reduce(ee.Reducer.mode());
 
-// plot 
-// number of changes
-Map.addLayer(nChanges, {palette: ["#C8C8C8", "#FED266", "#FBA713", "#cb701b", "#a95512", "#662000", "#cb181d"],
-                                  min: 0, max: 15}, 'number of changes', false);
-
-Map.addLayer(connected_nChanges, {palette: ['green', 'yellow', 'orange', 'red'], min:0, max:10}, 'con. nChanges', false);
-
-// classification
-Map.addLayer(mode, vis, 'mode', false);
 Map.addLayer(classification.select(['classification_2021']), vis, 'classification');
-
 // get border pixels (high geolocation RMSE) to be masked by the mode
-var border_mask = connected_nChanges.lte(6).and(nChanges.gt(12));
-border_mask = border_mask.updateMask(border_mask.eq(1));    
+var border_mask = connected_nChanges.lte(6).and(nChanges.gt(10));
+border_mask = border_mask.updateMask(border_mask.eq(1));
 
 // get borders to rectfy
-var rect_border = mode.updateMask(border_mask);
+var rect_border = ee.Image(21).updateMask(border_mask);
 
-// get classes to rectfy
-var forest = ee.Image(3).updateMask(connected_nChanges.gt(6).and(nChanges.gt(12)).and(mode.eq(3)));
-var savanna = ee.Image(4).updateMask(connected_nChanges.gt(6).and(nChanges.gt(12)).and(mode.eq(4)));
-var grassland = ee.Image(12).updateMask(connected_nChanges.gt(6).and(nChanges.gt(12)).and(mode.eq(12)));
-var pasture = ee.Image(15).updateMask(connected_nChanges.gt(6).and(nChanges.gt(12)).and(mode.eq(15)));
-var agriculture = ee.Image(19).updateMask(connected_nChanges.gt(6).and(nChanges.gt(12)).and(mode.eq(19)));
-var mosaic = ee.Image(21).updateMask(connected_nChanges.gt(6).and(nChanges.gt(12)).and(mode.eq(21)));
+// get classes to rectify
+var rect_all = ee.Image(21).updateMask(connected_nChanges.gt(6).and(nChanges.gte(thresh_events)));
 
 // blend masks
-var incidentsMask = rect_border.blend(forest)
-                               .blend(pasture)
-                               .blend(agriculture)
-                               .blend(savanna)
-                               .blend(grassland)
+var incidentsMask = rect_border.blend(rect_all)
                                .toByte();
 
 // build correction
 classification = classification.blend(incidentsMask);
 Map.addLayer(classification.select(['classification_2021']), vis, 'rectified');
+// Map.addLayer(classification, {}, 'all_rectified', false);
 
 // export as GEE asset
 Export.image.toAsset({
     'image': classification,
-    'description': 'CERRADO_col7_gapfill_incidence_v' + output_version,
-    'assetId': root + 'CERRADO_col7_gapfill_incidence_v' + output_version,
+    'description': 'CERRADO_col8_gapfill_incidence_v' + output_version,
+    'assetId': out + 'CERRADO_col8_gapfill_incidence_v' + output_version,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
