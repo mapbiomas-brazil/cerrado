@@ -5,19 +5,13 @@
 
 ## read libraries
 library(rgee)
-
 ee_Initialize()
-#ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
-
-# ee_Initialize()
-ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to use as metadata (output)
-version <- "1"     ## version string
+version <- "3"     ## version string
 
 ## define output directory
-dirout <- 'users/barbarasilvaIPAM/collection8/training/v2/'
-dirout <- 'users/barbarasilvaIPAM/collection8/training/v1/'
+dirout <- 'projects/ee-barbarasilvaipam/assets/collection8/training/v3/'
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -28,15 +22,13 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
   filterMetadata('biome', 'equals', 'CERRADO')
 
 ## get mosaic rules
-rules <- read.csv('\\_aux\\mosaic_rules.csv')
-rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
+rules <- read.csv('/mosaic_rules.csv')
 
 ## import classification regions
 regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
 ## import sample points
-samples <- ee$FeatureCollection('users/barbarasilvaIPAM/collection8/sample/points/samplePoints_v2')
-samples <- ee$FeatureCollection('users/barbarasilvaIPAM/collection8/sample/points/samplePoints_v1')
+samples <- ee$FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8/sample/points/samplePoints_v2')
 
 ## time since last fire
 fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
@@ -45,7 +37,7 @@ fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
 regions_list <- unique(regionsCollection$aggregate_array('mapb')$getInfo())
 
 ## define years to extract spectral signatures (temporal operator)
-years <- 2022
+years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
@@ -53,8 +45,6 @@ bands <- mosaic$first()$bandNames()$getInfo()
 ## remove bands with 'cloud' or 'shade' into their names
 ##bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
  ##                        sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
-bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
 
 ## for each region 
 for (i in 1:length(regions_list)) {
@@ -159,6 +149,5 @@ for (i in 1:length(regions_list)) {
     ## start task
     task$start()
     print ('========================================')
-    
   }
 }
