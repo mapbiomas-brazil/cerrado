@@ -7,7 +7,7 @@ var root = 'projects/ee-barbarasilvaipam/assets/collection8/general-class-post/'
 var out = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
 
 // set version
-var input_version = '1';
+var input_version = '3';
 var output_version = '1';
 var thresh_events = 11;
 
