@@ -1,25 +1,14 @@
 ## -- -- -- -- 05_rfClassification
 ## Run smileRandomForest classifier - Mapbiomas Collection 8.0
 ## dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
-# -- -- -- -- 05_rfClassification
-## Run smileRandomForest classifier - Mapbiomas Collection 8.0
-# barbara.silva@ipam.org.br
-
 
 ## read libraries
 library(rgee)
 ee_Initialize()
-ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to be used as metadata
-samples_version <- '1'   # input training samples version
-output_version <-  '1'   # output classification version 
-
-## define hyperparameters for then rf classifier
-n_tree <- 300
-
-## define output asset
-output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general/'
+samples_version <- '3'   # input training samples version
+output_version <-  '3'   # output classification version 
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
@@ -31,32 +20,28 @@ n_bands <- round(length(mosaic$first()$bandNames()$getInfo()) / 100 * 66.6, digi
 
 ## define output asset
 output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general-class/'
-## import mosaic rules 
-rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
-## import mosaic rules 
-rules <- read.csv('./_aux/mosaic_rules.csv')
+## get mosaic rules
+rules <- read.csv('/mosaic_rules.csv')
 
 ## read classification regions (vetor)
 regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
-## time since last fire
-fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
 
 ## define regions to be processed 
 regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
 
 ### training samples (prefix string)
-training_dir <- 'users/barbarasilvaIPAM/collection8/training/'
+training_dir <- 'projects/ee-barbarasilvaipam/assets/collection8/training/'
 
 ### classification regions (imageCollection, one region per image)
 regions_ic <- 'users/dh-conciani/collection7/classification_regions/eachRegion_v2_10m/'
 
 ## read classification parameters
-param_bands <- read.csv('./_aux/bands.csv', sep= '')
-param_rf <- read.csv('./_aux/rf.csv', sep= '')
+param_bands <- read.csv('/bands.csv', sep= '')
+param_rf <- read.csv('/rf.csv', sep= '')
 
 ## for each region
 for (i in 1:length(regions_list)) {
@@ -100,7 +85,6 @@ for (i in 1:length(regions_list)) {
     
     ## get the sentinel mosaic for the current year 
     mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
-      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
       mosaic()$
       updateMask(region_i_ras)$   # filter for the region
       select(bands)               # select only relevant bands
@@ -140,7 +124,6 @@ for (i in 1:length(regions_list)) {
       amp_ndvi <- ee$Image(0)$rename('amp_ndvi_3yr')$clip(region_i_vec)
       fire_age_i <- ee$Image(5)$rename('fire_age')$clip(region_i_vec)
     }
-    
     
     ## bind mapbiomas mosaic and auxiliary bands
     mosaic_i <- mosaic_i$addBands(lat)$
