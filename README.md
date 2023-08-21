@@ -30,4 +30,4 @@ Folders are organized by key-steps and contains a set of codes following the Cer
 
 
 ## Contact
-For clarification or issue/bug report, please write to <>
+For clarification or issue/bug report, please write to <barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br>
