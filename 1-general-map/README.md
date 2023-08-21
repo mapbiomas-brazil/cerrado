@@ -60,5 +60,7 @@ Uses IBGE's (2009) geomorphology - "Floodplain" - to optimize wetland classifica
 The spatial filter avoids misclassifications at the edge of pixel groups and was built based on the "connectedPixelCount" function. Native to the GEE platform, this function locates connected components (neighbors) that share the same pixel value. Thus, only pixels that do not share connections to a predefined number of identical neighbors are considered isolated. At least six connected pixels are required to reach the minimum connection value. Consequently, the minimum mapping unit is directly affected by the spatial filter applied, and it was defined as six pixels (0.54 hectares).
 
 ## Classification schema:
-![alt text](https://github.com/mapbiomas-brazil/cerrado/tree/mapbiomas80/1-general-map)
 Overview of the methodological approach utilized for classifying the Cerrado native vegetation in Collection 7.0. Each gray geometry (cylinders for databases and rectangles for processes) represents a key step in the classification scheme—with the respective name inside. The gray text near databases and processes offers a short description of the step, while the green text highlights the main innovations in Collection 7.0. Arrows with a continuous black line connecting the key steps represent the main direction of the processing flux. In contrast, arrows with dotted black lines represent the databases that feed the main processes. Red text inside arrows refers to the asset type in the Google Earth Engine (GEE), while blue text offers a short description of the asset content.
+![Col-8_classification-schema](https://github.com/mapbiomas-brazil/cerrado/assets/132362599/943ec98b-9805-4e0e-b29d-bdac28c89f4a)
+
+
