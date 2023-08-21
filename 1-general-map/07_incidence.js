@@ -3,8 +3,9 @@
 // felipe.lenti@ipam.org.br
 
 // set root imageCollection
-var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+var root = 'projects/ee-barbarasilvaipam/assets/collection8/general-class-post/';
 var out = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+
 // set version
 var input_version = '1';
 var output_version = '1';
@@ -24,7 +25,7 @@ var vis = {
 var classification = ee.Image(root + file_in);
 
 //aggregate as Anthropic or Natural
-//Aggregating Mapbiomas legend
+//Aggregating MapBiomas legend
 var k_original = [
     3, 4, 5,//forest, savnna, mangrove
     11, 12, 13,//wetlands, grasslands and other non-forest formation
