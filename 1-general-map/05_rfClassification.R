@@ -1,14 +1,25 @@
 ## -- -- -- -- 05_rfClassification
 ## Run smileRandomForest classifier - Mapbiomas Collection 8.0
 ## dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
+# -- -- -- -- 05_rfClassification
+## Run smileRandomForest classifier - Mapbiomas Collection 8.0
+# barbara.silva@ipam.org.br
 
-## import libraries
+
+## read libraries
 library(rgee)
 ee_Initialize()
+ee_Initialize(user = 'barbara.silva@ipam.org.br', drive = TRUE, gcs = TRUE)
 
 ## define strings to be used as metadata
-samples_version <- '2'   # input training samples version
-output_version <-  '2'   # output classification version 
+samples_version <- '1'   # input training samples version
+output_version <-  '1'   # output classification version 
+
+## define hyperparameters for then rf classifier
+n_tree <- 300
+
+## define output asset
+output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general/'
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
@@ -20,6 +31,8 @@ n_bands <- round(length(mosaic$first()$bandNames()$getInfo()) / 100 * 66.6, digi
 
 ## define output asset
 output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general-class/'
+## import mosaic rules 
+rules <- read.csv('D:\\Users\\barba\\OneDrive\\Documentos\\17. IPAM\\1. Cerrado\\cerrado-mapbiomas71\\cerrado-mapbiomas71\\1-general-map\\_aux\\mosaic_rules.csv')
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
@@ -29,6 +42,8 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## read classification regions (vetor)
 regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
+## time since last fire
+fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
 
 ## define regions to be processed 
 regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
