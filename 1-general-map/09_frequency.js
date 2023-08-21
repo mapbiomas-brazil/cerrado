@@ -3,11 +3,11 @@
 // barbara.silva@ipam.org.br
 
 // set root directory 
-var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+var root = 'projects/ee-barbarasilvaipam/assets/collection8/general-class-post/';
 
 // set metadata 
-var version_input = '2'
-var version_out = '2';
+var version_input = '3'
+var version_out = '3';
 
 // define input file 
 var file_in = 'CERRADO_col8_gapfill_incidence_temporal_v'+version_input;
