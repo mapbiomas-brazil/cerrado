@@ -52,7 +52,7 @@ readData <- function (path) {
 }
 
 ## import file
-data <- readData(path= 'C:\\Users\\Lenovo\\Downloads\\_accuracy_col8\\table')
+data <- readData(path= './table/')
 
 ## rename collections
 data$collection <- gsub('col3.1', '3.1',
