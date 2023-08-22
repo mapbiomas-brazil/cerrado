@@ -14,9 +14,12 @@ var territory = tenure.blend(no_info)
                   .rename('tenure');
 
 // read mapbiomas collection 7
-var mapbiomas = ee.Image('projects/mapbiomas-workspace/public/collection7/mapbiomas_collection70_integration_v2')
-      // clip by reference
-      .updateMask(territory);
+var mapbiomas = ee.ImageCollection('projects/mapbiomas-workspace/COLECAO8/integracao')
+      .filter(ee.Filter.eq('version','0-16'))
+      .mosaic()
+      .select('classification_2022')
+      //.updateMask(territory)
+      .aside(print);
 
 // read states
 var states = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-raster')
@@ -30,7 +33,7 @@ Map.addLayer(states.randomVisualizer(), {}, 'states');
 var states_list = [21, 22, 17, 29 ,51, 15, 52, 53, 31, 50, 35, 41, 11];
 
 // define the years to compute area
-var years = ee.List.sequence({'start': 1985, 'end': 2021, 'step': 1}).getInfo();
+var years = ee.List.sequence({'start': 1985, 'end': 2022, 'step': 1}).getInfo();
 
 // define area unit (hectares)
 var pixelArea = ee.Image.pixelArea().divide(10000);
@@ -120,4 +123,4 @@ var mapb_pal = {'min': 0,
                 .get('classification6')
               };
               
-Map.addLayer(mapbiomas.select(['classification_2021']), mapb_pal, 'mapbiomas');
+Map.addLayer(mapbiomas.select(['classification_2022']), mapb_pal, 'mapbiomas');
