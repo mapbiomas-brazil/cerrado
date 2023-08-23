@@ -82,6 +82,7 @@ for (l in 1:length(unique(recipe2$class_id))) {
   ## select matched class
   z <- subset(recipe2, class_id == unique(recipe2$class_id)[l])
   ## apply tenure translation for each level
+  z$mapb_0 <- gsub(paste0('^',y$id,'$'), y$mapb_0, z$class_id)
   z$mapb_1 <- gsub(paste0('^',y$id,'$'), y$mapb_1, z$class_id)
   z$mapb_1_2 <- gsub(paste0('^',y$id,'$'), y$mapb_1_2, z$class_id)
   z$mapb_2 <- gsub(paste0('^',y$id,'$'), y$mapb_2, z$class_id)
