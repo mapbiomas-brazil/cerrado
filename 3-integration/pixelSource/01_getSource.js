@@ -1,8 +1,9 @@
-// get pixel source to meansure filter effects
+// get pixel source to meansure filter effect 
 // dhemerson.costa@ipam.org.br
 
 // set output dir
-
+var output = 'users/dh-conciani/basemaps';
+var filename = 'pixelSource_col8';
 
 // read biomes
 var biomes = ee.Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster');
@@ -102,6 +103,29 @@ years_list.forEach(function(year_i) {
   recipe2 = recipe2.addBands(source);
 });
 
+// check
+recipe2 = recipe2.updateMask(biomes.eq(4)).aside(Map.addLayer);
 print(recipe2);
 
+var cerrado_geometry = 
+    ee.Geometry.Polygon(
+        [[[-61.267821440420335, -1.733640363392174],
+          [-61.267821440420335, -25.540695674939442],
+          [-40.877196440420335, -25.540695674939442],
+          [-40.877196440420335, -1.733640363392174]]], null, false);
+
+
+
+// export as ee.Image
+Export.image.toAsset({
+    "image": recipe2.toInt8(),
+    "description": filename,
+    "assetId": output + '/' + filename,
+    "scale": 30,
+    "pyramidingPolicy": {
+        '.default': 'mode'
+    },
+    "maxPixels": 1e13,
+    "region": cerrado_geometry
+});  
 
