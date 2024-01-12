@@ -16,6 +16,31 @@ var bands = [1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995,
 // mapbiomas lulc 
 var collection = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1');
 
+// set function to remap collection
+var remapCols = function(image) {
+  // build empty recipe
+  var recipe = ee.Image([]);
+  bands.forEach(function(year_i) {
+    // get x
+    var x = image.select('classification_' + year_i)
+      .remap({
+        'from':  [29, 3, 4, 5, 6, 49, 11, 12, 32, 19, 50, 13, 15, 39, 20, 40, 62, 41, 36, 46, 47, 35, 48, 9, 21, 23, 24, 30, 25, 33, 31],
+        //'to':    [3, 4, 3, 3,  0, 11, 12,  0, 19, 0,  0,  0, 15, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 9,21, 25, 25, 25, 25, 33, 33],
+        'to':    [25, 3, 4, 3, 3,  0, 11, 12,  0, 21, 0,  0, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21,21, 25, 25, 25, 25, 33, 33],
+        'defaultValue': 0
+        }) // mask zeros
+      .selfMask();
+    // store
+    recipe = recipe.addBands(x.rename('classification_' + year_i));
+
+  });
+  
+  return recipe;
+};
+
+// remap collection
+var collection = remapCols(collection);
+
 // native classes in which statistics will be processed
 var classes = [3, 4, 11, 12, 21, 25, 33];
 
