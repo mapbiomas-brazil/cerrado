@@ -48,10 +48,10 @@ for(i in 1:length(unique(data_all$year))) {
 }; rm(x)
 
 ## plot
-ggplot(data= recipe, mapping=aes(x= year, y= area/ 1e6, fill= value_str)) +
+ggplot(data= subset(recipe, value_str != '0. Gapfill (Sem mudança)'), mapping=aes(x= year, y= area/ 1e6, fill= value_str)) +
   geom_bar(stat= 'identity', position = 'stack', alpha= 0.6) +
-  scale_fill_manual('Etapa', values=c('gray90', 'yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
-  geom_text(mapping=aes(label= perc), size= 2.5, 
+  scale_fill_manual('Etapa', values=c('yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
+  geom_text(mapping=aes(label= perc), size= 3, 
              position = position_stack(vjust = 0.5)) + 
   #scale_colour_manual('Etapa', values=c('gray90', 'yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
   theme_minimal() +
@@ -76,7 +76,7 @@ for(i in 1:length(unique(data_class$year))) {
     ## get class j
     y <- subset(x, class_str == unique(x$class_str)[j])
     ## get percents
-    y$perc <- round(y$area / sum(y$area) * 100, digits=1)
+    y$perc <- round(y$area / sum(y$area) * 100, digits=0)
     #store
     recipe2 <- rbind(recipe2, y)
   }
@@ -91,11 +91,11 @@ for(i in 1:length(unique(data_class$year))) {
 # }
 
 ## plot
-ggplot(data= recipe2, mapping=aes(x= year, y= area/ 1e6, fill= value_str)) +
+ggplot(data= subset(recipe2,  value_str != '0. Gapfill (Sem mudança)'), mapping=aes(x= year, y= area/ 1e6, fill= value_str)) +
   geom_bar(stat= 'identity', position = 'stack', alpha= 0.6) +
-  scale_fill_manual('Etapa', values=c('gray90', 'yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
-  #geom_text(mapping=aes(label= perc), size= 1.5, 
-  #          position = position_stack(vjust = 0.5)) + 
+  scale_fill_manual('Etapa', values=c('yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
+  geom_text(mapping=aes(label= perc), size= 2, 
+            position = position_stack(vjust = 0.5)) + 
   #scale_colour_manual('Etapa', values=c('gray90', 'yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
   facet_wrap(~class_str, scales= 'free_y') + 
   theme_minimal() +
