@@ -66,11 +66,35 @@ data_class <- aggregate(x=list(area= data$area), by=list(
   year= data$variable,
   class_str= data$class_str), FUN= 'sum')
 
+## get percents
+recipe2 <- as.data.frame(NULL)
+for(i in 1:length(unique(data_class$year))) {
+  ## get for the year i
+  x <- subset(data_class, year == unique(data_class$year)[i])
+  ## for each class
+  for (j in 1:length(unique(data_class$class_str))) {
+    ## get class j
+    y <- subset(x, class_str == unique(x$class_str)[j])
+    ## get percents
+    y$perc <- round(y$area / sum(y$area) * 100, digits=1)
+    #store
+    recipe2 <- rbind(recipe2, y)
+  }
+}
+
+# ## retain only min_max and get mean per class to be used as text 
+# legends <- as.data.frame(NULL)
+# legends_mean <- as.data.frame(NULL)
+# for(k in 1:length(unique(recipe2$class_str))) {
+#   x <- subset(recipe2, class_str == unique(recipe2$class_str)[k])
+#   ## get years with max 
+# }
+
 ## plot
-ggplot(data= data_class, mapping=aes(x= year, y= area/ 1e6, fill= value_str)) +
+ggplot(data= recipe2, mapping=aes(x= year, y= area/ 1e6, fill= value_str)) +
   geom_bar(stat= 'identity', position = 'stack', alpha= 0.6) +
   scale_fill_manual('Etapa', values=c('gray90', 'yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
-  #geom_text(mapping=aes(label= perc), size= 2.5, 
+  #geom_text(mapping=aes(label= perc), size= 1.5, 
   #          position = position_stack(vjust = 0.5)) + 
   #scale_colour_manual('Etapa', values=c('gray90', 'yellow3', 'red3', 'springgreen4', 'magenta3', 'darkorange', 'black')) +
   facet_wrap(~class_str, scales= 'free_y') + 
@@ -78,4 +102,3 @@ ggplot(data= data_class, mapping=aes(x= year, y= area/ 1e6, fill= value_str)) +
   xlab(NULL) +
   ylab('Área (Mha)') +
   theme(text = element_text(size = 16))
-#geom_line()
