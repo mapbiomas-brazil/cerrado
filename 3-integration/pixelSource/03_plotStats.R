@@ -3,6 +3,11 @@
 
 ## read libraries
 library(ggplot2)
+library(sf)
+library(dplyr)
+library(tidyverse)
+library(broom)
+library(cartogram)
 
 ## avoid sci notes
 options(scipen= 9e3)
@@ -59,6 +64,64 @@ ggplot(data= subset(recipe, value_str != '0. Gapfill (Sem mudança)'), mapping=a
   ylab('Área (Mha)') +
   theme(text = element_text(size = 16))
   #geom_line()
+
+## summarized per region
+reg <- aggregate(x= list(area= data$area), by=list(mapb= data$ecoregion, value_str= data$value_str), FUN= 'sum')
+
+## retain only the most applied 
+recipe2 <- as.data.frame(NULL)
+for (i in 1:length(unique(reg$mapb))) {
+  x <- subset(reg, mapb == unique(reg$mapb)[i])
+  ## calc percents
+  x$perc <- round(x$area / sum(x$area) * 100, digits =1)
+  ## remove no chance
+  x <- subset(x, value_str != '0. Gapfill (Sem mudança)')
+  ## retain only max
+  recipe2 <- rbind(recipe2, x[which.max(x$area), ])
+
+}
+
+## match with map
+reg_vec <- read_sf('./vec/cerrado_c8_regions.shp')
+reg_vec2 <- left_join(reg_vec, recipe2, by='mapb')
+
+## get centroids of regions
+points <- as.data.frame(st_coordinates(st_centroid(reg_vec)))
+points$mapb <- reg_vec$mapb
+#points$X <- points$X*-1
+#points$Y <- points$Y*-1
+
+## plot
+x11()
+ggplot() +
+  geom_sf(data= reg_vec2, mapping= aes(fill= value_str), color= 'white', size= 0.1) +
+  scale_fill_manual('Filtro mais usado', values=c('yellow3', 'red3', 'darkorange', 'gray50')) +
+  geom_text(data = points, aes(X, Y, label = mapb), size = 3, col='black') +
+  #xlim(60, 42) +
+  #ylim(25, 0) +
+  theme_minimal() 
+
+## make a cartogram
+webcart <- cartogram(st_transform(reg_vec2, 3857), "perc", itermax=30)
+
+## get centroids of regions
+points2 <- as.data.frame(st_coordinates(st_centroid(webcart)))
+points2$mapb <- reg_vec2$mapb
+#z <- st_as_sf(points2, coords= c('X', 'Y'))
+#st_crs(z) = 4326
+#z <- st_transform(z, 3857)
+#z$X <- st_coordinates(z)[,1]
+#z$Y <- st_coordinates(z)[,2]
+
+## plot cartogram
+x11()
+ggplot() +
+  geom_sf(data= webcart, mapping= aes(fill= value_str), color= 'white', size= 0.1) +
+  scale_fill_manual('Filtro mais usado', values=c('yellow3', 'red3', 'darkorange', 'gray50')) +
+  geom_text(data= points2, aes(X, Y, label = mapb), size = 3, col='black') +
+  #xlim(60, 42) +
+  #ylim(25, 0) +
+  theme_minimal() 
 
 ## per class
 data_class <- aggregate(x=list(area= data$area), by=list(
