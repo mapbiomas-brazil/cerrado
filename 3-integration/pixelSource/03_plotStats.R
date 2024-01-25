@@ -65,6 +65,12 @@ ggplot(data= subset(recipe, value_str != '0. Gapfill (Sem mudança)'), mapping=a
   theme(text = element_text(size = 16))
   #geom_line()
 
+## get general
+x <- subset(recipe, value_str == '6. Integração')
+mean(aggregate(x= list(perc= x$perc), by=list(year= x$year), FUN= 'sum')$perc) ##mean
+sd(aggregate(x= list(perc= x$perc), by=list(year= x$year), FUN= 'sum')$perc) ##mean
+
+
 ## summarized per region
 reg <- aggregate(x= list(area= data$area), by=list(mapb= data$ecoregion, value_str= data$value_str), FUN= 'sum')
 
@@ -100,6 +106,9 @@ ggplot() +
   #xlim(60, 42) +
   #ylim(25, 0) +
   theme_minimal() 
+
+## get stats
+
 
 ## make a cartogram
 webcart <- cartogram(st_transform(reg_vec2, 3857), "perc", itermax=30)
@@ -170,3 +179,9 @@ ggplot(data= subset(recipe2,  value_str != '0. Gapfill (Sem mudança)'), mapping
   xlab(NULL) +
   ylab('Área (Mha)') +
   theme(text = element_text(size = 16))
+
+## calc 
+x <- subset(recipe2, class_str == 'Áreas Úmidas' |  class_str == 'F. campestre' |  class_str == 'F. Florestal' |  class_str == 'F. Savânica')
+x <- subset(x, value_str == '6. Integração')
+mean(aggregate(x= list(perc= x$perc), by=list(year= x$year), FUN= 'sum')$perc) ##mean
+sd(aggregate(x= list(perc= x$perc), by=list(year= x$year), FUN= 'sum')$perc) ##mean
