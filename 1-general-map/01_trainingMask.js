@@ -54,20 +54,39 @@ var nClass = numberOfClasses(recipe);
 // now, get only the stable pixels (nClass equals to one)
 var stable = recipe.select(0).updateMask(nClass.eq(1));
 
-// * * * M A S K S
+// * * * D E F O R E S T A T I O N      M A S K S
 // 1- PRODES 
-var prodes = ee.Image('users/dh-conciani/basemaps/prodes_cerrado_00-21')
+var prodes = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/produtos_desmatamento/prodes_cerrado_raster_2000_2023_v20231116')
   // convert annual deforestation to a binary raster in which value 1 represents cummulative deforestation 
   .remap({
-    'from': [0, 2, 4, 6, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 127],
-    'to':   [1, 1, 1, 1, 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,   0]
+    'from': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 100],
+    'to':   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,   0]
   }
 );
 
 // Erase stable pixels of native vegetation that were classified as deforestation by PRODES 
 
+// 2- Sistema de Alerta de Desmatamento do Cerrado (SAD Cerrado)
+var sad = ee.FeatureCollection('projects/ee-sad-cerrado/assets/PUBLIC/SAD_CERRADO_ALERTAS')
+  // bind 2021 data
+  //.merge(ee.FeatureCollection('projects/ee-sad-cerrado/assets/WARNINGS/SAD_CERRADO_ALERTAS_2021'))
+  .filterMetadata('detect_mon', 'less_than', 2301);
 
-// 2- Inventário Florestal do Estado de SP
+// Erase stable pixels of native vegetation that were classified as deforestation by SAD
+
+// 3 - MapBiomas Alerta (MB Alerta)
+var mb_alerta = ee.FeatureCollection('projects/ee-robertarocha/assets/MapBiomasAlerta_total')
+  // get only deeforestation year (last two digits)
+  .map(function(feature) {
+    return feature.set('year', ee.Number(ee.String(ee.Number.parse(
+      feature.get('AnoDetec')).int()).slice(2)));
+  }
+);
+
+// Erase stable pixels of native vegetation that were classified as deforestation by |MB Alerta
+
+// * * * R E F E R E N C E    M A P     M A S K S
+// 4- Inventário Florestal do Estado de SP
 var sema_sp = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2')
   .remap({
     'from': [3, 4, 5, 9, 11, 12, 13, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33],
@@ -77,7 +96,7 @@ var sema_sp = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP
 
 // Erase XX from YY
 
-// 3- Mapeamento Temático do CAR para o Estado do TO
+// 5- Mapeamento Temático do CAR para o Estado do Tocantins
 var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
   .remap({
     'from': [11, 50, 128],
@@ -87,18 +106,20 @@ var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
 
 // Erase XX from YY
 
-// 4- Uso e cobertura da Terra no DF
+// 6- Uso e cobertura da Terra no DF
 var sema_df = ee.Image('projects/barbaracosta-ipam/assets/base/DF_cobertura-do-solo_2019_img');
 
 // Erase XX from YY
 
-// 5- Canopy heigth (in meters)
+// 7- Mapeamento de Campos de Murumdum do Estado de Goías 
+var sema_go = ee.Image('');
+
+// 8- Canopy heigth (in meters)
 // From Lang et al., 2023 (https://www.nature.com/articles/s41559-023-02206-6)
 var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
 
-// Erase XX from YY
 
-// 
+
 
 
 
