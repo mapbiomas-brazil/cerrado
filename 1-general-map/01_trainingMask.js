@@ -101,7 +101,6 @@ stable = stable.where(mb_alerta.gte(1).and(stable.eq(3).or(stable.eq(4).or(stabl
 Map.addLayer(stable, vis, '3. Filtered by MB Alerta', false);
 
 
-
 // * * * R E F E R E N C E    M A P     M A S K S
 // 4- Inventário Florestal do Estado de SP
 var sema_sp = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2')
@@ -111,7 +110,10 @@ var sema_sp = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP
   }
 );
 
-// Erase XX from YY
+// compute binary
+var sema_sp_bin
+
+// 
 
 // 5- Mapeamento Temático do CAR para o Estado do Tocantins
 var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
