@@ -54,6 +54,16 @@ var nClass = numberOfClasses(recipe);
 // now, get only the stable pixels (nClass equals to one)
 var stable = recipe.select(0).updateMask(nClass.eq(1));
 
+// import the color ramp module from mapbiomas 
+var vis = {
+    'min': 0,
+    'max': 62,
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
+};
+
+// Plot stable pixels
+Map.addLayer(stable, vis, 'MB stable pixels', false);
+
 // * * * D E F O R E S T A T I O N      M A S K S
 // 1- PRODES 
 var prodes = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/produtos_desmatamento/prodes_cerrado_raster_2000_2023_v20231116')
@@ -65,6 +75,9 @@ var prodes = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/produtos_desmata
 );
 
 // Erase stable pixels of native vegetation that were classified as deforestation by PRODES 
+
+
+
 
 // 2- Sistema de Alerta de Desmatamento do Cerrado (SAD Cerrado)
 var sad = ee.FeatureCollection('projects/ee-sad-cerrado/assets/PUBLIC/SAD_CERRADO_ALERTAS')
@@ -128,12 +141,7 @@ var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
 
 
 
-// import the color ramp module from mapbiomas 
-var vis = {
-    'min': 0,
-    'max': 62,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
-};
+
 
 Map.addLayer(stable, vis, 'stable');
 
