@@ -26,89 +26,19 @@ var years = [1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1
 
 // remap collection to ipam-workflow classes 
 var recipe = ee.Image([]);      // build empty recipe
-
 // for each year
 years.forEach(function(i) {
   // select classification for the year i 
-  collection.select('classification_' + i)
+  var yi = collection.select('classification_' + i)
     .remap({
-      'from': [],
-      'to': []
-    });
-})
-
-
-
-// remap collection 7.1 using legend that cerrado team maps 
-var colList = ee.List([]);
-var col71remap = colecao71.select('classification_1985').remap(
-                  [3, 4, 5, 11, 12, 29, 15, 39, 20, 40, 41, 46, 47, 48, 21, 23, 24, 30, 25, 33, 31],
-                  [3, 4, 3, 11, 12, 25, 15, 19, 19, 19, 19, 19, 19, 19, 21, 25, 25, 25, 25, 33, 33]);
-
-// convert to 8 bits
-colList = colList.add(col71remap.int8());
-
-// list years to be used in stability computation
-var anos = ['1985','1986','1987','1988','1989','1990',
-            '1991','1992','1993','1994','1995','1996',
-            '1997','1998','1999','2000','2001','2002',
-            '2003','2004','2005','2006','2007','2008',
-            '2009','2010','2011','2012','2013','2014',
-            '2015','2016','2017','2018','2019','2020',
-            '2021'];
-
-// remap collection 7.1 
-for (var i_ano=0;i_ano<anos.length; i_ano++){
-  var ano = anos[i_ano];
-
-  var col71flor = colecao71.select('classification_' + ano).remap(
-                  [3, 4, 5, 11, 12, 29, 15, 39, 20, 40, 41, 46, 47, 48, 21, 23, 24, 30, 25, 33, 31],
-                  [3, 4, 3, 11, 12, 25, 15, 19, 19, 19, 19, 19, 19, 19, 21, 25, 25, 25, 25, 33, 33]);
-  colList = colList.add(col71flor.int8());
-}
-
-// ***** start function to compute invariant pixels from 1985 to 2021
-var collection = ee.ImageCollection(colList);
-
-var unique = function(arr) {
-    var u = {},
-        a = [];
-    for (var i = 0, l = arr.length; i < l; ++i) {
-        if (!u.hasOwnProperty(arr[i])) {
-            a.push(arr[i]);
-            u[arr[i]] = 1;
-        }
-    }
-    return a;
-};
-
-var getFrenquencyMask = function(collection, classId) {
-    var classIdInt = parseInt(classId, 10);
-    var maskCollection = collection.map(function(image) {
-        return image.eq(classIdInt);
-    });
-
-    var frequency = maskCollection.reduce(ee.Reducer.sum());
-    var frequencyMask = frequency.gte(classFrequency[classId])
-        .multiply(classIdInt)
-        .toByte();
-
-    frequencyMask = frequencyMask.mask(frequencyMask.eq(classIdInt));
-    return frequencyMask.rename('frequency').set('class_id', classId);
-};
-
-var lista_image = ee.List([]);
-
-var classFrequency = { "3": 37,  "4": 37, "11": 37, "12": 37,
-                      "15": 37, "19": 37, "21": 37, "25": 37, 
-                      "33": 37
-                      };
-  
-var frequencyMasks = Object.keys(classFrequency).map(function(classId) {
-    return getFrenquencyMask(collection, classId);
+      'from': [3, 4, 5, 6, 49, 11, 12, 32, 29, 50, 13, 15, 19, 39, 20, 40, 62, 41, 36, 46, 47, 35, 48, 21, 23, 24, 30, 25, 33, 31],
+      'to':   [3, 4, 3, 3,  3, 11, 12, 12, 25, 12, 12, 15, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 21, 25, 25, 25, 25, 33, 33]
+    }).rename('classification_' + i); // rename reclassified as the mapbiomas standard
+  // store into recipe
+  recipe = recipe.addBands(yi);
 });
 
-frequencyMasks = ee.ImageCollection.fromImages(frequencyMasks);
+// compute invariant pixels 
 
 
 // import the color ramp module from mapbiomas 
