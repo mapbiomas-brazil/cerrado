@@ -171,9 +171,29 @@ Map.addLayer(stable, vis, '7. Filtered by SEMA GO', false);
 // From Lang et al., 2023 (https://www.nature.com/articles/s41559-023-02206-6)
 var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
 
+// Filter stable pixels by using field-based rules per vegetation type 
+stable = stable.where(stable.eq(3).and(canopy_heigth.lt(8)), 50)
+               .where(stable.eq(4).and(canopy_heigth.lte(2)), 50)
+               .where(stable.eq(4).and(canopy_heigth.gte(12)), 50)
+               .where(stable.eq(11).and(canopy_heigth.gte(15)), 50)
+               .where(stable.eq(12).and(canopy_heigth.gte(6)), 50)
+               .where(stable.eq(15).and(canopy_heigth.gte(8)), 50)
+               .where(stable.eq(19).and(canopy_heigth.gt(7)), 50)
+               .where(stable.eq(25).and(canopy_heigth.gt(0)), 50)
+               .where(stable.eq(33).and(canopy_heigth.gt(0)), 50);
+
+Map.addLayer(stable, vis, '8. Filtered by GEDI', false);
 
 
-
-
-
-// compute invariant pixels 
+// * * * E X P O R T 
+Export.image.toAsset({
+    "image": stable.toInt8(),
+    "description": 'cerrado_trainingMask_1985_2022_v' + version_out,
+    "assetId": dirout + 'cerrado_trainingMask_1985_2022_v'+ version_out,
+    "scale": 30,
+    "pyramidingPolicy": {
+        '.default': 'mode'
+    },
+    "maxPixels": 1e13,
+    "region": cerrado
+});  
