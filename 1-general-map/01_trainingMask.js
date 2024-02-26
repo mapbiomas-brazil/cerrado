@@ -16,50 +16,10 @@ var dirout = 'users/dh-conciani/collection9/masks/';
 // set string to identify the output version
 var version_out = '1';
 
+// read mapbiomas lulc 
+var collection = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1');
 
 
-
-
-// load collection 7.1
-var colecao71 =  'projects/mapbiomas-workspace/COLECAO7/integracao';
-colecao71 = ee.ImageCollection(colecao71)
-  .filter(ee.Filter.eq('version','0-29'))
-  .mosaic();
-
-print ("Collection 7.1", colecao71);
-  
-// import data to mask stable pixels 
-// PROBIO
-var probioNV = ee.Image('users/felipelenti/probio_cerrado_ras');
-    probioNV = probioNV.eq(1); // select only deforestation (value= 0)
-
-// PRODES 00-21
-var prodesNV = ee.Image('users/dh-conciani/basemaps/prodes_cerrado_00-21')
-                  .remap([0, 2, 4, 6, 8, 10, 12, 13, 15, 14, 16, 17, 18, 19, 20, 21, 96, 97, 98, 99, 127],
-                         [1, 1, 1, 1, 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,   0]); // deforestation equals to 1
-                         
-                         
-// Inventário Florestal do Estado de São Paulo (World-View <1m)
-var SEMA_SP = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2')
-                .remap([3, 4, 5, 9, 11, 12, 13, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33],
-                       [3, 4, 3, 9, 11, 12, 12, 15, 19, 19, 19, 21, 25, 25, 25, 25, 33, 25, 25, 25, 25, 33]);
-                       
-                // select only native vegetation patches
-                var SEMA_bin = SEMA_SP.remap([3, 4, 9, 11, 12, 15, 19, 21, 25, 33],
-                                             [1, 1, 0,  1,  1,  0,  0,  0,  0,  0]);
-                // crop only for são paulo's 
-                var SEMA_bin = SEMA_bin.unmask(0).updateMask(assetStates.eq(35));
-
-// Mapa Temático do CAR para áreas úmidas do Estado do Tocantins (RapidEye 2m)
-var SEMA_TO = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR');
-    SEMA_TO = SEMA_TO.remap([11, 50, 128],
-                            [11, 11, 0]);
-
-// global tree canopy (Lang et al, 2022) http://arxiv.org/abs/2204.08322
-var tree_canopy = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
-Map.addLayer(tree_canopy, {palette: ['red', 'orange', 'yellow', 'green'], min:0, max:30}, 'tree canopy', false);
-
-// ***** end of products to filter stable samples //
 
 // remap collection 7.1 using legend that cerrado team maps 
 var colList = ee.List([]);
@@ -145,6 +105,41 @@ var referenceMap = frequencyMasks.reduce(ee.Reducer.firstNonNull()).clip(CERRADO
     Map.addLayer(referenceMap, vis, 'stable pixels', false);
 
 // ***** process masks to improve stable pixels 
+
+
+// import data to mask stable pixels 
+// PROBIO
+var probioNV = ee.Image('users/felipelenti/probio_cerrado_ras');
+    probioNV = probioNV.eq(1); // select only deforestation (value= 0)
+
+// PRODES 00-21
+var prodesNV = ee.Image('users/dh-conciani/basemaps/prodes_cerrado_00-21')
+                  .remap([0, 2, 4, 6, 8, 10, 12, 13, 15, 14, 16, 17, 18, 19, 20, 21, 96, 97, 98, 99, 127],
+                         [1, 1, 1, 1, 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,   0]); // deforestation equals to 1
+                         
+                         
+// Inventário Florestal do Estado de São Paulo (World-View <1m)
+var SEMA_SP = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2')
+                .remap([3, 4, 5, 9, 11, 12, 13, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33],
+                       [3, 4, 3, 9, 11, 12, 12, 15, 19, 19, 19, 21, 25, 25, 25, 25, 33, 25, 25, 25, 25, 33]);
+                       
+                // select only native vegetation patches
+                var SEMA_bin = SEMA_SP.remap([3, 4, 9, 11, 12, 15, 19, 21, 25, 33],
+                                             [1, 1, 0,  1,  1,  0,  0,  0,  0,  0]);
+                // crop only for são paulo's 
+                var SEMA_bin = SEMA_bin.unmask(0).updateMask(assetStates.eq(35));
+
+// Mapa Temático do CAR para áreas úmidas do Estado do Tocantins (RapidEye 2m)
+var SEMA_TO = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR');
+    SEMA_TO = SEMA_TO.remap([11, 50, 128],
+                            [11, 11, 0]);
+
+// global tree canopy (Lang et al, 2022) http://arxiv.org/abs/2204.08322
+var tree_canopy = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
+Map.addLayer(tree_canopy, {palette: ['red', 'orange', 'yellow', 'green'], min:0, max:30}, 'tree canopy', false);
+
+
+
 // mask native vegetation pixels by usign deforestation from PROBIO
 var referenceMapRef = referenceMap
                         //.where(probioNV.eq(0)
