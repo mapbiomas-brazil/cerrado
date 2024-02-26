@@ -143,9 +143,19 @@ Map.addLayer(stable, vis, '5. Filtered by SEMA TO', false);
 
 
 // 6- Uso e cobertura da Terra no DF
-var sema_df = ee.Image('projects/barbaracosta-ipam/assets/base/DF_cobertura-do-solo_2019_img');
+var sema_df = ee.Image('projects/barbaracosta-ipam/assets/base/DF_cobertura-do-solo_2019_img')
+  // get only native vegetation
+  .remap({
+    'from': [3, 4, 11, 12],
+    'to':   [3, 4, 11, 12],
+    'defaultValue': 0
+  }
+);
 
-// Erase XX from YY
+// Erase stable pixels of native vegetation that wasn't in the SEMA DF map
+stable = stable.where(sema_df.eq(0).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
+Map.addLayer(stable, vis, '6. Filtered by SEMA DF', false);
+
 
 // 7- Mapeamento de Campos de Murumdum do Estado de Goías 
 var sema_go = ee.Image('');
