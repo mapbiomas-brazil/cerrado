@@ -19,6 +19,24 @@ var version_out = '1';
 // read mapbiomas lulc 
 var collection = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1');
 
+// set years to be processed 
+var years = [1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
+             2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014,
+             2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+
+// remap collection to ipam-workflow classes 
+var recipe = ee.Image([]);      // build empty recipe
+
+// for each year
+years.forEach(function(i) {
+  // select classification for the year i 
+  collection.select('classification_' + i)
+    .remap({
+      'from': [],
+      'to': []
+    });
+})
+
 
 
 // remap collection 7.1 using legend that cerrado team maps 
