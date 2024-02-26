@@ -62,7 +62,7 @@ var vis = {
 };
 
 // Plot stable pixels
-Map.addLayer(stable, vis, 'MB stable pixels', false);
+Map.addLayer(stable, vis, '0. MB stable pixels', false);
 
 // * * * D E F O R E S T A T I O N      M A S K S
 // 1- PRODES 
@@ -75,15 +75,24 @@ var prodes = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/produtos_desmata
 );
 
 // Erase stable pixels of native vegetation that were classified as deforestation by PRODES 
-
-
+stable = stable.where(prodes.eq(1).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
+Map.addLayer(stable, vis, '1. Filtered by PRODES', false);
 
 
 // 2- Sistema de Alerta de Desmatamento do Cerrado (SAD Cerrado)
-var sad = ee.FeatureCollection('projects/ee-sad-cerrado/assets/PUBLIC/SAD_CERRADO_ALERTAS')
-  // bind 2021 data
-  //.merge(ee.FeatureCollection('projects/ee-sad-cerrado/assets/WARNINGS/SAD_CERRADO_ALERTAS_2021'))
-  .filterMetadata('detect_mon', 'less_than', 2301);
+var sad = ee.Image(1).clip(
+  ee.FeatureCollection('projects/ee-sad-cerrado/assets/PUBLIC/SAD_CERRADO_ALERTAS')
+    // filter to retain only deforestations at the end of 2023 
+    .filterMetadata('detect_mon', 'less_than', 2401)
+  );
+  
+// Erase stable pixels of native vegetation that were classified as deforestation by SAD 
+stable = stable.where(sad.eq(1).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 32);
+Map.addLayer(stable, vis, '2. Filtered by SAD', false);
+
+
+Map.addLayer(sad, {}, 'SAD')
+
 
 // Erase stable pixels of native vegetation that were classified as deforestation by SAD
 
@@ -134,16 +143,6 @@ var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
 
 
 
-
-
-
-
-
-
-
-
-
-Map.addLayer(stable, vis, 'stable');
 
 
 // compute invariant pixels 
