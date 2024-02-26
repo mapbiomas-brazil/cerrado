@@ -106,14 +106,28 @@ Map.addLayer(stable, vis, '3. Filtered by MB Alerta', false);
 var sema_sp = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2')
   .remap({
     'from': [3, 4, 5, 9, 11, 12, 13, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33],
-    'to':   [3, 4, 3, 9, 11, 12, 12, 15, 19, 19, 19, 21, 25, 25, 25, 25, 33, 25, 25, 25, 25, 33]
+    'to':   [3, 4, 3, 0, 11, 12, 12, 0,   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
   }
 );
 
-// compute binary
-var sema_sp_bin
+// Erase stable pixels of native vegetation that wasn't classifeid as in the SEMA SP map
+stable = stable.where(sema_sp.eq(0).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
+// Remove grasslands from São Paulo state
+stable = stable.where(stable.eq(12).and(assetStates.eq(35)), 27);
+// Apply rules for native vegetation
+stable = stable
+  // Forest Formation
+  .where(stable.eq(3).and(sema_sp.neq(3)), 27)
+  .where(stable.neq(3).and(sema_sp.eq(3)), 3)
+  // Savanna Formation
+  .where(stable.eq(4).and(sema_sp.neq(4)), 27)
+  .where(stable.neq(4).and(sema_sp.eq(4)), 4)
+  // Grassland
+  .where(stable.gte(1).and(sema_sp.eq(12)), 12)
+  // Wetland
+  .where(stable.neq(11).and(sema_sp.eq(11)), 11);
+Map.addLayer(stable, vis, '4. Filtered by SEMA SP', false);
 
-// 
 
 // 5- Mapeamento Temático do CAR para o Estado do Tocantins
 var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
