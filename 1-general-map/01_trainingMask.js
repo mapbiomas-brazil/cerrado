@@ -158,8 +158,15 @@ Map.addLayer(stable, vis, '6. Filtered by SEMA DF', false);
 
 
 // 7- Mapeamento de Campos de Murumdum do Estado de Goías 
-var sema_go = ee.Image('');
+var sema_go = ee.Image(11).clip(
+  ee.FeatureCollection('users/dh-conciani/basemaps/SEMA_GO_Murundus')
+);
 
+// Replace stable pixels of savanna and grassland that was wetland in the reference map by wetland
+stable = stable.where(sema_go.eq(11).and(stable.eq(4).or(stable.eq(12).or(stable.eq(27)))), 11);
+Map.addLayer(stable, vis, '7. Filtered by SEMA GO', false);
+
+// * * * G E D I    B A S E D      M A S K 
 // 8- Canopy heigth (in meters)
 // From Lang et al., 2023 (https://www.nature.com/articles/s41559-023-02206-6)
 var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
