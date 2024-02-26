@@ -137,7 +137,10 @@ var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
   }
 );
 
-// Erase XX from YY
+// Replace stable pixels of savanna and grassland that was wetland in the reference map by wetland
+stable = stable.where(sema_to.eq(11).and(stable.eq(4).or(stable.eq(12).or(stable.eq(27)))), 11);
+Map.addLayer(stable, vis, '5. Filtered by SEMA TO', false);
+
 
 // 6- Uso e cobertura da Terra no DF
 var sema_df = ee.Image('projects/barbaracosta-ipam/assets/base/DF_cobertura-do-solo_2019_img');
