@@ -94,15 +94,13 @@ Map.addLayer(stable, vis, '2. Filtered by SAD', false);
 
 
 // 3 - MapBiomas Alerta (MB Alerta)
-var mb_alerta = ee.FeatureCollection('projects/ee-robertarocha/assets/MapBiomasAlerta_total')
-  // get only deeforestation year (last two digits)
-  .map(function(feature) {
-    return feature.set('year', ee.Number(ee.String(ee.Number.parse(
-      feature.get('AnoDetec')).int()).slice(2)));
-  }
-);
+var mb_alerta = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/produtos_desmatamento/mb_alertas_up_to_2023_020524');
 
-// Erase stable pixels of native vegetation that were classified as deforestation by |MB Alerta
+// Erase stable pixels of native vegetation that were classified as deforestation by MB Alerta 
+stable = stable.where(mb_alerta.gte(1).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
+Map.addLayer(stable, vis, '3. Filtered by MB Alerta', false);
+
+
 
 // * * * R E F E R E N C E    M A P     M A S K S
 // 4- Inventário Florestal do Estado de SP
