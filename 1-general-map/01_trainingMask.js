@@ -28,7 +28,7 @@ var reclassify = function(image) {
   );
 };
 
-// set function to compute the number of classes over a given the time-series 
+// set function to compute the number of classes over a given time-series 
 var numberOfClasses = function(image) {
     return image.reduce(ee.Reducer.countDistinctNonNull()).rename('number_of_classes');
 };
@@ -54,6 +54,54 @@ var nClass = numberOfClasses(recipe);
 // now, get only the stable pixels (nClass equals to one)
 var stable = recipe.select(0).updateMask(nClass.eq(1));
 
+// * * * M A S K S
+// 1- PRODES 
+var prodes = ee.Image('users/dh-conciani/basemaps/prodes_cerrado_00-21')
+  // convert annual deforestation to a binary raster in which value 1 represents cummulative deforestation 
+  .remap({
+    'from': [0, 2, 4, 6, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 127],
+    'to':   [1, 1, 1, 1, 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,   0]
+  }
+);
+
+// Erase stable pixels of native vegetation that were classified as deforestation by PRODES 
+
+
+// 2- Inventário Florestal do Estado de SP
+var sema_sp = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2')
+  .remap({
+    'from': [3, 4, 5, 9, 11, 12, 13, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33],
+    'to':   [3, 4, 3, 9, 11, 12, 12, 15, 19, 19, 19, 21, 25, 25, 25, 25, 33, 25, 25, 25, 25, 33]
+  }
+);
+
+// Erase XX from YY
+
+// 3- Mapeamento Temático do CAR para o Estado do TO
+var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
+  .remap({
+    'from': [11, 50, 128],
+    'to':   [11, 11, 0]
+  }
+);
+
+// Erase XX from YY
+
+// 4- Uso e cobertura da Terra no DF
+var sema_df = ee.Image('projects/barbaracosta-ipam/assets/base/DF_cobertura-do-solo_2019_img');
+
+// Erase XX from YY
+
+// 5- Canopy heigth (in meters)
+// From Lang et al., 2023 (https://www.nature.com/articles/s41559-023-02206-6)
+var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
+
+// Erase XX from YY
+
+// 
+
+
+
 
 
 
@@ -66,9 +114,7 @@ var vis = {
     'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
 };
 
-Map.addLayer(stable, vis, 'stable')
-Map.addLayer(recipe.select('classification_1985'), vis, '1985', false)
-Map.addLayer(recipe.select('classification_2002'), vis, '2002', false)
-Map.addLayer(recipe.select('classification_2022'), vis, '2022', false)
+Map.addLayer(stable, vis, 'stable');
+
 
 // compute invariant pixels 
