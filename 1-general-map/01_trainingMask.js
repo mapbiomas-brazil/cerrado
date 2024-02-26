@@ -82,6 +82,8 @@ Map.addLayer(stable, vis, '1. Filtered by PRODES', false);
 // 2- Sistema de Alerta de Desmatamento do Cerrado (SAD Cerrado)
 var sad = ee.Image(1).clip(
   ee.FeatureCollection('projects/ee-sad-cerrado/assets/PUBLIC/SAD_CERRADO_ALERTAS')
+    // add 2021 data, from another asset  
+    .merge(ee.FeatureCollection('projects/ee-sad-cerrado/assets/WARNINGS/SAD_CERRADO_ALERTAS_2021'))
     // filter to retain only deforestations at the end of 2023 
     .filterMetadata('detect_mon', 'less_than', 2401)
   );
