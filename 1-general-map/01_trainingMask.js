@@ -2,10 +2,12 @@
 // generate training mask based in stable pixels from mapbiomas collection 8, reference maps and GEDI
 //  dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
 
-// import cerrado extent as geometry
-var cerrado = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019')
-  .filterMetadata('Bioma', 'equals', 'Cerrado')
-  .geometry();
+// set extent in which result will be exported 
+var extent = ee.Geometry.Polygon(
+  [[[-60.935545859442364, -1.734173093722467],
+    [-60.935545859442364, -25.10422789569622],
+    [-40.369139609442364, -25.10422789569622],
+    [-40.369139609442364, -1.734173093722467]]], null, false);
   
 // read brazilian states (to be used to filter reference maps)
 var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-raster');
@@ -195,5 +197,5 @@ Export.image.toAsset({
         '.default': 'mode'
     },
     "maxPixels": 1e13,
-    "region": cerrado
+    "region": extent
 });  
