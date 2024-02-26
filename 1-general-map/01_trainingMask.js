@@ -1,31 +1,24 @@
 // -- -- -- -- 01_trainingMask
 // generate training mask based in stable pixels from mapbiomas collection 8, reference maps and GEDI
-// barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
+//  dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
 
-// set area of interest 
-var CERRADO_simpl = 
-    ee.Geometry.Polygon(
-        [[[-61.58018892468989, -1.8506184138463584],
-          [-61.58018892468989, -26.04174742534789],
-          [-40.6622201746899, -26.04174742534789],
-          [-40.6622201746899, -1.8506184138463584]]], null, false);
-
-// string to identify the output version
-var version_out = '2';
-
-// import the color ramp module from mapbiomas 
-var palettes = require('users/mapbiomas/modules:Palettes.js');
-var vis = {
-    'min': 0,
-    'max': 62,
-    'palette': palettes.get('classification7')
-};
+// import cerrado extent as geometry
+var cerrado = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019')
+  .filterMetadata('Bioma', 'equals', 'Cerrado')
+  .geometry();
+  
+// read brazilian states (to be used to filter reference maps)
+var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-raster');
 
 // set directory for the output file
-var dirout = 'users/barbarasilvaIPAM/collection8/masks/';
+var dirout = 'users/dh-conciani/collection9/masks/';
 
-// brazilian states 
-var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-raster');
+// set string to identify the output version
+var version_out = '1';
+
+
+
+
 
 // load collection 7.1
 var colecao71 =  'projects/mapbiomas-workspace/COLECAO7/integracao';
@@ -139,6 +132,14 @@ var frequencyMasks = Object.keys(classFrequency).map(function(classId) {
 
 frequencyMasks = ee.ImageCollection.fromImages(frequencyMasks);
 
+
+// import the color ramp module from mapbiomas 
+var vis = {
+    'min': 0,
+    'max': 62,
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
+};
+
 // compute the stable pixels
 var referenceMap = frequencyMasks.reduce(ee.Reducer.firstNonNull()).clip(CERRADO_simpl).aside(print);
     Map.addLayer(referenceMap, vis, 'stable pixels', false);
@@ -239,4 +240,4 @@ Export.image.toAsset({
     },
     "maxPixels": 1e13,
     "region": CERRADO_simpl
-});  
+}); 
