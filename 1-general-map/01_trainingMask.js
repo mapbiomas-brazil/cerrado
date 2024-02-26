@@ -87,14 +87,9 @@ var sad = ee.Image(1).clip(
   );
   
 // Erase stable pixels of native vegetation that were classified as deforestation by SAD 
-stable = stable.where(sad.eq(1).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 32);
+stable = stable.where(sad.eq(1).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
 Map.addLayer(stable, vis, '2. Filtered by SAD', false);
 
-
-Map.addLayer(sad, {}, 'SAD')
-
-
-// Erase stable pixels of native vegetation that were classified as deforestation by SAD
 
 // 3 - MapBiomas Alerta (MB Alerta)
 var mb_alerta = ee.FeatureCollection('projects/ee-robertarocha/assets/MapBiomasAlerta_total')
