@@ -10,7 +10,7 @@ ee_Initialize()
 version <- "0"     ## version string
 
 ## define output directory
-dirout <- paste0('users/dh-conciani/collection7/training/v', version, '/')
+dirout <- paste0('users/dh-conciani/collection9/training/v', version, '/')
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -144,8 +144,8 @@ for (i in 1:length(regions_list)) {
     
     ## build task to export data
     task <- ee$batch$Export$table$toAsset(
-      training_i, paste0('train_col7_reg' , regions_list[i] , '_' , years[j] , '_v' , version),
-      paste0(dirout , 'train_col7_reg' , regions_list[i] , '_' , years[j] , '_v' , version))
+      training_i, paste0('train_col9_reg' , regions_list[i] , '_' , years[j] , '_v' , version),
+      paste0(dirout , 'train_col9_reg' , regions_list[i] , '_' , years[j] , '_v' , version))
     
     ## start task
     task$start()
