@@ -16,7 +16,7 @@ var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-r
 var dirout = 'users/dh-conciani/collection9/masks/';
 
 // set string to identify the output version
-var version_out = '1';
+var version_out = '3';
 
 // read mapbiomas lulc 
 var collection = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1');
