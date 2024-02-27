@@ -1,15 +1,15 @@
 // -- -- -- -- 02_computeProportion
 // compute area by ecoregion to be used as reference to estimate samples distribution 
-// barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
+// dhemerson.costa@ipam.org.br andbarbara.silva@ipam.org.br
 
 // input metadata
-var version = '2';
+var version = '1';
 
 // define classes to be assessed
-var classes = [3, 4, 11, 12, 15, 19, 21, 25, 33];
+var classes = [3, 4, 11, 12, 15, 18, 25, 33];
 
 // output directory
-var dirout = 'projects/ee-barbarasilvaipam/assets/collection8/sample/area';
+var dirout = 'users/dh-conciani/collection9/sample/area';
 
 // cerrado classification regions
 var regionsCollection = ee.FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2');
@@ -20,23 +20,27 @@ var option = 'year' ;
 // if option equal to year
 if (option == 'year') {
   
-  // define year to be used as reference
-  var year = '2000';
+  // define year to be used as reference (default: mid of the time-series [nYear/2])
+  var year = '2005';
   
   // load collection 7.1 
-  var mapbiomas = ee.Image('projects/mapbiomas-workspace/public/collection7_1/mapbiomas_collection71_integration_v1');
+  var mapbiomas = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1')
+    .select('classification_' + year);
 }
 
 if (option == 'stable') {
-  var mapbiomas = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/masks/cerrado_stablePixels_1985_2021_v2');
+  var mapbiomas = ee.Image('users/dh-conciani/collection9/masks/cerrado_trainingMask_1985_2022_v3');
 }
 
 // define function to compute area (skm)
 var pixelArea = ee.Image.pixelArea().divide(1000000); //km²
 
-// reclassify following cerrado strategy 
-mapbiomas = mapbiomas.remap([3, 4, 5, 11, 12, 29, 15, 19, 39, 20, 40, 41, 46, 47, 48, 21, 23, 24, 30, 25, 33, 31],
-                            [3, 4, 3, 11, 12, 25, 15, 19, 19, 19, 19, 19, 19, 19, 19, 21, 25, 25, 25, 25, 33, 33]);
+// reclassify collection by ipam-workflow classes 
+mapbiomas = mapbiomas.remap({
+  'from': [3, 4, 5, 6, 49, 11, 12, 32, 29, 50, 13, 15, 19, 39, 20, 40, 62, 41, 36, 46, 47, 35, 48, 23, 24, 30, 25, 33, 31],
+  'to':   [3, 4, 3, 3,  3, 11, 12, 12, 25, 12, 12, 15, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 25, 25, 25, 25, 33, 33]
+  }
+);
 
 // mapbiomas color pallete
 var palettes = require('users/mapbiomas/modules:Palettes.js');
@@ -47,7 +51,7 @@ var vis = {
 };
 
 // plot 
-Map.addLayer(mapbiomas, vis, 'MapBiomas ' + year, true);
+Map.addLayer(mapbiomas, vis, 'Collection ' + year, true);
 
 // define function to get class area 
 // for each region 
@@ -74,8 +78,8 @@ var getArea = function(feature) {
 }; 
 
 var computed_obj = regionsCollection.map(getArea);
-print (computed_obj);
-Map.addLayer(computed_obj, {}, 'Result');
+print ('Result: ', computed_obj);
+Map.addLayer(computed_obj, {}, 'Result', false);
 
 // export computation as GEE asset
 Export.table.toAsset({'collection': computed_obj, 
