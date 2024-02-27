@@ -1,17 +1,16 @@
-# -- -- -- -- 04_getSignatures
+## For clarification, write to <dhemerson.costa@ipam.org.br> 
 ## Exported data is composed by spatialPoints with spectral signature values grouped by column
 ## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
-# barbara.silva@ipam.org.br
 
 ## read libraries
 library(rgee)
 ee_Initialize()
 
 ## define strings to use as metadata (output)
-version <- "3"     ## version string
+version <- "0"     ## version string
 
 ## define output directory
-dirout <- 'projects/ee-barbarasilvaipam/assets/collection8/training/v3/'
+dirout <- paste0('users/dh-conciani/collection7/training/v', version, '/')
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -22,16 +21,18 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
   filterMetadata('biome', 'equals', 'CERRADO')
 
 ## get mosaic rules
-rules <- read.csv('/mosaic_rules.csv')
+rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## import classification regions
 regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
 ## import sample points
-samples <- ee$FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8/sample/points/samplePoints_v2')
+samples <- ee$FeatureCollection('users/dh-conciani/collection9/sample/points/samplePoints_v0')
 
 ## time since last fire
 fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
+## add 2023 
+fire_age <- fire_age$addBands(fire_age$select('classification_2022')$rename('classification_2023'))
 
 ## define regions to extract spectral signatures (spatial operator)
 regions_list <- unique(regionsCollection$aggregate_array('mapb')$getInfo())
@@ -43,8 +44,8 @@ years <- unique(mosaic$aggregate_array('year')$getInfo())
 bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
-##bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
- ##                        sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
+                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
 
 ## for each region 
 for (i in 1:length(regions_list)) {
@@ -143,11 +144,12 @@ for (i in 1:length(regions_list)) {
     
     ## build task to export data
     task <- ee$batch$Export$table$toAsset(
-      training_i, paste0('train_col8_reg' , regions_list[i] , '_' , years[j] , '_v' , version),
-      paste0(dirout , 'train_col8_reg' , regions_list[i] , '_' , years[j] , '_v' , version))
+      training_i, paste0('train_col7_reg' , regions_list[i] , '_' , years[j] , '_v' , version),
+      paste0(dirout , 'train_col7_reg' , regions_list[i] , '_' , years[j] , '_v' , version))
     
     ## start task
     task$start()
     print ('========================================')
+    
   }
 }
