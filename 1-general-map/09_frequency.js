@@ -10,7 +10,7 @@ var version_input = '14'
 var version_out = '14';
 
 // define input file 
-var file_in = 'CERRADO_col8_gapfill_incidence_temporal_v'+version_input;
+var file_in = 'CERRADO_col8_gapfill_incidence_temporal_step-b_v'+version_input;
 
 // load classification
 var classification = ee.Image(root + file_in);
