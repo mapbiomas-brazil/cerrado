@@ -22,7 +22,7 @@ var vis = {
 };
 
 // set directory for the output file
-var dirout = 'users/barbarasilvaIPAM/collection8/masks/';
+var dirout = 'projects/ee-barbarasilvaipam/assets/collection8/masks/';
 
 // brazilian states 
 var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-raster');
