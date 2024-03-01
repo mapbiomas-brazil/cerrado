@@ -8,7 +8,7 @@ var rocky = ee.Image('projects/ee-barbaracsilva/assets/Collection_8/rocky-outcro
 
 // --- --- -- 
 // convert biome mask
-var native_2021 = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/general-class-post/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorfology_spatial_v3')
+var native_2021 = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v14')
                     .select('classification_2021');
 
 var geometry = native_2021.geometry();
