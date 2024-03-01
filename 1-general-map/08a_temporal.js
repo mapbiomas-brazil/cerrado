@@ -355,7 +355,7 @@ Export.image.toAsset({
     'pyramidingPolicy': {
         '.default': 'mode'
     },
-    'region': geometry2,
+    'region': imgInput.geometry(),
     'scale': 30,
     'maxPixels': 1e13
 });
