@@ -118,8 +118,8 @@ print ('output', container)
 // export as GEE asset
 Export.image.toAsset({
     'image': container,
-    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v1' + version_out,
-    'assetId': root + 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v1' + version_out,
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v' + version_out,
+    'assetId': root + 'CERRADO_col8_gapfill_incidence_temporal_frequency_geomorphology_spatial_v' + version_out,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
