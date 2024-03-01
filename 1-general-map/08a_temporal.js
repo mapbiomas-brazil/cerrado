@@ -4,14 +4,14 @@
 
 
 // This variable holds the version of the code being used
-var input_version = "1";//all classes, 2yrs before and 2 yrs after
-var output_version = "1";//all classes, 2yrs before and 2 yrs after
+var input_version = "5";//all classes, 2yrs before and 2 yrs after
+var output_version = "14";//all classes, 2yrs before and 2 yrs after
 //(plus year of first detection) for secondary vegetation detection
 //and 2yrs before and 1 yr after for deforestation (plus year of detection)
 
 // This variable holds the output location for the results of the code
-var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
-var out = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+var root = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/';
+var out = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/';
 
 // This variable holds the location of the raster image for the biomes limits
 var assetBiomes = 'projects/mapbiomas-workspace/AUXILIAR/biomas-raster-41';
@@ -25,6 +25,7 @@ var biomes = ee.Image(assetBiomes).eq(4).selfMask();
 //  The main input is the MapBiomas Collection as a multiband
 var asset = root + 'CERRADO_col8_gapfill_incidence_v' + input_version;
 var imgInput = ee.Image(asset).updateMask(biomes);
+print ("input image", imgInput);
 
 // Define the parameters for the temporal filter execution
 var params = {
@@ -347,11 +348,13 @@ for(var i in yearsToShow) {
 }
   //Map.addLayer(totalDif, {palette:["magenta"]}, "total difference");
 
+print ("output_image", product);
+
 // export as GEE asset
 Export.image.toAsset({
     'image': product,
-    'description': 'CERRADO_col8_gapfill_incidence_temporal_a_v' + params.version,
-    'assetId': out + 'CERRADO_col8_gapfill_incidence_temporal_a_v' + params.version,
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_step-a_v' + params.version,
+    'assetId': out + 'CERRADO_col8_gapfill_incidence_temporal_step-a_v' + params.version,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
