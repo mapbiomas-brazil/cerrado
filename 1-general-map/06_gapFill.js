@@ -11,7 +11,7 @@ var geometry =
           [-40.31639240564828, -1.2109638051779688]]], null, false);
           
 // set metadata 
-var input_version = '3';
+var input_version = '4';
 var output_version = '3';
 
 // set directories
