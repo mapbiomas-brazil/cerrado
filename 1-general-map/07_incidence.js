@@ -4,11 +4,11 @@
 
 // set root imageCollection
 var root = 'projects/ee-barbarasilvaipam/assets/collection8/general-class-post/';
-var out = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+var out = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/';
 
 // set version
 var input_version = '3';
-var output_version = '1';
+var output_version = '5';
 var thresh_events = 11;
 
 // define input file 
