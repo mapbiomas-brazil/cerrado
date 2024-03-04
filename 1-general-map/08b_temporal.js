@@ -3,12 +3,12 @@
 // felipe.lenti@ipam.org.br
 
 // set root directory 
-var root = 'projects/ee-ipam-cerrado/assets/Collection_8/c8-general-class-post/';
+var root = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO8_DEV/';
 
-var version_in = '1';
-var version_out = '1';
+var version_in = '14';
+var version_out = '14';
 // set file to be processed
-var file_in = 'CERRADO_col8_gapfill_incidence_temporal_a_v'+version_in;
+var file_in = 'CERRADO_col8_gapfill_incidence_temporal_step-a_v'+version_in;
 
 // import mapbiomas color ramp
 var vis = {
@@ -19,6 +19,8 @@ var vis = {
 
 // import classification 
 var inputClassification = ee.Image(root + file_in);
+
+print ("input image", inputClassification);
 
 // define empty classification to receive data
 var classification = ee.Image([]);
@@ -196,6 +198,8 @@ var run_4yr_deforestation = function(image, class_id) {
 
 
 //////////////////////// end of functions 
+
+
 /////////////////////////////// start of conditionals 
 
 // create object to be filtered
@@ -230,11 +234,12 @@ class_ordering.forEach(function(class_i) {
 });
 
 
+print ("output_image", to_filter);
 
 Export.image.toAsset({
     'image': to_filter,
-    'description': 'CERRADO_col8_gapfill_incidence_temporal_v' + version_out,
-    'assetId': root +  'CERRADO_col8_gapfill_incidence_temporal_v' + version_out,
+    'description': 'CERRADO_col8_gapfill_incidence_temporal_step-b_v' + version_out,
+    'assetId': root +  'CERRADO_col8_gapfill_incidence_temporal_step-b_v' + version_out,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
