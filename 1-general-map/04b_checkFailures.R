@@ -137,7 +137,7 @@ for(m in 1:length(missing)) {
     addBands(hand)$
     addBands(amp_ndvi)$
     addBands(fire_age_i)$
-    addBands(ee$Image(year_i)$int16()$rename('year'))
+    addBands(ee$Image(as.numeric(year_i))$int16()$rename('year'))
   
   ## subset sample points for the region 
   samples_ij <- samples$filterBounds(regionsCollection$filterMetadata('mapb', "equals", region_list))
