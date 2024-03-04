@@ -8,7 +8,7 @@ library(stringr)
 ee_Initialize()
 
 ## define version to be checked 
-version <- "3"     ## version string
+version <- "2"     ## version string
 
 ## set folder to be checked 
 dirout <- paste0('users/dh-conciani/collection9/training/v', version, '/')
@@ -24,7 +24,7 @@ years <- 1985:2023
 
 # Generate expected patterns
 expected <- as.vector(outer(regions, years, function(r, y) {
-  paste0('users/dh-conciani/collection9/training/v3/train_col9_reg', r, '_', y, '_v', version)
+  paste0('users/dh-conciani/collection9/training/v', version, '/train_col9_reg', r, '_', y, '_v', version)
   })
 )
 
