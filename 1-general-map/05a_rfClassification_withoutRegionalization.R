@@ -7,8 +7,8 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '0'   # input training samples version
-output_version <-  '0'   # output classification version 
+samples_version <- '3'   # input training samples version
+output_version <-  '3'   # output classification version 
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
