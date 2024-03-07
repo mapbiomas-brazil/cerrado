@@ -8,10 +8,10 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to use as metadata
-version <- "3"     ## version string
+version <- "0"     ## version string
 
 ## define output directory
-dirout <- 'projects/ee-barbarasilvaipam/assets/collection8-rocky/training/v3/'
+dirout <- 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/training/v0/'
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -22,10 +22,11 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
   filterMetadata('biome', 'equals', 'CERRADO')
 
 ## get mosaic rules
-rules <- read.csv('./_aux/mosaic_rules.csv')
+rules <- read.csv('./mosaic_rules.csv')
 
 ## non rocky samples
-samples_non_rocky <- ee$FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/point/samplePoints_v3')
+samples_non_rocky <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/points/samplePoints_v0')
+
 ## rocky outcrop
 samples_rocky <- ee$FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/afloramento_collect_v5')$
   ##insert class number based on mapbiomas
@@ -38,8 +39,9 @@ samples <- samples_non_rocky$merge(samples_rocky);
 
 ## compute random column
 samples <- samples$randomColumn()
+
 ## subset 70% randomly
-samples <- samples$filter(ee$Filter$lt('random', 0.6))
+samples <- samples$filter(ee$Filter$lt('random', 0.7))
 
 ## define years to extract spectral signatures (temporal operator)
 years <- unique(mosaic$aggregate_array('year')$getInfo())
@@ -49,11 +51,11 @@ bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
 bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                        sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
 
 ## for each year
 for (j in 1:length(years)) {
-
+  
   ## compute additional bands
   geo_coordinates <- ee$Image$pixelLonLat()
   ## get latitude
@@ -133,6 +135,10 @@ for (j in 1:length(years)) {
   
   ## start task
   task$start()
-  print ('========================================')
-  
+  print('========================================')
+  print(paste("Task start:", task$start))
+  print(paste("Ano:", years[j]))
+  print('========================================')
 }
+
+## enjoy :)
