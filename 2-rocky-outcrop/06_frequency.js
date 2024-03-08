@@ -7,7 +7,7 @@ var input_version = '0';
 var output_version = '0';
 
 // set directories
-var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col8_rocky_gapfill_v' + input_version;
+var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_v' + input_version;
 var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/';
 
 // load classification
