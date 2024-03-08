@@ -27,7 +27,7 @@ rules <- read.csv('./mosaic_rules.csv')
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## read area of interest
-aoi_vec <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v1')
+aoi_vec <- ee$FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5')
 aoi_img <- ee$Image(1)$clip(aoi_vec)
 
 ## get predictor names to be used in the classification
