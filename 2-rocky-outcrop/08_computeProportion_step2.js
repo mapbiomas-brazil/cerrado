@@ -2,24 +2,27 @@
 // compute area to sort samples - second phase
 // barbara.silva@ipam.org.br
 
-// // input metadata
-var version = '4';
+
+// set metadata 
+var input_version = '0';
+var output_version = '0';
+
+// set directories
+var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_frequency_spatial_v' + input_version;
+var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/area/';
 
 // define classes to be assessed
 var classes = [3, 4, 11, 12, 15, 19, 21, 29, 33];
-
-// output directory
-var dirout = 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/sample/area/';
 
 // area of interest for rocky outcrop
 var aoi = ee.Image(1).clip(ee.FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5'));
 
 // rocky ouytcrop
-var rocky = ee.Image('projects/ee-barbarasilvaipam/assets/collection8-rocky/general-class-post/CERRADO_col8_rocky_gapfill_frequency_spatial_v4')
-              .select(['classification_2021']);
+var rocky = ee.Image(input)
+              .select(['classification_2022']);
 
-// stable pixels collection 7.1
-var stable = ee.Image('projects/ee-barbarasilvaipam/assets/collection8/masks/cerrado_stablePixels_1985_2021_v2')
+// stable pixels collection 8
+var stable = ee.Image('users/dh-conciani/collection9/masks/cerrado_trainingMask_1985_2022_v0')
                 // insert rocky outcrop 
                 .blend(rocky.updateMask(rocky.eq(29)))
                 .updateMask(aoi.eq(1));
@@ -29,7 +32,7 @@ var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
     'max': 62,
-    'palette': palettes.get('classification7')
+    'palette': palettes.get('classification8')
 };
 
 // get cerrado biome
@@ -71,5 +74,5 @@ Map.addLayer(stable, vis, 'stable');
 
 // export computation as GEE asset
 Export.table.toAsset({'collection': computed_obj, 
-                      'description': 'stable_v' + version,
-                      'assetId': dirout + 'stable_v' + version});
+                      'description': 'step2_stable_v' + output_version,
+                      'assetId': dirout + 'step2_stable_v' + output_version});
