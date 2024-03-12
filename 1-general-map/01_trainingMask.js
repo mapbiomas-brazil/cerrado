@@ -16,7 +16,7 @@ var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-r
 var dirout = 'users/dh-conciani/collection9/masks/';
 
 // set string to identify the output version
-var version_out = '3';
+var version_out = '4';
 
 // read mapbiomas lulc 
 var collection = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1');
@@ -105,7 +105,7 @@ Map.addLayer(stable, vis, '3. Filtered by MB Alerta', false);
 
 // * * * R E F E R E N C E    M A P     M A S K S
 // 4- Inventário Florestal do Estado de SP
-var sema_sp = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2')
+var sema_sp = ee.Image('projects/mapbiomas-workspace/MAPA_REFERENCIA/MATA_ATLANTICA/SP_IF_2020_2')
   .remap({
     'from': [3, 4, 5, 9, 11, 12, 13, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33],
     'to':   [3, 4, 3, 0, 11, 12, 12, 0,   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
@@ -174,9 +174,9 @@ Map.addLayer(stable, vis, '7. Filtered by SEMA GO', false);
 var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
 
 // Filter stable pixels by using field-based rules per vegetation type 
-stable = stable.where(stable.eq(3).and(canopy_heigth.lt(8)), 50)
+stable = stable.where(stable.eq(3).and(canopy_heigth.lt(4)), 50)
                .where(stable.eq(4).and(canopy_heigth.lte(2)), 50)
-               .where(stable.eq(4).and(canopy_heigth.gte(12)), 50)
+               .where(stable.eq(4).and(canopy_heigth.gte(8)), 50)
                .where(stable.eq(11).and(canopy_heigth.gte(15)), 50)
                .where(stable.eq(12).and(canopy_heigth.gte(6)), 50)
                .where(stable.eq(15).and(canopy_heigth.gte(8)), 50)
