@@ -7,27 +7,28 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '4'   # input training samples version
-output_version <-  '4'   # output classification version 
+samples_version <- '0'   # input training samples version
+output_version <-  '0'   # output classification version 
 
 ## define hyperparameters for then rf classifier
 n_tree <- 300
 
 ## define output asset
-output_asset <- 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/general-class/'
+output_asset <- 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class/'
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
 
 ## import mosaic rules 
-rules <- read.csv('./_aux/mosaic_rules.csv')
+rules <- read.csv('./mosaic_rules.csv')
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## read area of interest
-aoi_img <- ee$Image('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5-image')
+aoi_vec <- ee$FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5')
+aoi_img <- ee$Image(1)$clip(aoi_vec)
 
 ## get predictor names to be used in the classification
 bands <- mosaic$first()$bandNames()$getInfo()
@@ -41,7 +42,7 @@ aux_bands <- c('latitude', 'longitude_sin', 'longitude_cos', 'hand', 'amp_ndvi_3
 
 ## define assets
 ### training samples (prefix string)
-training_dir <- 'projects/ee-barbaracsilva/assets/Collection_8/rocky-outcrop_step2/training/'
+training_dir <- 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/training/'
 
 ## for each year
 for (j in 1:length(years)) {
@@ -108,8 +109,8 @@ for (j in 1:length(years)) {
     addBands(amp_ndvi)
   
   ## get training samples
-  training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_rocky_', years[j], '_v', samples_version))
-
+  training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/step2_train_col9_rocky_', years[j], '_v', samples_version))
+  
   ## train classifier
   classifier <- ee$Classifier$smileRandomForest(numberOfTrees= n_tree)$
     train(training_ij, 'class', c(bands, aux_bands))
@@ -117,17 +118,17 @@ for (j in 1:length(years)) {
   ## perform classification and mask only to region 
   predicted <- mosaic_i$classify(classifier)$mask(mosaic_i$select('red_median'))
   
-  ## add year as bandname
+  ## add year as bandnames
   predicted <- predicted$rename(paste0('classification_', as.character(years[j])))$toInt8()
   
   ## set properties
   predicted <- predicted$
-    set('collection', '8')$
+    set('collection', '9')$
     set('version', output_version)$
     set('biome', 'CERRADO')$
     set('year', as.numeric(years[j]))
   
-    ## stack classification
+  ## stack classification
   if (years[j] == 1985) {
     stacked_classification <- predicted
   } else {
@@ -138,7 +139,7 @@ for (j in 1:length(years)) {
 print('exporting stacked classification')
 
 ## create filename
-file_name <- paste0('CERRADO_col8_rocky_v', output_version)
+file_name <- paste0('CERRADO_step2_col9_rocky_v', output_version)
 
 ## build task
 task <- ee$batch$Export$image$toAsset(
@@ -153,6 +154,7 @@ task <- ee$batch$Export$image$toAsset(
 
 ## export 
 task$start()
-print ('------------> NEXT REGION --------->')
+print('========================================')
+print(paste("Task start:", task$start))
 
 print('end, now wait few hours and have fun :)')
