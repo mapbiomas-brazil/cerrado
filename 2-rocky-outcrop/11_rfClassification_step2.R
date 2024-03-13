@@ -118,7 +118,7 @@ for (j in 1:length(years)) {
   ## perform classification and mask only to region 
   predicted <- mosaic_i$classify(classifier)$mask(mosaic_i$select('red_median'))
   
-  ## add year as bandnames
+  ## add year as bandname
   predicted <- predicted$rename(paste0('classification_', as.character(years[j])))$toInt8()
   
   ## set properties
@@ -135,7 +135,9 @@ for (j in 1:length(years)) {
     stacked_classification <- stacked_classification$addBands(predicted)    
   }
   
-} ## end of year processing
+} 
+
+## end of year processing
 print('exporting stacked classification')
 
 ## create filename
@@ -149,7 +151,7 @@ task <- ee$batch$Export$image$toAsset(
   scale= 30,
   maxPixels= 1e13,
   pyramidingPolicy= list('.default' = 'mode'),
-  region= aoi_img$geometry()
+  region= aoi_vec$geometry()
 )
 
 ## export 
