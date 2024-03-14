@@ -7,7 +7,7 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to use as metadata (output)
-version <- "3"     ## version string
+version <- "4"     ## version string
 
 ## define output directory
 dirout <- paste0('users/dh-conciani/collection9/training/v', version, '/')
@@ -27,7 +27,7 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
 ## import sample points
-samples <- ee$FeatureCollection('users/dh-conciani/collection9/sample/points/samplePoints_v3')
+samples <- ee$FeatureCollection('users/dh-conciani/collection9/sample/points/samplePoints_v4')
 
 ## time since last fire
 fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
@@ -123,7 +123,8 @@ for (i in 1:length(regions_list)) {
     
     ## subset sample points for the region 
     samples_ij <- samples$filterBounds(regionsCollection$filterMetadata('mapb', "equals", regions_list[i]))
-    print(paste0('number of points: ', samples_ij$size()$getInfo()))      
+    print(paste0('number of points: ', samples_ij$size()$getInfo()))
+    
     
     ## extract signatures
     #training_i <- samples_ij$map(function(feature) {
