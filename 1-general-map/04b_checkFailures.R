@@ -8,7 +8,7 @@ library(stringr)
 ee_Initialize()
 
 ## define version to be checked 
-version <- "3"     ## version string
+version <- "4"     ## version string
 
 ## set folder to be checked 
 dirout <- paste0('users/dh-conciani/collection9/training/v', version, '/')
