@@ -7,8 +7,8 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '3'   # input training samples version
-output_version <-  '3'   # output classification version 
+samples_version <- '4'   # input training samples version
+output_version <-  '4'   # output classification version 
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
@@ -92,6 +92,7 @@ for (i in 1:length(regions_list)) {
     
     ## get the sentinel mosaic for the current year 
     mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
+      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
       mosaic()$
       updateMask(region_i_ras)$   # filter for the region
       select(bands)               # select only relevant bands
