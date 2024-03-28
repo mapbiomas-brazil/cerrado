@@ -4,12 +4,6 @@
 
 ## load packages
 library(rgee)
-library(sf)
-library(caret)
-library(randomForest)
-library(AppliedPredictiveModeling)
-library(reshape2)
-library(DMwR2)
 
 ## avoid scientific notation
 options(scipen= 9e3)
