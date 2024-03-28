@@ -13,7 +13,7 @@ library(DMwR2)
 
 ## set start and end years
 start_year <- 1985
-end_year <- 2021
+end_year <- 2023
 
 ## set a number of random years to be used in the estimation (20% of total)
 n_years <- round((end_year - start_year + 1)/100 * 20, digits=0) 
@@ -35,7 +35,7 @@ options(scipen= 999)
 ee_Initialize()
 
 ## read samples
-samples <- ee$FeatureCollection('users/dh-conciani/collection7/sample/points/samplePoints_v7')
+samples <- ee$FeatureCollection('users/dh-conciani/collection9/sample/points/samplePoints_v4')
 
 ## read classification regions
 regions <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
@@ -47,6 +47,9 @@ region_name <- unique(samples$aggregate_array('mapb')$getInfo())
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
 
+## get mosaic rules
+rules <- read.csv('./_aux/mosaic_rules.csv')
+
 ## for each classification region
 for (i in 1:length(region_name)) {
   print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
@@ -57,20 +60,20 @@ for (i in 1:length(region_name)) {
   samples_i <- samples$filterMetadata('mapb', 'equals', region_name[i])
   
   ## compute additional bands
-  geo_coordinates <- ee$Image$pixelLonLat()$
-    clip(regions$filterMetadata('mapb', 'equals', region_name[i]))
+  #geo_coordinates <- ee$Image$pixelLonLat()$
+  #  clip(regions$filterMetadata('mapb', 'equals', region_name[i]))
   ## get latitude
-  lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
+  #lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
   ## get longitude
-  lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
+  #lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
+  #  sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
   ## cosine
-  lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
+  #lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
+  #  cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
   
   ## get heigth above nearest drainage
-  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
-    clip(regions$filterMetadata('mapb', 'equals', region_name[i]))$rename('hand')
+  #hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
+  #  clip(regions$filterMetadata('mapb', 'equals', region_name[i]))$rename('hand')
   
   ## sort a set of random years (without replacement) to be used in the estimation
   set_of_years <- sample(x= start_year:end_year, size= n_years, replace= FALSE)
@@ -81,12 +84,10 @@ for (i in 1:length(region_name)) {
     print(paste0('year ', j, ' of ', n_years, ' ----> ', set_of_years[j]))
     
     ## filter mosaic mosaic for a random year
-    mosaic_ij <- mosaic_i$filter(ee$Filter$eq('year', set_of_years[j]))$mosaic()$
-      ## add auxiliary bands
-      addBands(lon_sin)$
-      addBands(lon_cos)$
-      addBands(hand)
-    
+    mosaic_ij <- mosaic_i$filter(ee$Filter$eq('year', set_of_years[j]))$
+      filterMetadata('satellite', 'equals', subset(rules, year == set_of_years[j])$sensor)$
+      mosaic()
+
     ## get spectral signatures from GEE and ingest locally 
     print('Ingesting array of samples locally')
     sample_ij <- as.data.frame(na.omit(ee_as_sf(mosaic_ij$
@@ -120,11 +121,11 @@ for (i in 1:length(region_name)) {
     
     ## set prediction function 
     customRF$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
-    predict(modelFit, newdata)
+      predict(modelFit, newdata)
     customRF$prob <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
       
-    ## set data-structure functions 
-    customRF$sort <- function(x) x[order(x[,1]),]
+      ## set data-structure functions 
+      customRF$sort <- function(x) x[order(x[,1]),]
     customRF$levels <- function(x) x$reference
     
     ## set train control 
