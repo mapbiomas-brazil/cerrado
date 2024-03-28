@@ -54,7 +54,11 @@ combinations <- expand.grid(
   mtry=c(5, 10, 20, 40)
 )
 
-## for each region 
+## set recipes
+paramTable <- as.data.frame(NULL)
+importanceTable <- as.data.frame(NULL)
+
+## for each region ## for eaNULLch region 
 for (i in 1:length(region_name)) {
   print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
   
@@ -94,9 +98,35 @@ for (i in 1:length(region_name)) {
         inputProperties= bands
       )
       
+      ## get a confusion matrix and overall accuracy for the test sample.
+      samples_ij_test <- samples_ij_test$classify(trainedClassifier)
+      testAccuracy <- samples_ij_test$errorMatrix('reference', 'classification');
+      
+      ## build accuracy table
+      tempParam <- as.data.frame(rbind(cbind(
+        ntree= combinations[k,]$ntree,
+        mtry= combinations[k,]$mtry,
+        region= region_name[i],
+        year= set_of_years[j],
+        accuracy= round(testAccuracy$accuracy()$getInfo(), digits=4)
+        )))
+      
+      ## temp iomportance
+      tempImportance <- as.data.frame(rbind(cbind(
+        ntree= combinations[k,]$ntree,
+        mtry= combinations[k,]$mtry,
+        region= region_name[i],
+        year= set_of_years[j],
+        importance= trainedClassifier$explain()$get('importance')$getInfo()
+      )))
+      
+      ## insert bandnames
+      tempImportance$bandNames <- row.names(tempImportance)
       
       
-      print(trainedClassifier$explain()$getInfo())
+      
+      
+      #print(trainedClassifier$explain()$getInfo())
       
     }
     
