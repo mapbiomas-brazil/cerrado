@@ -4,12 +4,13 @@
 
 ## load packages
 library(rgee)
+library(tidyverse)
 
-## avoid scientific notation
+## avoidtidyr## avoid scientific notation
 options(scipen= 9e3)
 
 ## initialize earth engine 
-ee_Initialize(drive= TRUE)
+ee_Initialize()
 
 ## set the version of training samples to used
 version <- "4"
@@ -58,9 +59,10 @@ for (i in 1:length(region_name)) {
   print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
   
   ## sort random years to calibrate parameters 
-  set_of_years <- getYears(start_year= 1985,
-                           end_year= 2023, 
-                           proportion= 20)
+  # set_of_years <- getYears(start_year= 1985,
+  #                          end_year= 2023, 
+  #                          proportion= 20)
+  set_of_years(1985:2023)
   
   ## for each classification region
   for (j in 1:length(set_of_years)) {
@@ -112,12 +114,10 @@ for (i in 1:length(region_name)) {
         mtry= combinations[k,]$mtry,
         region= region_name[i],
         year= set_of_years[j],
-        importance= trainedClassifier$explain()$get('importance')$getInfo()
+        bandNames= bands[bands != 'reference'],
+        importance= as.numeric(unlist(trainedClassifier$explain()$get('importance')$getInfo()))
       )))
-      
-      ## insert bandnames
-      tempImportance$bandNames <- row.names(tempImportance)
-      
+
       ## bind data
       paramTable <- rbind(paramTable, tempParam)
       importanceTable <- rbind(importanceTable, tempImportance)
@@ -129,5 +129,6 @@ for (i in 1:length(region_name)) {
 }
 
 ## save data locally to be used 
-write.table(paramTable, file = './_aux/modelParams.csv')
-write.table(importanceTable, file = './_aux/varImportance.csv')
+write.table(paramTable, file = './_aux/modelParams.csv', row.names= FALSE)
+write.table(importanceTable, file = './_aux/varImportance.csv', row.names=FALSE)
+importanceTable
