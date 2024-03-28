@@ -10,13 +10,68 @@ library(randomForest)
 library(AppliedPredictiveModeling)
 library(reshape2)
 library(DMwR2)
+library(googledrive)
 
-## set start and end years
-start_year <- 1985
-end_year <- 2023
+## avoid scientific notation
+options(scipen= 9e3)
+
+## initialize earth engine 
+ee_Initialize()
+
+## set the version of training samples to used
+version <- "4"
+
+## set training folder 
+folder <- paste0('users/dh-conciani/collection9/training/v', version, '/')
+
+## read classification regions
+regions <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
+
+## get unique region names as string
+region_name <- as.character(1:38)
+
+## get landsat mosaic rules
+rules <- read.csv('./_aux/mosaic_rules.csv')
+
+################## set sample size functions ##############################
+## get the number of years to be used
+yearSize <- function(end_year, start_year, proportion) {
+  return (
+    round((end_year - start_year + 1)/ 100 * proportion, digits=0)
+  )
+}
+
+## get years to be used in calibration 
+getYears <- function(start_year, end_year, proportion) {
+  return(
+    sample(x= start_year:end_year, 
+           size= yearSize(end_year, start_year, proportion), replace= F)
+  )
+}
+
+
+
+################## set cross-vlaidation functions #########################
+
+
+## for each region 
+for (i in 1:length(region_name)) {
+  print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
+  
+  ## sort random years to calibrate parameters 
+  set_of_years <- getYears(start_year= 1985,
+                           end_year= 2023, 
+                           proportion= 20)
+  
+  
+  
+  
+  
+}
+  
+
 
 ## set a number of random years to be used in the estimation (20% of total)
-n_years <- round((end_year - start_year + 1)/100 * 20, digits=0) 
 
 ## define the number of models repetitions ito be used in heuristic search for each year 
 n_rep <- 10
@@ -28,36 +83,20 @@ p <- 10
 dcv_n <- 10   ## number
 dcv_rep <- 3  ## repeats
 
-## avoid scientific notation
-options(scipen= 999)
 
-## initialize earth engine 
-ee_Initialize()
-
-## read samples
-samples <- ee$FeatureCollection('users/dh-conciani/collection9/sample/points/samplePoints_v4')
-
-## read classification regions
-regions <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
-
-## get unique region names as string
-region_name <- unique(samples$aggregate_array('mapb')$getInfo())
 
 ## read mosaic
-mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
-  filterMetadata('biome', 'equals', 'CERRADO')
+#mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
+#  filterMetadata('biome', 'equals', 'CERRADO')
 
-## get mosaic rules
-rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## for each classification region
 for (i in 1:length(region_name)) {
-  print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
   
   ## get mosaic only for region [i]
-  mosaic_i <- mosaic$filterBounds(regions$filterMetadata('mapb', 'equals', region_name[i]))
+  #mosaic_i <- mosaic$filterBounds(regions$filterMetadata('mapb', 'equals', region_name[i]))
   ## get sample points for the region [i]
-  samples_i <- samples$filterMetadata('mapb', 'equals', region_name[i])
+  #samples_i <- samples$filterMetadata('mapb', 'equals', region_name[i])
   
   ## compute additional bands
   #geo_coordinates <- ee$Image$pixelLonLat()$
@@ -76,7 +115,6 @@ for (i in 1:length(region_name)) {
   #  clip(regions$filterMetadata('mapb', 'equals', region_name[i]))$rename('hand')
   
   ## sort a set of random years (without replacement) to be used in the estimation
-  set_of_years <- sample(x= start_year:end_year, size= n_years, replace= FALSE)
   
   
   ## get spectral signatures for a random year (repeat n times)
