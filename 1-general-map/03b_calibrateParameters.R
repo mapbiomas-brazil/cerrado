@@ -49,9 +49,7 @@ getYears <- function(start_year, end_year, proportion) {
   )
 }
 
-
-
-################## set cross-vlaidation functions #########################
+################## set cross-vaidation functions #########################
 
 
 ## for each region 
@@ -63,9 +61,18 @@ for (i in 1:length(region_name)) {
                            end_year= 2023, 
                            proportion= 20)
   
-  
-  
-  
+  ## for each classification region
+  for (i in 1:length(region_name)) {
+    print(paste0('year ', j, ' of ', length(set_of_years), ' ----> ', set_of_years[j]))
+    
+    ## read training samples for the region [i] and year [j]
+    samples_ij <- ee$FeatureCollection(paste0(folder, 'train_col9_reg', region_name[i], '_', set_of_years[j], '_v', version))
+    
+    
+    samples_ij$first()$getInfo()
+    
+     
+  }
   
 }
   
@@ -90,8 +97,7 @@ dcv_rep <- 3  ## repeats
 #  filterMetadata('biome', 'equals', 'CERRADO')
 
 
-## for each classification region
-for (i in 1:length(region_name)) {
+
   
   ## get mosaic only for region [i]
   #mosaic_i <- mosaic$filterBounds(regions$filterMetadata('mapb', 'equals', region_name[i]))
@@ -119,13 +125,8 @@ for (i in 1:length(region_name)) {
   
   ## get spectral signatures for a random year (repeat n times)
   for (j in 1:n_years) {
-    print(paste0('year ', j, ' of ', n_years, ' ----> ', set_of_years[j]))
-    
-    ## filter mosaic mosaic for a random year
-    mosaic_ij <- mosaic_i$filter(ee$Filter$eq('year', set_of_years[j]))$
-      filterMetadata('satellite', 'equals', subset(rules, year == set_of_years[j])$sensor)$
-      mosaic()
-
+   
+   
     ## get spectral signatures from GEE and ingest locally 
     print('Ingesting array of samples locally')
     sample_ij <- as.data.frame(na.omit(ee_as_sf(mosaic_ij$
