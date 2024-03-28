@@ -10,13 +10,12 @@ library(randomForest)
 library(AppliedPredictiveModeling)
 library(reshape2)
 library(DMwR2)
-library(googledrive)
 
 ## avoid scientific notation
 options(scipen= 9e3)
 
 ## initialize earth engine 
-ee_Initialize()
+ee_Initialize(drive= TRUE)
 
 ## set the version of training samples to used
 version <- "4"
@@ -50,8 +49,44 @@ getYears <- function(start_year, end_year, proportion) {
 }
 
 ################## set cross-vaidation functions #########################
+## create a empty model as recipe 
+improvedClassifier <- list(type = "Classification", library = "randomForest", loop = NULL)
 
+## set model's parameters
+improvedClassifier$parameters <- data.frame(parameter = c("mtry", "ntree"),
+                                            reference = rep("numeric", 2),
+                                            label = c("mtry", "ntree"))
 
+## set searching method 
+improvedClassifier$grid <- function(x, y, len = NULL, search = "grid") { }
+
+## set function to computed training estimates 
+improvedClassifier$fit <- function(x, y, wts, param, lev, last, weights, classProbs) {
+  return(
+    randomForest(x, y, mtry = param$mtry, ntree=param$ntree)
+  )
+}
+
+## set function to compute predictions 
+improvedClassifier$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL) {
+  return(
+    predict(modelFit, newdata)
+  )
+}
+
+## set funciton to store probabilities 
+improvedClassifier$prob <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
+
+## set data-structure functions 
+improvedClassifier$sort <- function(x) x[order(x[,1]),]
+improvedClassifier$levels <- function(x) x$reference       ## set data-structure functions 
+
+########################## set cross-validation ###########################
+control <- trainControl(method="repeatedcv", 
+                        number= 10, 
+                        repeats= 3,
+                        allowParallel = TRUE)
+  
 ## for each region 
 for (i in 1:length(region_name)) {
   print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
@@ -68,114 +103,49 @@ for (i in 1:length(region_name)) {
     ## read training samples for the region [i] and year [j]
     samples_ij <- ee$FeatureCollection(paste0(folder, 'train_col9_reg', region_name[i], '_', set_of_years[j], '_v', version))
     
+    ## 
+    ## get spectral signatures from GEE and ingest locally 
+    print('Ingesting array of samples locally')
+    sample_ij <- as.data.frame(na.omit(ee_as_sf(samples_ij, via = 'drive')))
     
-    samples_ij$first()$getInfo()
+    ## remove description columns 
+    sample_ij <- sample_ij[ , -which(names(sample_ij) %in% c("id","mapb", "geometry"))]
     
+    ## set a grid of parameters to be tested (half of default, default and double)
+    tunegrid <- expand.grid(.mtry=c(round(sqrt(ncol(sample_ij)))/2, round(sqrt(ncol(sample_ij))), round(sqrt(ncol(sample_ij))*2)),
+                            .ntree=c(100, 300, 500))
+    
+    ## train model 
+    custom <- train(as.factor(reference)~.,
+                    data= sample_ij, 
+                    method= improvedClassifier, 
+                    metric= 'Accuracy', 
+                    tuneGrid= tunegrid, 
+                    trControl= control)
      
   }
   
 }
-  
 
 
 ## set a number of random years to be used in the estimation (20% of total)
 
 ## define the number of models repetitions ito be used in heuristic search for each year 
-n_rep <- 10
+n_rep <- 10 # NAO PRECISA
 
 ## set sub sample of proportion (%) - used to improved performance into cross-validation k-folds
-p <- 10
+p <- 10 # nao precisa, faz com 100% 
 
-## set repeated cross-validation @params
-dcv_n <- 10   ## number
-dcv_rep <- 3  ## repeats
-
-
-
-## read mosaic
-#mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
-#  filterMetadata('biome', 'equals', 'CERRADO')
-
-
-
-  
-  ## get mosaic only for region [i]
-  #mosaic_i <- mosaic$filterBounds(regions$filterMetadata('mapb', 'equals', region_name[i]))
-  ## get sample points for the region [i]
-  #samples_i <- samples$filterMetadata('mapb', 'equals', region_name[i])
-  
-  ## compute additional bands
-  #geo_coordinates <- ee$Image$pixelLonLat()$
-  #  clip(regions$filterMetadata('mapb', 'equals', region_name[i]))
-  ## get latitude
-  #lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
-  ## get longitude
-  #lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-  #  sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
-  ## cosine
-  #lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-  #  cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
-  
-  ## get heigth above nearest drainage
-  #hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
-  #  clip(regions$filterMetadata('mapb', 'equals', region_name[i]))$rename('hand')
-  
-  ## sort a set of random years (without replacement) to be used in the estimation
+ estimation
   
   
   ## get spectral signatures for a random year (repeat n times)
   for (j in 1:n_years) {
    
+    
    
-    ## get spectral signatures from GEE and ingest locally 
-    print('Ingesting array of samples locally')
-    sample_ij <- as.data.frame(na.omit(ee_as_sf(mosaic_ij$
-                                                  sampleRegions(collection= samples_i,
-                                                                scale= 30,
-                                                                geometries= TRUE,
-                                                                tileScale= 16), via = 'drive')))
     
-    ## remove description columns 
-    sample_ij <- sample_ij[ , -which(names(sample_ij) %in% c("id","mapb", "geometry"))]
-    
-    ## set RF heuristic learning functions
-    customRF <- list(type = "Classification",
-                     library = "randomForest",
-                     loop = NULL)
-    
-    ## set parameters to be optimized 
-    customRF$parameters <- data.frame(parameter = c("mtry", "ntree"),
-                                      reference = rep("numeric", 2),
-                                      label = c("mtry", "ntree"))
-    
-    ## set searching method 
-    customRF$grid <- function(x, y, len = NULL, search = "grid") {}
-    
-    ## set training function 
-    customRF$fit <- function(x, y, wts, param, lev, last, weights, classProbs) {
-      randomForest(x, y,
-                   mtry = param$mtry,
-                   ntree=param$ntree)
-    }
-    
-    ## set prediction function 
-    customRF$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
-      predict(modelFit, newdata)
-    customRF$prob <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
-      
-      ## set data-structure functions 
-      customRF$sort <- function(x) x[order(x[,1]),]
-    customRF$levels <- function(x) x$reference
-    
-    ## set train control 
-    control <- trainControl(method="repeatedcv", 
-                            number= dcv_n, 
-                            repeats= dcv_rep,
-                            allowParallel = TRUE)
-    
-    ## set a grid of parameters to be tested (half of default, default and double)
-    tunegrid <- expand.grid(.mtry=c(round(sqrt(ncol(sample_ij)))/2, round(sqrt(ncol(sample_ij))), round(sqrt(ncol(sample_ij))*2)),
-                            .ntree=c(100, 300))
+
     
     ## standardize seed
     set.seed(1)
