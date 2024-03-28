@@ -48,45 +48,12 @@ getYears <- function(start_year, end_year, proportion) {
   )
 }
 
-################## set cross-vaidation functions #########################
-## create a empty model as recipe 
-improvedClassifier <- list(type = "Classification", library = "randomForest", loop = NULL)
+## set grid to be tested
+combinations <- expand.grid(
+  ntree=c(100, 200, 400, 800),
+  mtry=c(5, 10, 20, 40)
+)
 
-## set model's parameters
-improvedClassifier$parameters <- data.frame(parameter = c("mtry", "ntree"),
-                                            reference = rep("numeric", 2),
-                                            label = c("mtry", "ntree"))
-
-## set searching method 
-improvedClassifier$grid <- function(x, y, len = NULL, search = "grid") { }
-
-## set function to computed training estimates 
-improvedClassifier$fit <- function(x, y, wts, param, lev, last, weights, classProbs) {
-  return(
-    randomForest(x, y, mtry = param$mtry, ntree=param$ntree)
-  )
-}
-
-## set function to compute predictions 
-improvedClassifier$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL) {
-  return(
-    predict(modelFit, newdata)
-  )
-}
-
-## set funciton to store probabilities 
-improvedClassifier$prob <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
-
-## set data-structure functions 
-improvedClassifier$sort <- function(x) x[order(x[,1]),]
-improvedClassifier$levels <- function(x) x$reference       ## set data-structure functions 
-
-########################## set cross-validation ###########################
-control <- trainControl(method="repeatedcv", 
-                        number= 10, 
-                        repeats= 3,
-                        allowParallel = TRUE)
-  
 ## for each region 
 for (i in 1:length(region_name)) {
   print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
@@ -97,11 +64,49 @@ for (i in 1:length(region_name)) {
                            proportion= 20)
   
   ## for each classification region
-  for (i in 1:length(region_name)) {
+  for (j in 1:length(set_of_years)) {
     print(paste0('year ', j, ' of ', length(set_of_years), ' ----> ', set_of_years[j]))
     
     ## read training samples for the region [i] and year [j]
     samples_ij <- ee$FeatureCollection(paste0(folder, 'train_col9_reg', region_name[i], '_', set_of_years[j], '_v', version))
+    
+    ## get bandNames
+    bands <- names(samples_ij$first()$getInfo()$properties)
+    
+    ## remove descriptots
+    bands <- bands[!bands %in% c('mapb', 'year')]
+    
+    ## for each combination in search grid
+    for(k in 1:nrow(combinations)) {
+      print(paste0('training combination ', k, ' of ', nrow(combinations)))
+      ## separate into training and test 
+      samples_ij <- samples_ij$randomColumn()
+      samples_ij_training <- samples_ij$filter('random <= 0.7')
+      samples_ij_test <- samples_ij$filter('random > 0.8')
+      
+      # train a smile.randomForest 
+      trainedClassifier <- ee$Classifier$smileRandomForest(
+        numberOfTrees = combinations[k,]$ntree,
+        variablesPerSplit = combinations[k,]$mtry
+      )$train(
+        features= samples_ij_training,
+        classProperty= 'reference',
+        inputProperties= bands
+      )
+      
+      
+      
+      print(trainedClassifier$explain()$getInfo())
+      
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
     ## 
     ## get spectral signatures from GEE and ingest locally 
@@ -111,17 +116,13 @@ for (i in 1:length(region_name)) {
     ## remove description columns 
     sample_ij <- sample_ij[ , -which(names(sample_ij) %in% c("id","mapb", "geometry"))]
     
-    ## set a grid of parameters to be tested (half of default, default and double)
-    tunegrid <- expand.grid(.mtry=c(round(sqrt(ncol(sample_ij)))/2, round(sqrt(ncol(sample_ij))), round(sqrt(ncol(sample_ij))*2)),
-                            .ntree=c(100, 300, 500))
     
-    ## train model 
-    custom <- train(as.factor(reference)~.,
-                    data= sample_ij, 
-                    method= improvedClassifier, 
-                    metric= 'Accuracy', 
-                    tuneGrid= tunegrid, 
-                    trControl= control)
+ 
+    
+    
+    
+    
+    
      
   }
   
