@@ -54,6 +54,9 @@ combinations <- expand.grid(
 paramTable <- as.data.frame(NULL)
 importanceTable <- as.data.frame(NULL)
 
+## set count
+count <- 0
+
 ## for each region ## for eaNULLch region 
 for (i in 1:length(region_name)) {
   print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
@@ -62,7 +65,7 @@ for (i in 1:length(region_name)) {
   # set_of_years <- getYears(start_year= 1985,
   #                          end_year= 2023, 
   #                          proportion= 20)
-  set_of_years(1985:2023)
+  set_of_years <- 1985:2023
   
   ## for each classification region
   for (j in 1:length(set_of_years)) {
@@ -79,7 +82,14 @@ for (i in 1:length(region_name)) {
     
     ## for each combination in search grid
     for(k in 1:nrow(combinations)) {
-      print(paste0('training combination ', k, ' of ', nrow(combinations)))
+      ## set count
+      count <- count + 1
+      print(paste0('training combination ', k, ' of ', nrow(combinations), 
+            ' ~ iteration ', count, ' of ', length(region_name) * length(set_of_years) * nrow(combinations)))
+      
+      ## store initializing time
+      startTime <- Sys.time()
+      
       ## separate into training and test 
       samples_ij <- samples_ij$randomColumn()
       samples_ij_training <- samples_ij$filter('random <= 0.7')
@@ -121,6 +131,11 @@ for (i in 1:length(region_name)) {
       ## bind data
       paramTable <- rbind(paramTable, tempParam)
       importanceTable <- rbind(importanceTable, tempImportance)
+      
+      ## get end time and estimated time to end
+      endTime <- Sys.time()
+      print(paste0('Task Runtime: ', round(endTime - startTime, digits=1),'s -------------> Estimated to end all tasks: ',
+                   round((endTime - startTime) * (length(region_name) * length(set_of_years) * nrow(combinations) - count))/3600), digits=1)
       
     }
     
