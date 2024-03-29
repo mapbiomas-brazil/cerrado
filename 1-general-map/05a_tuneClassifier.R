@@ -21,9 +21,6 @@ folder <- paste0('users/dh-conciani/collection9/training/v', version, '/')
 ## read classification regions
 regions <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
-## get unique region names as string
-region_name <- as.character(1:38)
-
 ## get landsat mosaic rules
 rules <- read.csv('./_aux/mosaic_rules.csv')
 
@@ -46,9 +43,17 @@ getYears <- function(start_year, end_year, proportion) {
 ## set grid of parameters to be tested
 combinations <- expand.grid(
   ntree=c(100, 200, 400, 800),
-  mtry=c(5, 10, 20, 40)
+  mtry=c(5, 10, 20, 40),
+  region=c(1:38),
+  year=c(1985:2023)
 )
 
+################# check already processed files ################## comment if is the first run 
+processedTable <- read.csv('./_aux/temp/modelParams.csv', sep=' ')
+
+# Find combinations that are not present in processedTable
+combinations <- anti_join(combinations, processedTable, by = c("ntree", "mtry", "region", "year"))
+######################################################################################################
 
 ## set recipes
 paramTable <- as.data.frame(NULL)
@@ -57,22 +62,23 @@ importanceTable <- as.data.frame(NULL)
 ## set count
 count <- 0
 
-## for each region ## for eaNULLch region 
-for (i in 1:length(region_name)) {
-  print(paste0('processing region ', region_name[i],' --- ', i, ' of ', length(region_name)))
+## for each region 
+for (i in 1:length(unique(combinations$region))) {
+  print(paste0('processing region ', unique(combinations$region)[i],' --- ',
+               i, ' of ', length(unique(combinations$region))))
   
   ## sort random years to calibrate parameters 
   # set_of_years <- getYears(start_year= 1985,
   #                          end_year= 2023, 
   #                          proportion= 20)
-  set_of_years <- 1985:2023
   
   ## for each classification region
-  for (j in 1:length(set_of_years)) {
-    print(paste0('year ', j, ' of ', length(set_of_years), ' ----> ', set_of_years[j]))
+  for (j in 1:length(unique(combinations$year))) {
+    print(paste0('year ', j, ' of ', length(unique(combinations$year)), ' ----> ', unique(combinations$year)[j]))
     
     ## read training samples for the region [i] and year [j]
-    samples_ij <- ee$FeatureCollection(paste0(folder, 'train_col9_reg', region_name[i], '_', set_of_years[j], '_v', version))
+    samples_ij <- ee$FeatureCollection(paste0(folder, 'train_col9_reg', unique(combinations$region)[i],
+                                              '_', unique(combinations$year)[j], '_v', version))
     
     ## get bandNames
     bands <- names(samples_ij$first()$getInfo()$properties)
@@ -80,12 +86,16 @@ for (i in 1:length(region_name)) {
     ## remove descriptots
     bands <- bands[!bands %in% c('mapb', 'year')]
     
+    ## get combinations for region 
+    combinations_k <- subset(combinations, region == unique(combinations$region)[i] &
+                               year == unique(combinations$year)[j])
+    
     ## for each combination in search grid
-    for(k in 1:nrow(combinations)) {
+    for(k in 1:nrow(combinations_k)) {
       ## set count
       count <- count + 1
-      print(paste0('training combination ', k, ' of ', nrow(combinations), 
-            ' ~ iteration ', count, ' of ', length(region_name) * length(set_of_years) * nrow(combinations)))
+      print(paste0('training combination ', k, ' of ', nrow(combinations_k), 
+            ' ~ iteration ', count, ' of ', nrow(combinations)))
       
       ## store initializing time
       startTime <- Sys.time()
@@ -97,8 +107,8 @@ for (i in 1:length(region_name)) {
       
       # train a smile.randomForest 
       trainedClassifier <- ee$Classifier$smileRandomForest(
-        numberOfTrees = combinations[k,]$ntree,
-        variablesPerSplit = combinations[k,]$mtry
+        numberOfTrees = combinations_k[k,]$ntree,
+        variablesPerSplit = combinations_k[k,]$mtry
       )$train(
         features= samples_ij_training,
         classProperty= 'reference',
@@ -111,19 +121,19 @@ for (i in 1:length(region_name)) {
       
       ## build accuracy table
       tempParam <- as.data.frame(rbind(cbind(
-        ntree= combinations[k,]$ntree,
-        mtry= combinations[k,]$mtry,
-        region= region_name[i],
-        year= set_of_years[j],
+        ntree= combinations_k[k,]$ntree,
+        mtry= combinations_k[k,]$mtry,
+        region= unique(combinations$region)[i],
+        year= unique(combinations$year)[j],
         accuracy= round(testAccuracy$accuracy()$getInfo(), digits=4)
         )))
       
       ## temp iomportance
       tempImportance <- as.data.frame(rbind(cbind(
-        ntree= combinations[k,]$ntree,
-        mtry= combinations[k,]$mtry,
-        region= region_name[i],
-        year= set_of_years[j],
+        ntree= combinations_k[k,]$ntree,
+        mtry= combinations_k[k,]$mtry,
+        region= unique(combinations$region)[i],
+        year= unique(combinations$year)[j],
         bandNames= bands[bands != 'reference'],
         importance= as.numeric(unlist(trainedClassifier$explain()$get('importance')$getInfo()))
       )))
@@ -135,7 +145,7 @@ for (i in 1:length(region_name)) {
       ## get end time and estimated time to end
       endTime <- Sys.time()
       print(paste0('Task Runtime: ', round(endTime - startTime, digits=1),'s -------------> Estimated to end all tasks: ',
-                   round((endTime - startTime) * (length(region_name) * length(set_of_years) * nrow(combinations) - count))/3600), digits=1)
+                   round((endTime - startTime) * nrow(combinations)/3600, digits=1), ' hours'))
       
     }
     
@@ -146,4 +156,3 @@ for (i in 1:length(region_name)) {
 ## save data locally to be used 
 write.table(paramTable, file = './_aux/modelParams.csv', row.names= FALSE)
 write.table(importanceTable, file = './_aux/varImportance.csv', row.names=FALSE)
-importanceTable
