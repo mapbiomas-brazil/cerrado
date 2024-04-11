@@ -54,6 +54,8 @@ processedTable <- read.csv('./_aux/temp/modelParams.csv', sep=' ')
 # Find combinations that are not present in processedTable
 combinations <- anti_join(combinations, processedTable, by = c("ntree", "mtry", "region", "year"))
 ######################################################################################################
+#combinations <- combinations[10000:15000,]
+###################
 
 ## set recipes
 paramTable <- as.data.frame(NULL)
@@ -79,7 +81,6 @@ for (i in 1:length(unique(combinations$region))) {
     ## read training samples for the region [i] and year [j]
     samples_ij <- ee$FeatureCollection(paste0(folder, 'train_col9_reg', unique(combinations$region)[i],
                                               '_', unique(combinations$year)[j], '_v', version))
-    
     ## get bandNames
     bands <- names(samples_ij$first()$getInfo()$properties)
     
@@ -87,15 +88,20 @@ for (i in 1:length(unique(combinations$region))) {
     bands <- bands[!bands %in% c('mapb', 'year')]
     
     ## get combinations for region 
-    combinations_k <- subset(combinations, region == unique(combinations$region)[i] &
-                               year == unique(combinations$year)[j])
+    try(combinations_k <- subset(combinations, region == unique(combinations$region)[i] &
+                               year == unique(combinations$year)[j]), silent = TRUE)
     
+    if (nrow(combinations_k) == 0) {
+      count <- count + 1
+      next
+      
+    }
     ## for each combination in search grid
     for(k in 1:nrow(combinations_k)) {
       ## set count
       count <- count + 1
       print(paste0('training combination ', k, ' of ', nrow(combinations_k), 
-            ' ~ iteration ', count, ' of ', nrow(combinations)))
+                   ' ~ iteration ', count, ' of ', nrow(combinations)))
       
       ## store initializing time
       startTime <- Sys.time()
@@ -119,25 +125,44 @@ for (i in 1:length(unique(combinations$region))) {
       samples_ij_test <- samples_ij_test$classify(trainedClassifier)
       testAccuracy <- samples_ij_test$errorMatrix('reference', 'classification');
       
+      print('Getting model results')
       ## build accuracy table
-      tempParam <- as.data.frame(rbind(cbind(
+      try(tempParam <- as.data.frame(rbind(cbind(
         ntree= combinations_k[k,]$ntree,
         mtry= combinations_k[k,]$mtry,
         region= unique(combinations$region)[i],
         year= unique(combinations$year)[j],
         accuracy= round(testAccuracy$accuracy()$getInfo(), digits=4)
-        )))
+      ))), silent= T)
+      
+      if(exists('tempParam') == FALSE) {
+        ## get end time and estimated time to end
+        endTime <- Sys.time()
+        print(paste0('Task Runtime: ', round(endTime - startTime, digits=1),'s -------------> Estimated to end all tasks: ',
+                     round((endTime - startTime) * nrow(combinations)/3600, digits=1), ' hours'))
+        next
+        
+      }
       
       ## temp iomportance
-      tempImportance <- as.data.frame(rbind(cbind(
+      try(tempImportance <- as.data.frame(rbind(cbind(
         ntree= combinations_k[k,]$ntree,
         mtry= combinations_k[k,]$mtry,
         region= unique(combinations$region)[i],
         year= unique(combinations$year)[j],
         bandNames= bands[bands != 'reference'],
         importance= as.numeric(unlist(trainedClassifier$explain()$get('importance')$getInfo()))
-      )))
-
+      ))), silent= T)
+      
+      if(exists('tempImportance') == FALSE) {
+        ## get end time and estimated time to end
+        endTime <- Sys.time()
+        print(paste0('Task Runtime: ', round(endTime - startTime, digits=1),'s -------------> Estimated to end all tasks: ',
+                     round((endTime - startTime) * nrow(combinations)/3600, digits=1), ' hours'))
+        next
+        
+      }
+      
       ## bind data
       paramTable <- rbind(paramTable, tempParam)
       importanceTable <- rbind(importanceTable, tempImportance)
@@ -147,12 +172,15 @@ for (i in 1:length(unique(combinations$region))) {
       print(paste0('Task Runtime: ', round(endTime - startTime, digits=1),'s -------------> Estimated to end all tasks: ',
                    round((endTime - startTime) * nrow(combinations)/3600, digits=1), ' hours'))
       
+      rm(tempParam)
+      rm(tempImportance)
+      
     }
-    
+
   }
   
 }
 
 ## save data locally to be used 
-write.table(paramTable, file = './_aux/modelParams.csv', row.names= FALSE)
-write.table(importanceTable, file = './_aux/varImportance.csv', row.names=FALSE)
+write.table(paramTable, file = './_aux/modelParams_e.csv', row.names= FALSE)
+write.table(importanceTable, file = './_aux/varImportance_e.csv', row.names=FALSE)
