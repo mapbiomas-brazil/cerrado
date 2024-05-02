@@ -182,5 +182,5 @@ for (i in 1:length(unique(combinations$region))) {
 }
 
 ## save data locally to be used 
-write.table(paramTable, file = './_aux/modelParams_p.csv', row.names= FALSE)
-write.table(importanceTable, file = './_aux/varImportance_p.csv', row.names=FALSE)
+write.table(paramTable, file = './_aux/modelParams.csv', row.names= FALSE)
+write.table(importanceTable, file = './_aux/varImportance.csv', row.names=FALSE)
