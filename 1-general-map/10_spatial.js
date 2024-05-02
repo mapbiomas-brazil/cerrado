@@ -122,7 +122,7 @@ print('Output classification', container2);
 Export.image.toAsset({
     'image': container2,
     'description': 'CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v'+inputVersion+'_spatial_v' + outputVersion,
-    'assetId': root + 'CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v'+inputVersion+'_spatial_v' + outputVersion,
+    'assetId': out + 'CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v'+inputVersion+'_spatial_v' + outputVersion,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
