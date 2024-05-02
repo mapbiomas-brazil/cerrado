@@ -7,25 +7,21 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '3'   # input training samples version
-output_version <-  '3'   # output classification version 
+samples_version <- '4'   # input training samples version
+output_version <-  '5'   # output classification version 
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
 
-## set the number of bands (with highest score) to be used in each region
-## actual rule uses 2/3 of the total ~(*66.6) descriptor
-n_bands <- round(length(mosaic$first()$bandNames()$getInfo()) / 100 * 66.6, digits= 0)
-
 ## define output asset
-output_asset <- 'users/barbarasilvaIPAM/collection8/c8-general-class/'
+output_asset <- 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-MAP-PROBABILITY/'
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## get mosaic rules
-rules <- read.csv('/mosaic_rules.csv')
+rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## read classification regions (vetor)
 regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
@@ -34,14 +30,34 @@ regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classificatio
 regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
 
 ### training samples (prefix string)
-training_dir <- 'projects/ee-barbarasilvaipam/assets/collection8/training/'
+training_dir <- 'users/dh-conciani/collection9/training/'
 
 ### classification regions (imageCollection, one region per image)
 regions_ic <- 'users/dh-conciani/collection7/classification_regions/eachRegion_v2_10m/'
 
+## get bandnames to be extracted
+bands <- mosaic$first()$bandNames()$getInfo()
+
+## remove bands with 'cloud' or 'shade' into their names
+bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
+                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+
 ## read classification parameters
-param_bands <- read.csv('/bands.csv', sep= '')
-param_rf <- read.csv('/rf.csv', sep= '')
+#param_bands <- read.csv('/bands.csv', sep= '')
+param_rf <- read.csv('./_aux/modelParams.csv', sep= '')
+
+## get mean training accuracy per region by considering all years in a grid of tuning parameters
+param_rf <- aggregate(x= list(accuracy= param_rf$accuracy), 
+                      by= list(ntree= param_rf$ntree,
+                               mtry= param_rf$mtry, 
+                               region= param_rf$region),
+                      FUN= 'mean')
+
+## get bestFitted
+param_rf <- param_rf %>%
+  group_by(region) %>%
+  slice_max(order_by = accuracy, n = 1) %>%
+  ungroup()
 
 ## for each region
 for (i in 1:length(regions_list)) {
@@ -51,33 +67,52 @@ for (i in 1:length(regions_list)) {
   ## get the raster for the region [i]
   region_i_ras = ee$Image(paste0(regions_ic, 'reg_', regions_list[i]))
   
-  ## get variable importance for the region i
-  param_bands_i <- subset(param_bands, region == regions_list[i])
-  ## remove auxiliary bands from relational computation
-  param_bands_i <- subset(param_bands_i,  band != "hand" & band != 'longitude_sin' & band != 'longitude_cos')
-  ## get the most important bands, using thresholh cut 
-  bands <- levels(reorder(param_bands_i$band, -as.numeric(param_bands_i$mean)))[1:n_bands]
-  
   ## get best classification parameters for the region i
   n_tree <- subset(param_rf, region == regions_list[i])$ntree
   n_mtry <- subset(param_rf, region == regions_list[i])$mtry
   
   ## compute static auxiliary bands
-  geo_coordinates <- ee$Image$pixelLonLat()$clip(region_i_vec)
+  geo_coordinates <- ee$Image$pixelLonLat()$
+    updateMask(region_i_ras)
+  
   ## get latitude
-  lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
+  lat <- geo_coordinates$select('latitude')$
+    add(5)$
+    multiply(-1)$
+    multiply(1000)$
+    toInt16()
+  
   ## get longitude
-  lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
+  lon_sin <- geo_coordinates$select('longitude')$
+    multiply(pi)$
+    divide(180)$
+    sin()$
+    multiply(-1)$
+    multiply(10000)$
+    toInt16()$
+    rename('longitude_sin')
+  
   ## cosine
-  lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
+  lon_cos <- geo_coordinates$select('longitude')$
+    multiply(pi)$
+    divide(180)$
+    cos()$
+    multiply(-1)$
+    multiply(10000)$
+    toInt16()$
+    rename('longitude_cos')
   
   ## get heigth above nearest drainage
-  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
-    clip(region_i_vec)$rename('hand')
+  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$
+    mosaic()$
+    toInt16()$
+    updateMask(region_i_ras)$
+    rename('hand')
   
+  ## time since last fire
   fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
+  ## add 2023 
+  fire_age <- fire_age$addBands(fire_age$select('classification_2022')$rename('classification_2023'))
   
   ## for each year
   for (j in 1:length(years)) {
@@ -85,6 +120,7 @@ for (i in 1:length(regions_list)) {
     
     ## get the sentinel mosaic for the current year 
     mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
+      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
       mosaic()$
       updateMask(region_i_ras)$   # filter for the region
       select(bands)               # select only relevant bands
@@ -96,33 +132,49 @@ for (i in 1:length(regions_list)) {
       ## get previous year mosaic 
       mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
         filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
-        mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$clip(region_i_vec)
+        mosaic()$
+        select(c('ndvi_median_dry','ndvi_median_wet'))$
+        updateMask(region_i_ras)
+      
       ## get previous 2yr mosaic 
       mosaic_i2 <- mosaic$filterMetadata('year', 'equals', years[j] - 2)$
         filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past2)$
-        mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$clip(region_i_vec)
+        mosaic()$
+        select(c('ndvi_median_dry','ndvi_median_wet'))$
+        updateMask(region_i_ras)
       
       ## compute the minimum NDVI over dry season 
       min_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_dry'),
                                                   mosaic_i1$select('ndvi_median_dry'),
                                                   mosaic_i2$select('ndvi_median_dry')))$min()
       
-      ## compute the mmaximum NDVI over wet season 
+      ## compute the maximum NDVI over wet season 
       max_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_wet'),
                                                   mosaic_i1$select('ndvi_median_wet'),
                                                   mosaic_i2$select('ndvi_median_wet')))$max()
       
       ## get the amplitude
-      amp_ndvi <- max_ndvi$subtract(min_ndvi)$rename('amp_ndvi_3yr')$clip(region_i_vec)
+      amp_ndvi <- max_ndvi$subtract(min_ndvi)$
+        rename('amp_ndvi_3yr')$
+        updateMask(region_i_ras)
       
       ## get the time since last fire
-      fire_age_i <- fire_age$select(paste0('classification_', years[j]))$rename('fire_age')$clip(region_i_vec)
+      fire_age_i <- fire_age$select(paste0('classification_', years[j]))$
+        rename('fire_age')$
+        updateMask(region_i_ras)
+      
     }
     
     ## if the year[j] is lower than 1987, get null image as amp
     if (years[j] < 1987){
-      amp_ndvi <- ee$Image(0)$rename('amp_ndvi_3yr')$clip(region_i_vec)
-      fire_age_i <- ee$Image(5)$rename('fire_age')$clip(region_i_vec)
+      amp_ndvi <- ee$Image(0)$
+        rename('amp_ndvi_3yr')$
+        updateMask(region_i_ras)
+      
+      fire_age_i <- ee$Image(5)$
+        rename('fire_age')$
+        updateMask(region_i_ras)
+      
     }
     
     ## bind mapbiomas mosaic and auxiliary bands
@@ -134,62 +186,57 @@ for (i in 1:length(regions_list)) {
       addBands(fire_age_i)
     
     ## limit water samples only to 175 samples (avoid over-estimation)
-    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$eq("reference", 33))$
       filter(ee$Filter$eq("hand", 0))$
       limit(175)                        ## insert water samples limited to 175 
     
     ## merge filtered water with other classes
-    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col8_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_reg', regions_list[i], '_', years[j], '_v', samples_version))$
       filter(ee$Filter$neq("reference", 33))$ ## remove water samples
       merge(water_samples)
+    
+    ## get bands
+    bandNames_list <- mosaic_i$bandNames()$getInfo()
     
     ## train classifier
     classifier <- ee$Classifier$smileRandomForest(
       numberOfTrees= n_tree,
       variablesPerSplit= n_mtry)$
-      train(training_ij, 'reference', bands)
+      setOutputMode('MULTIPROBABILITY')$
+      train(training_ij, 'reference', bandNames_list)
     
     ## perform classification and mask only to region 
-    predicted <- mosaic_i$classify(classifier)$mask(mosaic_i$select(0))
-    
-    ## add year as bandname
-    predicted <- predicted$rename(paste0('classification_', as.character(years[j])))$toInt8()
+    predicted <- mosaic_i$classify(classifier)$
+      updateMask(region_i_ras)
     
     ## set properties
     predicted <- predicted$
-      set('collection', '8')$
+      set('collection', '9')$
       set('version', output_version)$
       set('biome', 'CERRADO')$
       set('mapb', as.numeric(regions_list[i]))$
       set('year', as.numeric(years[j]))
+  
+    ## create filename
+    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_v', output_version)
     
-    ## stack classification
-    if (years[j] == 1985) {
-      stacked_classification <- predicted
-    } else {
-      stacked_classification <- stacked_classification$addBands(predicted)    
-    }
+    ## build task
+    task <- ee$batch$Export$image$toAsset(
+      image= stacked_classification$toInt8(),
+      description= file_name,
+      assetId= paste0(output_asset, file_name),
+      scale= 30,
+      maxPixels= 1e13,
+      pyramidingPolicy= list('.default' = 'mode'),
+      region= region_i_vec
+    )
+    
+    ## export 
+    task$start()
     
   } ## end of year processing
-  print('exporting stacked classification')
   
-  ## create filename
-  file_name <- paste0('CERRADO_reg', regions_list[i], '_col8_v', output_version)
-  
-  ## build task
-  task <- ee$batch$Export$image$toAsset(
-    image= stacked_classification$toInt8(),
-    description= file_name,
-    assetId= paste0(output_asset, file_name),
-    scale= 30,
-    maxPixels= 1e13,
-    pyramidingPolicy= list('.default' = 'mode'),
-    region= region_i_vec
-  )
-  
-  ## export 
-  task$start()
   print ('------------> NEXT REGION --------->')
 }
 
