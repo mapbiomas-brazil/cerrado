@@ -54,7 +54,7 @@ processedTable <- read.csv('./_aux/temp/modelParams.csv', sep=' ')
 # Find combinations that are not present in processedTable
 combinations <- anti_join(combinations, processedTable, by = c("ntree", "mtry", "region", "year"))
 ######################################################################################################
-#combinations <- combinations[10000:15000,]
+#combinations <- combinations[1:2000,]
 ###################
 
 ## set recipes
@@ -182,5 +182,5 @@ for (i in 1:length(unique(combinations$region))) {
 }
 
 ## save data locally to be used 
-write.table(paramTable, file = './_aux/modelParams_e.csv', row.names= FALSE)
-write.table(importanceTable, file = './_aux/varImportance_e.csv', row.names=FALSE)
+write.table(paramTable, file = './_aux/modelParams_p.csv', row.names= FALSE)
+write.table(importanceTable, file = './_aux/varImportance_p.csv', row.names=FALSE)
