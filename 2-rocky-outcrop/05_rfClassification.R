@@ -1,4 +1,4 @@
-## -- -- -- -- 04_rfClassification
+## -- -- -- -- 05_rfClassification
 ## Run smileRandomForest classifier - Mapbiomas Collection 9
 ## barbara.silva@ipam.org.br 
 
@@ -7,8 +7,8 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '0'   # input training samples version
-output_version <-  '0'   # output classification version 
+samples_version <- '3'   # input training samples version
+output_version <-  '3'   # output classification version 
 
 ## define hyperparameters for then rf classifier
 n_tree <- 300
@@ -27,7 +27,7 @@ rules <- read.csv('./mosaic_rules.csv')
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## read area of interest
-aoi_vec <- ee$FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5')
+aoi_vec <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3')$geometry()
 aoi_img <- ee$Image(1)$clip(aoi_vec)
 
 ## get predictor names to be used in the classification
@@ -35,7 +35,13 @@ bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
 bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+                      sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+
+# import geomorphometric variables
+relative <- ee$Image ('projects/barbaracosta-ipam/assets/base/CERRADO_MERIT_RELATIVERELIEF')$rename('relative')
+valleydepth <- ee$Image('projects/barbaracosta-ipam/assets/base/CERRADO_MERIT_VALLEYDEPTH')$rename('valleydepth')
+tpi <- ee$Image('projects/barbaracosta-ipam/assets/base/CERRADO_MERIT_TPI')$rename('tpi')
+dem <- ee$Image ('projects/barbaracosta-ipam/assets/base/CERRADO_SRTM_ELEVATION_30m')$rename('dem')
 
 ## paste auxiliary bandnames
 aux_bands <- c('latitude', 'longitude_sin', 'longitude_cos', 'hand', 'amp_ndvi_3yr')
@@ -106,10 +112,14 @@ for (j in 1:length(years)) {
     addBands(lon_sin)$
     addBands(lon_cos)$
     addBands(hand)$
-    addBands(amp_ndvi)
+    addBands(amp_ndvi)$
+    addBands(relative)$
+    addBands(valleydepth)$
+    addBands(tpi)$
+    addBands(dem)
   
   ## get training samples
-  training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_rocky_', years[j], '_v', output_version))
+  training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_rocky_', years[j], '_v', samples_version))
   
   ## train classifier
   classifier <- ee$Classifier$smileRandomForest(numberOfTrees= n_tree)$
@@ -151,7 +161,7 @@ task <- ee$batch$Export$image$toAsset(
   scale= 30,
   maxPixels= 1e13,
   pyramidingPolicy= list('.default' = 'mode'),
-  region= aoi_vec$geometry()
+  region= aoi_vec
 )
 
 ## export 
