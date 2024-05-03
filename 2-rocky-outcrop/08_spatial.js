@@ -1,10 +1,10 @@
-// --- --- --- 07_spatial
+// --- --- --- 08_spatial
 // spatial filter - minimum area
 // barbara.silva@ipam.org.br 
 
 // set metadata 
-var input_version = '0';
-var output_version = '0';
+var input_version = '3';
+var output_version = '3';
 
 // set directories
 var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_frequency_v' + input_version;
@@ -41,7 +41,7 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
         // compute te number of connections
         var connections = classification.select(['classification_' + year_i])
                 .unmask(0)
-                .connectedPixelCount({'maxSize': 100, 'eightConnected': false});
+                .connectedPixelCount({'maxSize': 120, 'eightConnected': false});
         
         // get the focal model when the number of connections of same class is lower than parameter
         var to_mask = focal_mode.updateMask(connections.lte(filter_size));
@@ -73,7 +73,7 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
         // compute te number of connections
         var connections = filtered.select(['classification_' + year_i])
                 .unmask(0)
-                .connectedPixelCount({'maxSize': 100, 'eightConnected': false});
+                .connectedPixelCount({'maxSize': 120, 'eightConnected': false});
         
         // get the focal model when the number of connections of same class is lower than parameter
         var to_mask = focal_mode.updateMask(connections.lte(filter_size));
