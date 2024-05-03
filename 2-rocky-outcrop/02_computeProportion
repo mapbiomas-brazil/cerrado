@@ -1,0 +1,72 @@
+// -- -- -- -- 02_computeProportion
+// compute area by class to be used as reference to estimate samples of rocky outcrop
+// barbara.silva@ipam.org.br
+
+// output version
+var output_version = '3';
+var input_version = '3';
+
+// define classes to be assessed
+var classes = [1, 2, 29];
+
+// output directory
+var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/area/';
+
+// area of interest for rocky outcrop
+var aoi_vec = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3').geometry();
+var aoi = ee.Image(1).clip(aoi_vec);
+Map.addLayer (aoi, {palette: ['red']}, "Area of Interest");
+
+// stable pixels from collection 8
+var stable = ee.Image('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/cerrado_rockyTrainingMask_1985_2022_v'+input_version);
+
+// import the color ramp module from mapbiomas 
+var vis = {
+    'min': 1,
+    'max': 29,
+    'palette': ["32a65e","FFFFB2", "ffaa5f"]
+};
+
+Map.addLayer(stable, vis, 'stable pixels');
+print ('stable', stable);
+
+// get cerrado biome layer
+var cerrado = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019')
+                .filterMetadata('Bioma', 'equals', 'Cerrado');
+
+// define function to compute area (skm)
+var pixelArea = ee.Image.pixelArea().divide(1000000);
+
+// define function to get class area 
+// for each region 
+var getArea = function(feature) {
+  // get classification for the region [i]
+  var mapbiomas_i = stable.clip(feature);
+  // for each class [j]
+  classes.forEach(function(class_j) {
+    // create the reference area
+    var reference_ij = pixelArea.mask(mapbiomas_i.eq(class_j));
+    // compute area and insert as metadata into the feature 
+    feature = feature.set(String(class_j),
+                         ee.Number(reference_ij.reduceRegion({
+                                      reducer: ee.Reducer.sum(),
+                                      geometry: feature.geometry(),
+                                      scale: 30,
+                                      maxPixels: 1e13,
+                                      tileScale: 4
+                         }
+                                    ).get('area')
+                                  )
+                              ); // end of set
+                          }); // end of class_j function
+  // return feature
+  return feature;
+}; 
+
+var computed_obj = cerrado.map(getArea);
+print (computed_obj);
+
+// export computation as GEE asset
+Export.table.toAsset({'collection': computed_obj, 
+                      'description': 'stable_v' + output_version,
+                      'assetId': dirout + 'stable_v' + output_version});
