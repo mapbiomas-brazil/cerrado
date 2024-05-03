@@ -11,6 +11,10 @@ ee_Initialize()
 samples_version <- '4'   # input training samples version
 output_version <-  '5'   # output classification version 
 
+## define classes 
+classes <- c('3', '4', '11', '12', '15', '18', '25', '33')
+classNames <- c('Forest', 'Savanna', 'Wetland', 'Grassland', 'Pasture', 'Agriculture', 'Non-Vegetated', 'Water')
+
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
@@ -212,28 +216,43 @@ for (i in 1:length(regions_list)) {
       #updateMask(region_i_ras)
     
     ## flatten array of probabilities
-    probabilities <- predicted$arrayFlatten(list(list('3', '4', '11', '12', '15', '18', '25', '33')))
-
+    probabilities <- predicted$arrayFlatten(list(classes))
     
     ## rename
-    probabilities <- probabilities$select(c('3', '4', '11', '12', '15', '18', '25', '33'),
-                                          c('Forest', 'Savanna', 'Wetland', 'Grassland', 'Pasture', 'Agriculture', 'Non-Vegetated', 'Water'))
+    probabilities <- probabilities$select(classes, classNames)
+    
+    ## get classification from maximum value of probability 
+    ## convert probabilities to an array
+    probabilitiesArray <- probabilities$toArray()$
+      ## get position of max value
+      arrayArgmax()$
+      ## get values
+      arrayGet(0)
+    
+    ## remap to mapbiomas collection
+    classificationImage <- probabilitiesArray$remap(
+      from= seq(0, length(classes)-1),
+      to= as.numeric(classes)
+    )$rename('classification')
+    
+    
+    ## include classification as a band 
+    toExport <- classificationImage$addBands(probabilities)
     
     ## set properties
-    probabilities <- probabilities$
+    toExport <- toExport$
       set('collection', '9')$
       set('version', output_version)$
       set('biome', 'CERRADO')$
       set('mapb', as.numeric(regions_list[i]))$
-      set('year', as.numeric(years[j]))$
-      set('type', 'probability')
-  
+      set('year', as.numeric(years[j]))
+
     ## create filename
-    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_v', output_version)
+    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_vT', output_version)
 
     ## build task
     task <- ee$batch$Export$image$toAsset(
-      image= probabilities$multiply(100)$toInt8(),
+      image= probabilities$multiply(100)$round()$toInt8(),
       description= file_name,
       assetId= paste0(output_asset, file_name),
       scale= 30,
