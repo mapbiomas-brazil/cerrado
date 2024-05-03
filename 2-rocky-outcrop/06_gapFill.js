@@ -4,7 +4,8 @@
 
 // set the rocky outcrop extent 
 var geometry = ee.Geometry.Polygon (
-[[[-41.89424073899461,-3.5402242777700574],
+[[
+[-41.89424073899461,-3.5402242777700574],
 [-48.83760011399461,-6.385663504252147],
 [-48.96943605149461,-10.557420640233374],
 [-50.81513917649461,-13.906814250754953],
@@ -13,24 +14,28 @@ var geometry = ee.Geometry.Polygon (
 [-55.78095948899461,-22.374910342856523],
 [-53.18818605149461,-18.463398351122954],
 [-49.36494386399461,-17.92066736932659],
-[-47.82685792649461,-22.21226843307078],
+[-51.25193743299323,-24.41630980864504],
+[-51.07881105149461,-26.06116808540473],
 [-42.64131105149461,-19.99858562581205],
 [-41.76240480149461,-13.821484186840916],
-[-43.21260011399461,-13.565307050922476],
+[-42.07002198899461,-12.666540189072778],
 [-43.08076417649461,-8.998421853698893],
+[-43.192266274702234,-8.357590785527188],
+[-43.83007584726284,-7.933765648854686],
 [-45.10224855149461,-7.214743125944735],
 [-40.26826417649461,-5.336504449649562],
 [-41.05927980149461,-3.1015101677947055],
-[-41.89424073899461,-3.5402242777700574]]]);
+[-41.89424073899461,-3.5402242777700574]
+]]);
 
 // set metadata 
-var input_version = '0';
-var output_version = '0';
+var input_version = '3';
+var output_version = '3';
 
 // set directories
-var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class/CERRADO_col9_rocky_v0';
+var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class/CERRADO_col9_rocky_v'+input_version;
 var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/';
-var filename = 'CERRADO_col8_rocky_gapfill_v';
+var filename = 'CERRADO_col9_rocky_gapfill_v';
 
 // import classification 
 var image = ee.Image(input);
@@ -46,7 +51,7 @@ var vis = {
     'palette': require('users/mapbiomas/modules:Palettes.js').get('classification8')
 };
 
-Map.addLayer(image.select(['classification_2022']), vis, 'input');
+Map.addLayer(image.select(['classification_2023']), vis, 'input');
 
 // set the list of years to be filtered
 var years = ee.List.sequence({'start': 1985, 'end': 2023, step: 1}).getInfo();
@@ -147,7 +152,7 @@ var imageFilledYear = applyGapFill(imagePixelYear);
 
 // check filtered image
 print ('output classification', imageFilledtnt0);
-Map.addLayer(imageFilledtnt0.select('classification_2022'), vis, 'filtered');
+Map.addLayer(imageFilledtnt0.select('classification_2023'), vis, 'filtered');
 
 // write metadata
 imageFilledtnt0 = imageFilledtnt0.set('version', output_version);
@@ -162,6 +167,5 @@ Export.image.toAsset({
     },
     'region': geometry,
     'scale': 30,
-    'maxPixels': 1e13
+    'maxPixels': 1e13,
 });
-
