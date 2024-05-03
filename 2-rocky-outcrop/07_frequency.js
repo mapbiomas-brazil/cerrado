@@ -1,10 +1,10 @@
-// --- --- --- 06_frequency
+// --- --- --- 07_frequency
 // frequency filter 
 // barbara.silva@ipam.org.br 
 
 // set metadata 
-var input_version = '0';
-var output_version = '0';
+var input_version = '3';
+var output_version = '3';
 
 // set directories
 var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_v' + input_version;
@@ -34,8 +34,8 @@ var filterFreq = function(image) {
     Map.addLayer(rocky, {palette:['purple', 'red', 'orange', 'yellow', 'green', 'darkgreen'], min:20, max:70}, 'frequency');
     
     // stabilize rocky when:
-    var filtered = ee.Image(0).where(rocky.gte(60), 29)
-                              .where(rocky.lt(60), 99);
+    var filtered = ee.Image(0).where(rocky.gte(50), 29)
+                              .where(rocky.lt(50), 99);
     
     // get only pixels to be filtered
     filtered = filtered.updateMask(filtered.neq(0));
@@ -49,7 +49,7 @@ var classification_filtered = filterFreq(classification);
 // plot
 Map.addLayer(classification.select(['classification_2021']), vis, 'classification');
 Map.addLayer(classification_filtered.select(['classification_2021']), vis, 'filtered');
-print ('output', classification_filtered)
+print ('output', classification_filtered);
 
 // export as GEE asset
 Export.image.toAsset({
