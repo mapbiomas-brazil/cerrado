@@ -1,4 +1,4 @@
-## --- --- --- 03_getSignatures
+## --- --- --- 04_getSignatures
 ## Exported data is composed by spatialPoints with spectral signature values grouped by column
 ## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
 ## barbara.silva@ipam.org.br
@@ -8,10 +8,10 @@ library(rgee)
 ee_Initialize()
 
 ## define strings to use as metadata
-version <- "0"     ## version string
+version <- "3"     ## version string
 
 ## define output directory
-dirout <- 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/training/v0/'
+dirout <- 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/training/v3/'
 
 ## biome
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
@@ -24,34 +24,25 @@ mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosai
 ## get mosaic rules
 rules <- read.csv('./mosaic_rules.csv')
 
-## non rocky samples
-samples_non_rocky <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/points/samplePoints_v0')
-
-## rocky outcrop
-samples_rocky <- ee$FeatureCollection('users/barbarasilvaIPAM/rocky_outcrop/collection8/sample/afloramento_collect_v5')$
-  ##insert class number based on mapbiomas
-  map(function(feature) {
-    return(feature$set(list('class' = 29)))
-  })
-
-## merge to get samples dataset 
-samples <- samples_non_rocky$merge(samples_rocky);
-
-## compute random column
-samples <- samples$randomColumn()
-
-## subset 70% randomly
-samples <- samples$filter(ee$Filter$lt('random', 0.7))
+## get samples
+samples<- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/points/samplePoints_v3')
 
 ## define years to extract spectral signatures (temporal operator)
 years <- unique(mosaic$aggregate_array('year')$getInfo())
+#years <- c(1989,2012,2023)
 
 ## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
 bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+                      sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+
+# import geomorphometric variables
+relative <- ee$Image ('projects/barbaracosta-ipam/assets/base/CERRADO_MERIT_RELATIVERELIEF')$rename('relative')
+valleydepth <- ee$Image('projects/barbaracosta-ipam/assets/base/CERRADO_MERIT_VALLEYDEPTH')$rename('valleydepth')
+tpi <- ee$Image('projects/barbaracosta-ipam/assets/base/CERRADO_MERIT_TPI')$rename('tpi')
+dem <- ee$Image ('projects/barbaracosta-ipam/assets/base/CERRADO_SRTM_ELEVATION_30m')$rename('dem')
 
 ## for each year
 for (j in 1:length(years)) {
@@ -67,11 +58,11 @@ for (j in 1:length(years)) {
   lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
     cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
   
-  ## get heigth above nearest drainage
+  ## get height above nearest drainage
   hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
     rename('hand')
   
-  ## get the landsat mosaic for the current year 
+  ## get the Landsat mosaic for the current year 
   mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
     filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
     mosaic()$select(bands)
@@ -93,7 +84,7 @@ for (j in 1:length(years)) {
                                                 mosaic_i1$select('ndvi_median_dry'),
                                                 mosaic_i2$select('ndvi_median_dry')))$min()
     
-    ## compute the mmaximum NDVI over wet season 
+    ## compute the maximum NDVI over wet season 
     max_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_wet'),
                                                 mosaic_i1$select('ndvi_median_wet'),
                                                 mosaic_i2$select('ndvi_median_wet')))$max()
@@ -113,6 +104,10 @@ for (j in 1:length(years)) {
     addBands(lon_cos)$
     addBands(hand)$
     addBands(amp_ndvi)$
+    addBands(relative)$
+    addBands(valleydepth)$
+    addBands(tpi)$
+    addBands(dem)$
     addBands(ee$Image(years[j])$int16()$rename('year'))
   
   ## subset sample points for the region 
@@ -123,15 +118,17 @@ for (j in 1:length(years)) {
   training_i <- mosaic_i$sampleRegions(collection= samples_ij,
                                        scale= 30,
                                        geometries= TRUE,
-                                       tileScale= 2)
+                                       tileScale= 4)
   
   ## remove NA or NULL from extracted data
   training_i <- training_i$filter(ee$Filter$notNull(bands))
   
   ## build task to export data
   task <- ee$batch$Export$table$toAsset(
-    training_i, paste0('train_col9_rocky_', years[j] , '_v' , version),
-    paste0(dirout , 'train_col9_rocky_', years[j] , '_v' , version))
+    training_i, 
+    paste0('train_col9_rocky_', years[j] , '_v' , version),
+    paste0(dirout , 'train_col9_rocky_', years[j] , '_v' , version)
+  )
   
   ## start task
   task$start()
