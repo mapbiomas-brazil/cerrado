@@ -222,6 +222,10 @@ for (i in 1:length(regions_list)) {
     ## rename
     probabilities <- probabilities$select(classes, classNames)
     
+    ## scale to 0-100
+    probabilities <- probabilities$multiply(100)$round()$toInt8()
+    
+    
     ## get classification from maximum value of probability 
     ## convert probabilities to an array
     probabilitiesArray <- probabilities$toArray()$
@@ -253,7 +257,7 @@ for (i in 1:length(regions_list)) {
 
     ## build task
     task <- ee$batch$Export$image$toAsset(
-      image= probabilities$multiply(100)$round()$toInt8(),
+      image= toExport,
       description= file_name,
       assetId= paste0(output_asset, file_name),
       scale= 30,
