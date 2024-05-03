@@ -208,20 +208,19 @@ for (i in 1:length(regions_list)) {
       train(training_ij, 'reference', bandNames_list)
     
     ## perform classification and mask only to region 
-    predicted <- mosaic_i$classify(classifier)$
-      updateMask(region_i_ras)
-    
-    print(predicted$getInfo())
+    predicted <- mosaic_i$classify(classifier)#$
+      #updateMask(region_i_ras)
     
     ## flatten array of probabilities
-    probabilities <- predicted$arrayFlatten(list(c('3', '4', '11', '12', '15', '18', '25', '33')))
+    probabilities <- predicted$arrayFlatten(list(list('3', '4', '11', '12', '15', '18', '25', '33')))
+
     
     ## rename
     probabilities <- probabilities$select(c('3', '4', '11', '12', '15', '18', '25', '33'),
                                           c('Forest', 'Savanna', 'Wetland', 'Grassland', 'Pasture', 'Agriculture', 'Non-Vegetated', 'Water'))
-
+    
     ## set properties
-    predicted <- probabilities$
+    probabilities <- probabilities$
       set('collection', '9')$
       set('version', output_version)$
       set('biome', 'CERRADO')$
@@ -234,7 +233,7 @@ for (i in 1:length(regions_list)) {
 
     ## build task
     task <- ee$batch$Export$image$toAsset(
-      image= predicted$toInt8(),
+      image= probabilities$multiply(100)$toInt8(),
       description= file_name,
       assetId= paste0(output_asset, file_name),
       scale= 30,
