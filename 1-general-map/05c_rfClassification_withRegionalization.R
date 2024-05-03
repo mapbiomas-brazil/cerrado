@@ -226,7 +226,8 @@ for (i in 1:length(regions_list)) {
       set('version', output_version)$
       set('biome', 'CERRADO')$
       set('mapb', as.numeric(regions_list[i]))$
-      set('year', as.numeric(years[j]))
+      set('year', as.numeric(years[j]))$
+      set('type', 'probability')
   
     ## create filename
     file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_v', output_version)
