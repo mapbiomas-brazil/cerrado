@@ -4,7 +4,7 @@
 
 // set metadata 
 var input_version = '3';
-var output_version = '3';
+var output_version = '4';
 
 // set directories
 var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_frequency_v' + input_version;
