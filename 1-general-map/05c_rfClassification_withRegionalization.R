@@ -211,10 +211,15 @@ for (i in 1:length(regions_list)) {
     predicted <- mosaic_i$classify(classifier)$
       updateMask(region_i_ras)
     
+    print(predicted$getInfo())
+    
     ## flatten array of probabilities
     probabilities <- predicted$arrayFlatten(list(c('3', '4', '11', '12', '15', '18', '25', '33')))
-    #print(probabilities$bandNames()$getInfo())
     
+    ## rename
+    probabilities <- probabilities$select(c('3', '4', '11', '12', '15', '18', '25', '33'),
+                                          c('Forest', 'Savanna', 'Wetland', 'Grassland', 'Pasture', 'Agriculture', 'Non-Vegetated', 'Water'))
+
     ## set properties
     predicted <- probabilities$
       set('collection', '9')$
