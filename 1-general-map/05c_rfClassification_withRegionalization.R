@@ -9,7 +9,7 @@ ee_Initialize()
 
 ## define strings to be used as metadata
 samples_version <- '4'   # input training samples version
-output_version <-  '5'   # output classification version 
+output_version <-  '6'   # output classification version 
 
 ## define classes 
 classes <- c('3', '4', '11', '12', '15', '18', '25', '33')
@@ -253,7 +253,7 @@ for (i in 1:length(regions_list)) {
       set('year', as.numeric(years[j]))
 
     ## create filename
-    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_vX', output_version)
+    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_v', output_version)
 
     ## build task
     task <- ee$batch$Export$image$toAsset(
