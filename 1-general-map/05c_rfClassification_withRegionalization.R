@@ -211,8 +211,12 @@ for (i in 1:length(regions_list)) {
     predicted <- mosaic_i$classify(classifier)$
       updateMask(region_i_ras)
     
+    ## flatten array of probabilities
+    probabilities <- predicted$arrayFlatten(list(c('3', '4', '11', '12', '15', '18', '25', '33')))
+    #print(probabilities$bandNames()$getInfo())
+    
     ## set properties
-    predicted <- predicted$
+    predicted <- probabilities$
       set('collection', '9')$
       set('version', output_version)$
       set('biome', 'CERRADO')$
