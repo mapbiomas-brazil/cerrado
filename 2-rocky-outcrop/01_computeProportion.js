@@ -1,69 +1,83 @@
-// -- -- -- -- 01_computeProportion
-// compute area by class to be used as reference to estimate samples of rocky outcrop
+// -- -- -- -- 01_trainingMask
+// generate training mask based in stable pixels from mapbiomas collection 8
 // barbara.silva@ipam.org.br
 
-// input metadata
-var version = '0';
+// output version
+var version = '3';
 
-// define classes to be assessed
-var classes = [3, 4, 11, 12, 15, 19, 21, 33];
+// set directory for the output file
+var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/';
 
-// output directory
-var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/area/';
+// set area of interest (AOI)
+var aoi_vec = ee.FeatureCollection("projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3");
 
-// area of interest for rocky outcrop
-var aoi = ee.Image(1).clip(ee.FeatureCollection('projects/ee-barbarasilvaipam/assets/collection8-rocky/masks/aoi_v5'));
-Map.addLayer (aoi, {palette: ['red']}, "Area of Interest");
+// transform AOI into image
+var aoi_img = ee.Image(1).clip(aoi_vec);
+Map.addLayer(aoi_vec, {palette:['red']}, 'Area of Interest');
 
-// stable pixels from collection 8
-var stable = ee.Image('users/dh-conciani/collection9/masks/cerrado_trainingMask_1985_2022_v0')
-                .updateMask(aoi.eq(1));
-
-// import the color ramp module from mapbiomas 
+// random color ramp  
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
-    'min': 0,
-    'max': 62,
-    'palette': palettes.get('classification8')
+    'min': 1,
+    'max': 29,
+    'palette': ["32a65e","FFFFB2", "ffaa5f"]
 };
 
-Map.addLayer(stable, vis, 'stable');
+// load collection 8.0
+var collection = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1').updateMask(aoi_img);
 
-// get cerrado biome layer
-var cerrado = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019')
-                .filterMetadata('Bioma', 'equals', 'Cerrado');
+// set function to reclassify collection by native vegetation (1), non‑vegetation (2) and rocky outcrop (29)
+var reclassify = function(image) {
+  return image.remap({
+    'from': [3, 4, 5, 6, 49, 11, 12, 32, 29, 50, 13, 15, 19, 39, 20, 40, 62, 41, 46, 47, 35, 48, 9, 21, 23, 24, 30, 25, 33, 31, 27],
+    'to':   [1, 1, 1, 1,  1,  1,  1,  1, 29,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 2,  2,  2,  2,  2,  2,  2,  2,  2]
+    }
+  );
+};
 
-// define function to compute area (skm)
-var pixelArea = ee.Image.pixelArea().divide(1000000);
+// set function to compute the number of classes over a given time-series 
+var numberOfClasses = function(image) {
+    return image.reduce(ee.Reducer.countDistinctNonNull()).rename('number_of_classes');
+};
 
-// define function to get class area 
-// for each region 
-var getArea = function(feature) {
-  // get classification for the region [i]
-  var mapbiomas_i = stable.clip(feature);
-  // for each class [j]
-  classes.forEach(function(class_j) {
-    // create the reference area
-    var reference_ij = pixelArea.mask(mapbiomas_i.eq(class_j));
-    // compute area and insert as metadata into the feature 
-    feature = feature.set(String(class_j),
-                         ee.Number(reference_ij.reduceRegion({
-                                      reducer: ee.Reducer.sum(),
-                                      geometry: feature.geometry(),
-                                      scale: 30,
-                                      maxPixels: 1e13}
-                                    ).get('area')
-                                  )
-                              ); // end of set
-                          }); // end of class_j function
-  // return feature
-  return feature;
-}; 
+// set years to be processed 
+var years = [ 1985, 1986, 1987, 1988, 1989, 1990, 
+              1991, 1992, 1993, 1994, 1995, 1996, 
+              1997, 1998, 1999, 2000, 2001, 2002, 
+              2003, 2004, 2005, 2006, 2007, 2008, 
+              2009, 2010, 2011, 2012, 2013, 2014,
+              2015, 2016, 2017, 2018, 2019, 2020, 
+              2021, 2022];
 
-var computed_obj = cerrado.map(getArea);
-print (computed_obj);
+// remap collection to  native vegetation and non‑vegetation classes 
+var recipe = ee.Image([]);      // build empty container
+// for each year
+years.forEach(function(i) {
+  // select classification for the year i
+  var yi = reclassify(collection.select('classification_' + i)).rename('classification_' + i);
+  // store into recipe
+  recipe = recipe.addBands(yi);
+});
 
-// export computation as GEE asset
-Export.table.toAsset({'collection': computed_obj, 
-                      'description': 'stable_v' + version,
-                      'assetId': dirout + 'stable_v' + version});
+// get the number of classes 
+var nClass = numberOfClasses(recipe);
+
+// now, get only the stable pixels (nClass equals to one)
+var stable = recipe.select(0).updateMask(nClass.eq(1));
+
+// Plot stable pixels
+Map.addLayer(stable, vis, 'MB stable pixels');
+print ('MB stable pixels', stable);
+
+// export to workspace asset
+Export.image.toAsset({
+    "image": stable,
+    "description": 'cerrado_rockyTrainingMask_1985_2022_v' + version,
+    "assetId": dirout + 'cerrado_rockyTrainingMask_1985_2022_v'+ version,
+    "scale": 30,
+    "pyramidingPolicy": {
+        '.default': 'mode'
+    },
+    "maxPixels": 1e13,
+    "region": aoi_vec.geometry()
+});
