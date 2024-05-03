@@ -4,6 +4,7 @@
 
 ## read libraries
 library(rgee)
+library(dplyr)
 ee_Initialize()
 
 ## define strings to be used as metadata
@@ -198,7 +199,7 @@ for (i in 1:length(regions_list)) {
     
     ## get bands
     bandNames_list <- mosaic_i$bandNames()$getInfo()
-    
+
     ## train classifier
     classifier <- ee$Classifier$smileRandomForest(
       numberOfTrees= n_tree,
@@ -220,10 +221,10 @@ for (i in 1:length(regions_list)) {
   
     ## create filename
     file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_v', output_version)
-    
+
     ## build task
     task <- ee$batch$Export$image$toAsset(
-      image= stacked_classification$toInt8(),
+      image= predicted$toInt8(),
       description= file_name,
       assetId= paste0(output_asset, file_name),
       scale= 30,
