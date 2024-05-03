@@ -111,6 +111,7 @@ for (i in 1:length(regions_list)) {
   hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$
     mosaic()$
     toInt16()$
+    unmask(0)$
     updateMask(region_i_ras)$
     rename('hand')
   
@@ -212,8 +213,8 @@ for (i in 1:length(regions_list)) {
       train(training_ij, 'reference', bandNames_list)
     
     ## perform classification and mask only to region 
-    predicted <- mosaic_i$classify(classifier)#$
-      #updateMask(region_i_ras)
+    predicted <- mosaic_i$classify(classifier)$
+      updateMask(region_i_ras)
     
     ## flatten array of probabilities
     probabilities <- predicted$arrayFlatten(list(classes))
@@ -238,7 +239,7 @@ for (i in 1:length(regions_list)) {
     
     ## include classification as a band 
     toExport <- classificationImage$addBands(probabilities)
-    
+
     ## set properties
     toExport <- toExport$
       set('collection', '9')$
@@ -248,7 +249,7 @@ for (i in 1:length(regions_list)) {
       set('year', as.numeric(years[j]))
 
     ## create filename
-    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_vT', output_version)
+    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_vX', output_version)
 
     ## build task
     task <- ee$batch$Export$image$toAsset(
