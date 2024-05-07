@@ -11,9 +11,11 @@ ee_Initialize()
 samples_version <- '4'   # input training samples version
 output_version <-  '6'   # output classification version 
 
-## define classes 
-classes <- c('3', '4', '11', '12', '15', '18', '25', '33')
-classNames <- c('Forest', 'Savanna', 'Wetland', 'Grassland', 'Pasture', 'Agriculture', 'Non-Vegetated', 'Water')
+## define class dictionary
+classDict <- list(
+  class= c(3, 4, 11, 12, 15, 18, 25, 33),
+  name = c('Forest', 'Savanna', 'Wetland', 'Grassland', 'Pasture', 'Agriculture', 'Non-Vegetated', 'Water')
+  )
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
@@ -216,11 +218,15 @@ for (i in 1:length(regions_list)) {
     predicted <- mosaic_i$classify(classifier)$
       updateMask(region_i_ras)
     
+    ## retrieve classified classes
+    classes <- sort(training_ij$aggregate_array('reference')$distinct()$getInfo())
+    
     ## flatten array of probabilities
-    probabilities <- predicted$arrayFlatten(list(classes))
+    probabilities <- predicted$arrayFlatten(list(as.character(classes)))
     
     ## rename
-    probabilities <- probabilities$select(classes, classNames)
+    probabilities <- probabilities$select(as.character(classes), 
+                                          classDict$name[match(classes, classDict$class)])
     
     ## scale to 0-100
     probabilities <- probabilities$multiply(100)$round()$toInt8()
