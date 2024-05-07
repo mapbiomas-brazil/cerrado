@@ -5,11 +5,43 @@
 ## read libraries
 library(rgee)
 library(dplyr)
+library(stringr)
 ee_Initialize()
 
 ## define strings to be used as metadata
 samples_version <- '4'   # input training samples version
 output_version <-  '6'   # output classification version 
+
+## define output asset
+output_asset <- 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-MAP-PROBABILITY/'
+
+## read landsat mosaic 
+mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
+  filterMetadata('biome', 'equals', 'CERRADO')
+
+## define years to be classified
+years <- unique(mosaic$aggregate_array('year')$getInfo())
+
+## read classification regions (vetor)
+regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
+
+### classification regions (imageCollection, one region per image)
+regions_ic <- 'users/dh-conciani/collection7/classification_regions/eachRegion_v2_10m/'
+
+## define regions to be processed 
+regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
+
+## get already computed files (for current version)
+files <- ee_manage_assetlist(path_asset= output_asset)
+
+# Generate expected files
+expected <- as.vector(outer(regions_list, years, function(r, y) {
+  paste0(output_asset, 'CERRADO_', r, '_', y, '_v', output_version)
+  })
+)
+
+# Find remaining files to process
+missing <- expected[!expected %in% files$ID]
 
 ## define class dictionary
 classDict <- list(
@@ -17,30 +49,11 @@ classDict <- list(
   name = c('Forest', 'Savanna', 'Wetland', 'Grassland', 'Pasture', 'Agriculture', 'Non-Vegetated', 'Water')
   )
 
-## read landsat mosaic 
-mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
-  filterMetadata('biome', 'equals', 'CERRADO')
-
-## define output asset
-output_asset <- 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-MAP-PROBABILITY/'
-
-## define years to be classified
-years <- unique(mosaic$aggregate_array('year')$getInfo())
-
-## get mosaic rules
-rules <- read.csv('./_aux/mosaic_rules.csv')
-
-## read classification regions (vetor)
-regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
-
-## define regions to be processed 
-regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
-
 ### training samples (prefix string)
 training_dir <- 'users/dh-conciani/collection9/training/'
 
-### classification regions (imageCollection, one region per image)
-regions_ic <- 'users/dh-conciani/collection7/classification_regions/eachRegion_v2_10m/'
+## get mosaic rules
+rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
@@ -65,6 +78,10 @@ param_rf <- param_rf %>%
   group_by(region) %>%
   slice_max(order_by = accuracy, n = 1) %>%
   ungroup()
+
+# Extract the region using regex
+regions_list <- unique(gsub(".*CERRADO_([0-9]+)_.*", "\\1", missing))
+
 
 ## for each region
 for (i in 1:length(regions_list)) {
@@ -122,31 +139,37 @@ for (i in 1:length(regions_list)) {
   ## add 2023 
   fire_age <- fire_age$addBands(fire_age$select('classification_2022')$rename('classification_2023'))
   
+  ## retain only the entries for the region 
+  missing_i <- missing[grep(paste0('CERRADO_', regions_list[i]), missing)]
+  
+  # Extract the years using sregex
+  years_ij <- as.numeric(str_extract(missing_i, "[0-9]{4}"))
+  
   ## for each year
-  for (j in 1:length(years)) {
-    print(paste0('----> ', years[j]))
+  for (j in 1:length(years_ij)) {
+    print(paste0('----> ', years_ij[j]))
     
     ## get the sentinel mosaic for the current year 
-    mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
-      filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor)$
+    mosaic_i <- mosaic$filterMetadata('year', 'equals', years_ij[j])$
+      filterMetadata('satellite', 'equals', subset(rules, year == years_ij[j])$sensor)$
       mosaic()$
       updateMask(region_i_ras)$   # filter for the region
       select(bands)               # select only relevant bands
     
     ## compute the NDVI amplitude, following mosaic rules 
     ## if the year is greater than 1986, get the 3yr NDVI amplitude
-    if (years[j] > 1986) {
+    if (years_ij[j] > 1986) {
       ##print('Computing NDVI Amplitude (3yr)')
       ## get previous year mosaic 
-      mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
-        filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
+      mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years_ij[j] - 1)$
+        filterMetadata('satellite', 'equals', subset(rules, year == years_ij[j])$sensor_past1)$
         mosaic()$
         select(c('ndvi_median_dry','ndvi_median_wet'))$
         updateMask(region_i_ras)
       
       ## get previous 2yr mosaic 
-      mosaic_i2 <- mosaic$filterMetadata('year', 'equals', years[j] - 2)$
-        filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past2)$
+      mosaic_i2 <- mosaic$filterMetadata('year', 'equals', years_ij[j] - 2)$
+        filterMetadata('satellite', 'equals', subset(rules, year == years_ij[j])$sensor_past2)$
         mosaic()$
         select(c('ndvi_median_dry','ndvi_median_wet'))$
         updateMask(region_i_ras)
@@ -167,14 +190,14 @@ for (i in 1:length(regions_list)) {
         updateMask(region_i_ras)
       
       ## get the time since last fire
-      fire_age_i <- fire_age$select(paste0('classification_', years[j]))$
+      fire_age_i <- fire_age$select(paste0('classification_',years_ij[j]))$
         rename('fire_age')$
         updateMask(region_i_ras)
       
     }
     
     ## if the year[j] is lower than 1987, get null image as amp
-    if (years[j] < 1987){
+    if (years_ij[j] < 1987){
       amp_ndvi <- ee$Image(0)$
         rename('amp_ndvi_3yr')$
         updateMask(region_i_ras)
@@ -194,13 +217,13 @@ for (i in 1:length(regions_list)) {
       addBands(fire_age_i)
     
     ## limit water samples only to 175 samples (avoid over-estimation)
-    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    water_samples <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_reg', regions_list[i], '_', years_ij[j], '_v', samples_version))$
       filter(ee$Filter$eq("reference", 33))$
       filter(ee$Filter$eq("hand", 0))$
       limit(175)                        ## insert water samples limited to 175 
     
     ## merge filtered water with other classes
-    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_reg', regions_list[i], '_', years[j], '_v', samples_version))$
+    training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_reg', regions_list[i], '_', years_ij[j], '_v', samples_version))$
       filter(ee$Filter$neq("reference", 33))$ ## remove water samples
       merge(water_samples)
     
@@ -256,10 +279,10 @@ for (i in 1:length(regions_list)) {
       set('version', output_version)$
       set('biome', 'CERRADO')$
       set('mapb', as.numeric(regions_list[i]))$
-      set('year', as.numeric(years[j]))
+      set('year', as.numeric(years_ij[j]))
 
     ## create filename
-    file_name <- paste0('CERRADO_', regions_list[i], '_', years[j], '_v', output_version)
+    file_name <- paste0('CERRADO_', regions_list[i], '_', years_ij[j], '_v', output_version)
 
     ## build task
     task <- ee$batch$Export$image$toAsset(
