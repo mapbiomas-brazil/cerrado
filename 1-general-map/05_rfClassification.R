@@ -9,7 +9,7 @@ library(stringr)
 ee_Initialize()
 
 ## define strings to be used as metadata
-samples_version <- '4'   # input training samples version
+samples_version <- '8'   # input training samples version
 output_version <-  '8'   # output classification version 
 
 ## define output asset
@@ -50,7 +50,7 @@ classDict <- list(
 )
 
 ### training samples (prefix string)
-training_dir <- 'users/dh-conciani/collection9/training/'
+training_dir <- 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/training/'
 
 ## get mosaic rules
 rules <- read.csv('./_aux/mosaic_rules.csv')
@@ -59,8 +59,7 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
-bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' )]
 
 # Extract the region using regex
 regions_list <- unique(gsub(".*CERRADO_([0-9]+)_.*", "\\1", missing))
