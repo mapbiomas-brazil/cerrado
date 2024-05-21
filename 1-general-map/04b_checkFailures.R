@@ -8,10 +8,11 @@ library(stringr)
 ee_Initialize()
 
 ## define version to be checked 
-version <- "4"     ## version string
+version_in <- "4"     ## version string
+version_out <- "8"
 
 ## set folder to be checked 
-dirout <- paste0('users/dh-conciani/collection9/training/v', version, '/')
+dirout <- paste0('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/training/v', version_out, '/')
 
 ## list files on the asset
 files <- ee_manage_assetlist(path_asset= dirout)
@@ -24,7 +25,7 @@ years <- 1985:2023
 
 # Generate expected patterns
 expected <- as.vector(outer(regions, years, function(r, y) {
-  paste0('users/dh-conciani/collection9/training/v', version, '/train_col9_reg', r, '_', y, '_v', version)
+  paste0('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/training/v', version_out, '/train_col9_reg', r, '_', y, '_v', version_out)
   })
 )
 
@@ -48,7 +49,7 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 regionsCollection <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
 ## import sample points
-samples <- ee$FeatureCollection(paste0('users/dh-conciani/collection9/sample/points/samplePoints_v', version))
+samples <- ee$FeatureCollection(paste0('users/dh-conciani/collection9/sample/points/samplePoints_v', version_in))
 
 ## time since last fire
 fire_age <- ee$Image('users/barbarasilvaIPAM/collection8/masks/fire_age_v2')
@@ -59,8 +60,7 @@ fire_age <- fire_age$addBands(fire_age$select('classification_2022')$rename('cla
 bands <- mosaic$first()$bandNames()$getInfo()
 
 ## remove bands with 'cloud' or 'shade' into their names
-bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' |
-                         sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'shade') ]
+bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud')]
 
 ## process each missing file 
 for(m in 1:length(missing)) {
@@ -154,8 +154,8 @@ for(m in 1:length(missing)) {
   
   ## build task to export data
   task <- ee$batch$Export$table$toAsset(
-    training_i, paste0('train_col9_reg' , region_list , '_' , year_i , '_v' , version),
-    paste0(dirout , 'train_col9_reg' , region_list , '_' , year_i , '_v' , version))
+    training_i, paste0('train_col9_reg' , region_list , '_' , year_i , '_v' , version_out),
+    paste0(dirout , 'train_col9_reg' , region_list , '_' , year_i , '_v' , version_out))
   
   ## start task
   task$start()
