@@ -3,12 +3,15 @@
 ## barbara.silva@ipam.org.br 
 
 ## import libraries
+## read libraries
 library(rgee)
+library(dplyr)
+library(stringr)
 ee_Initialize()
 
 ## define strings to be used as metadata
 samples_version <- '3'   # input training samples version
-output_version <-  '3'   # output classification version 
+output_version <-  '4'   # output classification version 
 
 ## define hyperparameters for then rf classifier
 n_tree <- 300
@@ -50,25 +53,52 @@ aux_bands <- c('latitude', 'longitude_sin', 'longitude_cos', 'hand', 'amp_ndvi_3
 ### training samples (prefix string)
 training_dir <- 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/training/'
 
+## define class dictionary
+classDict <- list(
+  class= c(1, 2, 29),
+  name = c('Natural', 'Antropic', 'RockyOutcrop')
+)
+
 ## for each year
 for (j in 1:length(years)) {
   print(paste0('----> ', years[j]))
   
   ## compute additional bands
   geo_coordinates <- ee$Image$pixelLonLat()$updateMask(aoi_img$eq(1))
+  
   ## get latitude
-  lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
+  lat <- geo_coordinates$select('latitude')$
+    add(5)$
+    multiply(-1)$
+    multiply(1000)$
+    toInt16()
+  
   ## get longitude
-  lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
+  lon_sin <- geo_coordinates$select('longitude')$
+    multiply(pi)$
+    divide(180)$
+    sin()$
+    multiply(-1)$
+    multiply(10000)$
+    toInt16()$
+    rename('longitude_sin')
+  
   ## cosine
-  lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
+  lon_cos <- geo_coordinates$select('longitude')$
+    multiply(pi)$
+    divide(180)$
+    cos()$
+    multiply(-1)$
+    multiply(10000)$
+    toInt16()$
+    rename('longitude_cos')
   
   ## get heigth above nearest drainage
-  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
-    rename('hand')$
-    updateMask(aoi_img$eq(1))
+  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$
+    mosaic()$
+    toInt16()$
+    updateMask(aoi_img$eq(1))$
+    rename('hand')
   
   ## get the landsat mosaic for the current year 
   mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
@@ -76,6 +106,7 @@ for (j in 1:length(years)) {
     mosaic()$select(bands)$
     updateMask(aoi_img$eq(1))
   
+  ## compute the NDVI amplitude, following mosaic rules
   ## if the year is greater than 1986, get the 3yr NDVI amplitude
   if (years[j] > 1986) {
     print('Computing NDVI Amplitude (3yr)')
@@ -83,6 +114,7 @@ for (j in 1:length(years)) {
     mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
       filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
       mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$updateMask(aoi_img$eq(1))
+    
     ## get previous 2yr mosaic 
     mosaic_i2 <- mosaic$filterMetadata('year', 'equals', years[j] - 2)$
       filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past2)$
@@ -93,7 +125,7 @@ for (j in 1:length(years)) {
                                                 mosaic_i1$select('ndvi_median_dry'),
                                                 mosaic_i2$select('ndvi_median_dry')))$min()
     
-    ## compute the mmaximum NDVI over wet season 
+    ## compute the maximum NDVI over wet season 
     max_ndvi <- ee$ImageCollection$fromImages(c(mosaic_i$select('ndvi_median_wet'),
                                                 mosaic_i1$select('ndvi_median_wet'),
                                                 mosaic_i2$select('ndvi_median_wet')))$max()
@@ -118,21 +150,55 @@ for (j in 1:length(years)) {
     addBands(tpi)$
     addBands(dem)
   
+  ## get bands
+  bandNames_list <- mosaic_i$bandNames()$getInfo()
+  
   ## get training samples
   training_ij <- ee$FeatureCollection(paste0(training_dir, 'v', samples_version, '/train_col9_rocky_', years[j], '_v', samples_version))
   
   ## train classifier
-  classifier <- ee$Classifier$smileRandomForest(numberOfTrees= n_tree)$
-    train(training_ij, 'class', c(bands, aux_bands))
+  classifier <- ee$Classifier$smileRandomForest(
+    numberOfTrees= n_tree)$
+    setOutputMode('MULTIPROBABILITY')$
+    train(training_ij, 'class', bandNames_list)
   
-  ## perform classification and mask only to region 
-  predicted <- mosaic_i$classify(classifier)$mask(mosaic_i$select('red_median'))
+  ## perform classification and mask only to AOI region 
+  predicted <- mosaic_i$classify(classifier)$
+    updateMask(aoi_img)
   
-  ## add year as bandname
-  predicted <- predicted$rename(paste0('classification_', as.character(years[j])))$toInt8()
+  ## retrieve classified classes
+  classes <- sort(training_ij$aggregate_array('class')$distinct()$getInfo())
+  
+  ## flatten array of probabilities
+  probabilities <- predicted$arrayFlatten(list(as.character(classes)))
+  
+  ## rename
+  probabilities <- probabilities$select(as.character(classes), 
+                                        classDict$name[match(classes, classDict$class)])
+  
+  ## scale probabilities to 0-100
+  probabilities <- probabilities$multiply(100)$round()$toInt8()
+  
+
+  ## get classification from maximum value of probability 
+  ## convert probabilities to an array
+  probabilitiesArray <- probabilities$toArray()$
+    ## get position of max value
+    arrayArgmax()$
+    ## get values
+    arrayGet(0)
+  
+  ## remap to mapbiomas collection
+  classificationImage <- probabilitiesArray$remap(
+    from= seq(0, length(classes)-1),
+    to= as.numeric(classes)
+  )$rename('classification')
+  
+  ## include classification as a band 
+  toExport <- classificationImage$addBands(probabilities)
   
   ## set properties
-  predicted <- predicted$
+  toExport <- toExport$
     set('collection', '9')$
     set('version', output_version)$
     set('biome', 'CERRADO')$
@@ -140,9 +206,9 @@ for (j in 1:length(years)) {
   
   ## stack classification
   if (years[j] == 1985) {
-    stacked_classification <- predicted
+    stacked_classification <- toExport
   } else {
-    stacked_classification <- stacked_classification$addBands(predicted)    
+    stacked_classification <- stacked_classification$addBands(toExport)    
   }
   
 } 
