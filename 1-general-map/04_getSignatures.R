@@ -81,16 +81,31 @@ for(m in 1:length(missing)) {
   lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
   
   ## get longitude
-  lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
+  lon_sin <- geo_coordinates$select('longitude')$
+      multiply(pi)$
+      divide(180)$
+      sin()$
+      multiply(-1)$
+      multiply(10000)$
+      toInt16()$
+      rename('longitude_sin')
  
   ## cosine
-  lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
+  lon_cos <- geo_coordinates$select('longitude')$
+      multiply(pi)$
+      divide(180)$
+      cos()$
+      multiply(-1)$
+      multiply(10000)$
+      toInt16()$
+      rename('longitude_cos')
   
   ## get heigth above nearest drainage
-  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
-    clip(region_i)$rename('hand')
+  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$
+      mosaic()$
+      toInt16()$
+      clip(region_i)$
+      rename('hand')
   
   ## get the landsat mosaic for the current year 
   mosaic_i <- mosaic$filterMetadata('year', 'equals', as.numeric(year_i))$
