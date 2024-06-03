@@ -1,100 +1,92 @@
-// --- --- --- 09_integrate 
-// integrate rocky-outcrop class over cerrado native vegetation classification
-// barbara.silva@ipam.org.br
+// --- --- --- 09_integration
+// Post-processing: integration of the classification of 'rocky outcrop' (individual flow) with the classification of native vegetation and anthropic class [21]
+// barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
 
-// import files
-var native = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-POST/CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v1_spatial_v1');
-var rocky = ee.Image('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_frequency_spatial_v4');
+// Define input files
+var native = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-POST/CERRADO_col9_gapfill_v8_incidence_v8_temporal_v8_frequency_v9_noFalseRegrowth_v16_spatial_v4');
+var rocky = ee.Image('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_frequency_spatial_v6');
 
-// --- --- -- 
-// convert biome mask
-var native_2021 = ee.Image('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-POST/CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v1_spatial_v1')
-                    .select('classification_2021');
+print('Input native vegetation classification', native);
+print('Input rocky outcrop classification', rocky);
 
-var geometry = native_2021.geometry();
+// Import MapBiomas color ramp
+var vis = {
+    min: 0,
+    max: 62,
+    palette: require('users/mapbiomas/modules:Palettes.js').get('classification8')
+};
+
+// Plot input version
+Map.addLayer(native.select(['classification_2010']), vis, 'Native vegetation 2010');
+Map.addLayer(rocky.select(['classification_2010']), vis, 'Rocky outcrop 2010');
+
+// Define ecoregions layer
+var regions = ee.Image(1).clip(ee.FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2'));
+var geometry = regions.geometry();
+
 var scale = 30;
 
-var emptyImage = ee.Image.constant(0).byte()
-  .reproject(native_2021.projection().scale(scale, scale))
-  .clip(geometry);
+// Avoid the rocky outcrop class overlapping the grassland class in the Chapada dos Veadeiros region
+var geometryVeadeiros = ee.Image(1).clip(ee.FeatureCollection(ee.Geometry.Polygon(
+    [[[-47.91136858164175, -13.828379924704489],
+      [-47.91136858164175, -14.275996243879357],
+      [-47.28377458750113, -14.275996243879357],
+      [-47.28377458750113, -13.828379924704489]]], null, false)));
 
-var mappedImage = emptyImage.where(native_2021, 4);
+var mask = regions.where(geometryVeadeiros.eq(1), 4);
 
-var biomes = ee.Image(1).clip(ee.FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2'));
-var biome = mappedImage;
+// Create a container
+var container = ee.Image([]);
 
-// import mapbiomas color ramp
-var vis = {
-      min:0,
-      max:62,
-      palette: require('users/mapbiomas/modules:Palettes.js').get('classification8'),
-    };
-
-// create recipe
-var recipe = ee.Image([]);
-
-// chapada dos veadeiros
-var geometry_veadeiros = 
-    ee.Image(1).clip(ee.FeatureCollection(ee.Geometry.Polygon(
-        [[[-47.91136858164175, -13.828379924704489],
-          [-47.91136858164175, -14.275996243879357],
-          [-47.28377458750113, -14.275996243879357],
-          [-47.28377458750113, -13.828379924704489]]], null, false)));
-          
-// create mask
-var mask = biome.updateMask(biome.eq(4)).where(geometry_veadeiros.eq(1), 1);
-
-// integrate
-ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
-  .forEach(function(year_i) {
-    // get year i
-    var native_i = native.select(['classification_' + year_i]);
-    var rocky_i = rocky.select(['classification_' + year_i]);
+// Integrate layers
+ee.List.sequence({start: 1985, end: 2023}).getInfo().forEach(function(year) {
+    // Get year-specific images
+    var nativeYear = native.select(['classification_' + year]);
+    var rockyYear = rocky.select(['classification_' + year]);
     
-    // integrate
-    var integrated_i = native_i.where(rocky_i.eq(29).and(mask.neq(1)), 29);
+    // Integrate classifications
+    var integratedYear = nativeYear.where(rockyYear.eq(29).and(mask.neq(4)), 29);
     
-    // apply a post-integration spatial filter
-    // compute the focal model
-    var focal_mode = integrated_i
+    // Apply a post-integration spatial filter
+    // Compute the focal model
+    var focalMode = integratedYear
                     .unmask(0)
-                    .focal_mode({'radius': 1, 'kernelType': 'square', 'units': 'pixels'});
-     
-    // compute te number of connections
-    var connections = integrated_i
+                    .focal_mode({radius: 1, kernelType: 'square', units: 'pixels'});
+
+    // Compute the number of connections
+    var connections = integratedYear
                       .unmask(0)
-                      .connectedPixelCount({'maxSize': 100, 'eightConnected': false});
-            
-    // get the focal model when the number of connections of same class is lower than parameter
-    var to_mask = focal_mode.updateMask(connections.lte(6));
-    
-    // apply filter
-    integrated_i = integrated_i
-                    .blend(to_mask)
-                    .reproject('EPSG:4326', null, 30)
-                    .updateMask(biome.eq(4));
-                    
-    // add to recipe
-    recipe = recipe.addBands(integrated_i);
-  });
+                      .connectedPixelCount({maxSize: 100, eightConnected: false});
 
-// plot
-Map.addLayer(native.select(['classification_2010']), vis, 'native');
-Map.addLayer(recipe.select(['classification_2010']), vis, 'integrated');
-print('ouput image', recipe);
+    // Get the focal model when the number of connections of the same class is lower than the parameter
+    var toMask = focalMode.updateMask(connections.lte(6));
 
-// set output directory
+    // Apply filter
+    integratedYear = integratedYear
+                     .blend(toMask)
+                     .reproject('EPSG:4326', null, 30)
+                     .updateMask(regions);
+
+    // Add to container data
+    container = container.addBands(integratedYear);
+});
+
+// Plot maps
+Map.addLayer(native.select(['classification_2010']), vis, 'Native');
+Map.addLayer(container.select(['classification_2010']), vis, 'Integrated');
+print('Output integrated classification', container);
+
 var root = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-POST/';
 
-// export as GEE asset
+// Export as GEE asset
 Export.image.toAsset({
-    'image': recipe,
-    'description': 'CERRADO_col9_native4_rocky4',
-    'assetId': root + 'CERRADO_col9_native4_rocky4',
-    'pyramidingPolicy': {
+    image: container,
+    description: 'CERRADO_col9_native8_rocky6',
+    assetId: root + 'CERRADO_col9_native8_rocky6',
+    pyramidingPolicy: {
         '.default': 'mode'
     },
-    'region': native.geometry(),
-    'scale': 30,
-    'maxPixels': 1e13
+    region: native.geometry(),
+    scale: 30,
+    maxPixels: 1e13
 });
