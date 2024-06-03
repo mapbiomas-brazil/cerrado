@@ -1,40 +1,59 @@
 // -- -- -- -- 06_gapFill
-// post-processing - fill gaps (nodata) with data from previous years
-// barbara.silva@ipam.org.br
+// post-processing filter: fill gaps (nodata) with data from previous years
+// barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
 
-// Set the cerrado extent 
-var geometry = 
-    ee.Geometry.Polygon(
-        [[[-61.23436115564828, -1.2109638051779688],
-          [-61.23436115564828, -26.098552002927054],
-          [-40.31639240564828, -26.098552002927054],
-          [-40.31639240564828, -1.2109638051779688]]], null, false);
+// Import mapbiomas color schema 
+var vis = {
+    min: 0,
+    max: 62,
+    palette:require('users/mapbiomas/modules:Palettes.js').get('classification8')
+};
+
+// Set the cerrado biome extent 
+var geometry = ee.Geometry.Polygon(
+      [[[-61.23436115564828, -1.2109638051779688],
+        [-61.23436115564828, -26.098552002927054],
+        [-40.31639240564828, -26.098552002927054],
+        [-40.31639240564828, -1.2109638051779688]]], null, false);
 
 // Set root directory
-var input = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-MAP';
 var out = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-POST/';
 
 // Set metadata
-var inputVersion = '4';
-var outputVersion = '4';
+var inputVersion = '8';
+var outputVersion = '8';
 
-// Import MapBiomas color ramp
-var vis = {
-    'min': 0,
-    'max': 62,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification8')
+// Set input classification
+var data = ee.ImageCollection('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-MAP-PROBABILITY');
+
+// Function to build collection as ee.Image
+var buildCollection = function(input, version, startYear, endYear) {
+  var years = ee.List.sequence({'start': startYear, 'end': endYear}).getInfo();
+  var collection = ee.Image([]);
+  years.forEach(function(year_i) {
+    var tempImage = input.filterMetadata('version', 'equals', version)
+                        .filterMetadata('year', 'equals', year_i)
+                        .map(function(image) {
+                          return image.select('classification');
+                        })
+                        .mosaic()
+                        .rename('classification_' + year_i); 
+    collection = collection.addBands(tempImage);
+    }
+  );
+  return collection;
 };
 
-// Load input classification
-var classificationInput = ee.ImageCollection(input)
-            .filterMetadata('version', 'equals', inputVersion)
-            .mosaic();
-            
-Map.addLayer(classificationInput.select(['classification_2022']), vis, 'Input classification');
+var collection = buildCollection(
+  data,             // input collection
+  inputVersion,     // version 
+  1985,             // startYear
+  2023);            // endyear
 
 // Discard zero pixels in the image
-classificationInput = classificationInput.mask(classificationInput.neq(0));
+var classificationInput = collection.mask(collection.neq(0));
 print('Input classification', classificationInput);
+Map.addLayer(classificationInput.select(['classification_1986']), vis, 'Input classification');
 
 // Set the list of years to be filtered
 var years = ee.List.sequence({'start': 1985, 'end': 2023, step: 1}).getInfo();
@@ -61,7 +80,7 @@ var applyGapFill = function (image) {
 
     imageFilledt0tn = ee.Image(imageFilledt0tn);
 
-    // Apply the gap fill form tn until t0
+    // apply the gapfill from tn until t0
     var bandNamesReversed = bandNames.reverse();
 
     var imageFilledtnt0 = bandNamesReversed.slice(1)
@@ -73,7 +92,7 @@ var applyGapFill = function (image) {
                 previousImage = ee.Image(previousImage);
 
                 currentImage = currentImage.unmask(
-                    previousImage.select(previousImage.bandNames().length().subtract(1)));
+                                previousImage.select(previousImage.bandNames().length().subtract(1)));
 
                 return previousImage.addBands(currentImage);
 
@@ -122,23 +141,17 @@ var imageAllBands = ee.Image(
     )
 );
 
-// Generate image pixel years
-var imagePixelYear = ee.Image.constant(years)
-    .updateMask(imageAllBands)
-    .rename(bandNames);
-
-// Apply the gap fill
+// Apply the gapfill function
 var imageFilledtnt0 = applyGapFill(imageAllBands);
-var imageFilledYear = applyGapFill(imagePixelYear);
 
-// check filtered image
+// Check filtered image
 print('Output classification', imageFilledtnt0);
 Map.addLayer(imageFilledtnt0.select('classification_2022'), vis, 'filtered');
 
-// write metadata
+// Write metadata
 imageFilledtnt0 = imageFilledtnt0.set('version', outputVersion);
 
-// export as GEE asset
+// Export as GEE asset
 Export.image.toAsset({
     'image': imageFilledtnt0,
     'description': 'CERRADO_col9_gapfill_v' + outputVersion,
