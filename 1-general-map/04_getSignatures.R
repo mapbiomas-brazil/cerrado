@@ -1,6 +1,7 @@
-## For clarification, write to <dhemerson.costa@ipam.org.br> 
+## --- --- --- 04_getSignatures
 ## Exported data is composed by spatialPoints with spectral signature values grouped by column
 ## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
+## dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
 
 ## read libraries
 library(rgee)
@@ -32,9 +33,8 @@ expected <- as.vector(outer(regions, years, function(r, y) {
 # Find missing entries
 missing <- expected[!expected %in% files$ID]
 
-
-###########################################################
-## biome
+## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ##
+## biome layer
 biomes <- ee$Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster')
 cerrado <- biomes$updateMask(biomes$eq(4))
 
@@ -59,7 +59,7 @@ fire_age <- fire_age$addBands(fire_age$select('classification_2022')$rename('cla
 ## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
 
-## remove bands with 'cloud' or 'shade' into their names
+## remove bands with 'cloud' into their names
 bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud')]
 
 ## process each missing file 
@@ -76,11 +76,14 @@ for(m in 1:length(missing)) {
   
   ## compute additional bands
   geo_coordinates <- ee$Image$pixelLonLat()$clip(region_i)
+  
   ## get latitude
   lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
+  
   ## get longitude
   lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
     sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
+ 
   ## cosine
   lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
     cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
@@ -98,10 +101,12 @@ for(m in 1:length(missing)) {
   ## if the year is greater than 1986, get the 3yr NDVI amplitude
   if (year_i > 1986) {
     print('Computing NDVI Amplitude (3yr)')
+  
     ## get previous year mosaic 
     mosaic_i1 <- mosaic$filterMetadata('year', 'equals', as.numeric(year_i) - 1)$
       filterMetadata('satellite', 'equals', subset(rules, year == year_i)$sensor_past1)$
       mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))$clip(region_i)
+   
     ## get previous 2yr mosaic 
     mosaic_i2 <- mosaic$filterMetadata('year', 'equals', as.numeric(year_i) - 2)$
       filterMetadata('satellite', 'equals', subset(rules, year == year_i)$sensor_past2)$
