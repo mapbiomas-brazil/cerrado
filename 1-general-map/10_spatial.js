@@ -1,17 +1,17 @@
 // -- -- -- -- 11_spatial
-// spatial filter - minimum area
-// barbara.silva@ipam.org.br
+// post-processing filter: eliminate isolated or edge transition pixels, minimum area of 6 pixels
+// barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
 
 // Set root directory
 var root = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-POST/';
 var out = 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-GENERAL-POST/';
 
 // Set metadata
-var inputVersion = '1';
-var outputVersion = '1';
+var inputVersion = '16';
+var outputVersion = '4';
 
 // Define input file
-var inputFile = 'CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v'+inputVersion;
+var inputFile = 'CERRADO_col9_gapfill_v8_incidence_v8_temporal_v8_frequency_v9_noFalseRegrowth_v'+inputVersion;
 
 // Import MapBiomas color ramp
 var vis = {
@@ -24,7 +24,7 @@ var vis = {
 var classificationInput = ee.Image(root + inputFile);
 print('Input classification', classificationInput);
 
-// Plot  input version
+// Plot input version
 Map.addLayer(classificationInput.select(['classification_2010']), vis, 'input 2010');
 
 // Create an empty container
@@ -39,7 +39,7 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
         // Compute the focal model
         var focal_mode = classificationInput.select(['classification_' + year_i])
                 .unmask(0)
-                .focal_mode({'radius': 8, 'kernelType': 'square', 'units': 'pixels'});
+                .focal_mode({'radius': 1, 'kernelType': 'square', 'units': 'pixels'});
  
         // Compute te number of connections
         var connections = classificationInput.select(['classification_' + year_i])
@@ -71,7 +71,7 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
         // Compute the focal model
         var focal_mode = filtered.select(['classification_' + year_i])
                 .unmask(0)
-                .focal_mode({'radius': 8, 'kernelType': 'square', 'units': 'pixels'});
+                .focal_mode({'radius': 1, 'kernelType': 'square', 'units': 'pixels'});
  
         // Compute te number of connections
         var connections = filtered.select(['classification_' + year_i])
@@ -116,13 +116,13 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
   });
 
 Map.addLayer(container2.select(['classification_2010']), vis, 'final filled');
-print('Output classification', container2);
+print('Output classification', container);
 
 // export as GEE asset
 Export.image.toAsset({
     'image': container2,
-    'description': 'CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v'+inputVersion+'_spatial_v' + outputVersion,
-    'assetId': out + 'CERRADO_col9_gapfill_v4_incidence_v4_temporal_v1_frequency_v'+inputVersion+'_spatial_v' + outputVersion,
+    'description': inputFile+ '_spatial_v' + outputVersion,
+    'assetId': out + inputFile+ '_spatial_v' + outputVersion,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
