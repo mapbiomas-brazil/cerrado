@@ -1,6 +1,6 @@
 // -- -- -- -- 02_computeProportion
 // compute area by ecoregion to be used as reference to estimate samples distribution 
-// dhemerson.costa@ipam.org.br andbarbara.silva@ipam.org.br
+// dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
 
 // input metadata
 var version = '1';
@@ -23,13 +23,13 @@ if (option == 'year') {
   // define year to be used as reference (default: mid of the time-series [nYear/2])
   var year = '2005';
   
-  // load collection 7.1 
+  // load collection 8.0 
   var mapbiomas = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1')
     .select('classification_' + year);
 }
 
 if (option == 'stable') {
-  var mapbiomas = ee.Image('users/dh-conciani/collection9/masks/cerrado_trainingMask_1985_2022_v3');
+  var mapbiomas = ee.Image('users/dh-conciani/collection9/masks/cerrado_trainingMask_1985_2022_v4');
 }
 
 // define function to compute area (skm)
@@ -47,7 +47,7 @@ var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
     'max': 62,
-    'palette': palettes.get('classification7')
+    'palette': palettes.get('classification8')
 };
 
 // plot 
