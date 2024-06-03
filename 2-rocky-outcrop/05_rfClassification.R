@@ -17,20 +17,20 @@ output_version <-  '4'   # output classification version
 n_tree <- 300
 
 ## define output asset
-output_asset <- 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class/'
+output_asset <- 'projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-ROCKY-GENERAL-MAP-PROBABILITY/'
 
 ## read landsat mosaic 
 mosaic <- ee$ImageCollection('projects/nexgenmap/MapBiomas2/LANDSAT/BRAZIL/mosaics-2')$
   filterMetadata('biome', 'equals', 'CERRADO')
 
 ## import mosaic rules 
-rules <- read.csv('./mosaic_rules.csv')
+rules <- read.csv('./_aux/mosaic_rules.csv')
 
 ## define years to be classified
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## read area of interest
-aoi_vec <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3')$geometry()
+aoi_vec <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v4')$geometry()
 aoi_img <- ee$Image(1)$clip(aoi_vec)
 
 ## get predictor names to be used in the classification
@@ -110,6 +110,7 @@ for (j in 1:length(years)) {
   ## if the year is greater than 1986, get the 3yr NDVI amplitude
   if (years[j] > 1986) {
     print('Computing NDVI Amplitude (3yr)')
+    
     ## get previous year mosaic 
     mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
       filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
@@ -179,7 +180,6 @@ for (j in 1:length(years)) {
   ## scale probabilities to 0-100
   probabilities <- probabilities$multiply(100)$round()$toInt8()
   
-
   ## get classification from maximum value of probability 
   ## convert probabilities to an array
   probabilitiesArray <- probabilities$toArray()$
@@ -204,35 +204,19 @@ for (j in 1:length(years)) {
     set('biome', 'CERRADO')$
     set('year', as.numeric(years[j]))
   
-  ## stack classification
-  if (years[j] == 1985) {
-    stacked_classification <- toExport
-  } else {
-    stacked_classification <- stacked_classification$addBands(toExport)    
-  }
-  
-} 
+  ## export each year as a separate image in the collection
+  file_name <- paste0('CERRADO_ROCKY_', years[j], '_v', output_version)
+  task <- ee$batch$Export$image$toAsset(
+    image = toExport,
+    description = file_name,
+    assetId = paste0(output_asset, file_name),
+    scale = 30,
+    maxPixels = 1e13,
+    pyramidingPolicy = list('.default' = 'mode'),
+    region = aoi_vec
+  )
+  task$start()
+  print(paste("Task started:", file_name))
+}
 
-## end of year processing
-print('exporting stacked classification')
-
-## create filename
-file_name <- paste0('CERRADO_col9_rocky_v', output_version)
-
-## build task
-task <- ee$batch$Export$image$toAsset(
-  image= stacked_classification$toInt8(),
-  description= file_name,
-  assetId= paste0(output_asset, file_name),
-  scale= 30,
-  maxPixels= 1e13,
-  pyramidingPolicy= list('.default' = 'mode'),
-  region= aoi_vec
-)
-
-## export 
-task$start()
-print('========================================')
-print(paste("Task start:", task$start))
-
-print('end, now wait few hours and have fun :)')
+print('All tasks have been started. Now wait a few hours and have fun :)')
