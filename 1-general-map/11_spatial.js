@@ -41,7 +41,7 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
                 .unmask(0)
                 .focal_mode({'radius': 1, 'kernelType': 'square', 'units': 'pixels'});
  
-        // Compute te number of connections
+        // Compute the number of connections
         var connections = classificationInput.select(['classification_' + year_i])
                 .unmask(0)
                 .connectedPixelCount({'maxSize': 100, 'eightConnected': false});
@@ -73,7 +73,7 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
                 .unmask(0)
                 .focal_mode({'radius': 1, 'kernelType': 'square', 'units': 'pixels'});
  
-        // Compute te number of connections
+        // Compute the number of connections
         var connections = filtered.select(['classification_' + year_i])
                 .unmask(0)
                 .connectedPixelCount({'maxSize': 100, 'eightConnected': false});
