@@ -25,7 +25,7 @@ years <- unique(mosaic$aggregate_array('year')$getInfo())
 ## read classification regions (vetor)
 regions_vec <- ee$FeatureCollection('users/dh-conciani/collection7/classification_regions/vector_v2')
 
-### classification regions (imageCollection, one region per image)
+## classification regions (imageCollection, one region per image)
 regions_ic <- 'users/dh-conciani/collection7/classification_regions/eachRegion_v2_10m/'
 
 ## define regions to be processed 
@@ -34,13 +34,13 @@ regions_list <- sort(unique(regions_vec$aggregate_array('mapb')$getInfo()))
 ## get already computed files (for current version)
 files <- ee_manage_assetlist(path_asset= output_asset)
 
-# Generate expected files
+## generate expected files
 expected <- as.vector(outer(regions_list, years, function(r, y) {
   paste0(output_asset, 'CERRADO_', r, '_', y, '_v', output_version)
 })
 )
 
-# Find remaining files to process
+# find remaining files to process
 missing <- expected[!expected %in% files$ID]
 
 ## define class dictionary
@@ -58,17 +58,19 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 ## get bandnames to be extracted
 bands <- mosaic$first()$bandNames()$getInfo()
 
-## remove bands with 'cloud' or 'shade' into their names
+## remove bands with 'cloud' into their names
 bands <- bands[- which(sapply(strsplit(bands, split='_', fixed=TRUE), function(x) (x[1])) == 'cloud' )]
 
-# Extract the region using regex
+# extract the region using regex
 regions_list <- unique(gsub(".*CERRADO_([0-9]+)_.*", "\\1", missing))
 
 ## for each region
 for (i in 1:length(regions_list)) {
   print(paste0('processing region [', regions_list[i], ']'))
+  
   ## get the vector for the regon [i]
   region_i_vec <- regions_vec$filterMetadata('mapb', 'equals', regions_list[i])$geometry()
+  
   ## get the raster for the region [i]
   region_i_ras = ee$Image(paste0(regions_ic, 'reg_', regions_list[i]))
   
@@ -116,10 +118,10 @@ for (i in 1:length(regions_list)) {
   ## add 2023 
   fire_age <- fire_age$addBands(fire_age$select('classification_2022')$rename('classification_2023'))
   
-  # Use grep to match exactly followed by the year and version
+  # use grep to match exactly followed by the year and version
   missing_i <- missing[grep(paste0('CERRADO_', regions_list[i], '_[0-9]{4}_v8$'), missing)]
   
-  # Extract the years using sregex
+  # extract the years using sregex
   years_ij <- as.numeric(str_extract(missing_i, "[0-9]{4}"))
   
   ## for each year
@@ -137,6 +139,7 @@ for (i in 1:length(regions_list)) {
     ## if the year is greater than 1986, get the 3yr NDVI amplitude
     if (years_ij[j] > 1986) {
       ##print('Computing NDVI Amplitude (3yr)')
+      
       ## get previous year mosaic 
       mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years_ij[j] - 1)$
         filterMetadata('satellite', 'equals', subset(rules, year == years_ij[j])$sensor_past1)$
@@ -228,10 +231,9 @@ for (i in 1:length(regions_list)) {
     probabilities <- probabilities$select(as.character(classes), 
                                           classDict$name[match(classes, classDict$class)])
     
-    ## scale to 0-100
+    ## scale probabilities to 0-100
     probabilities <- probabilities$multiply(100)$round()$toInt8()
-    
-    
+        
     ## get classification from maximum value of probability 
     ## convert probabilities to an array
     probabilitiesArray <- probabilities$toArray()$
@@ -245,8 +247,7 @@ for (i in 1:length(regions_list)) {
       from= seq(0, length(classes)-1),
       to= as.numeric(classes)
     )$rename('classification')
-    
-    
+        
     ## include classification as a band 
     toExport <- classificationImage$addBands(probabilities)
     
@@ -280,4 +281,4 @@ for (i in 1:length(regions_list)) {
   print ('------------> NEXT REGION --------->')
 }
 
-print('end, now wait few hours and have fun :)')
+print('All tasks have been started. Now wait a few hours and have fun :)')
