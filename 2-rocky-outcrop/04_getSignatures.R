@@ -49,18 +49,38 @@ for (j in 1:length(years)) {
   
   ## compute additional bands
   geo_coordinates <- ee$Image$pixelLonLat()
+ 
   ## get latitude
-  lat <- geo_coordinates$select('latitude')$add(5)$multiply(-1)$multiply(1000)$toInt16()
+  lat <- geo_coordinates$select('latitude')$
+      add(5)$
+      multiply(-1)$
+      multiply(1000)$
+      toInt16()
+  
   ## get longitude
-  lon_sin <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    sin()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_sin')
+  lon_sin <- geo_coordinates$select('longitude')$
+      multiply(pi)$divide(180)$
+      sin()$
+      multiply(-1)$
+      multiply(10000)$
+      toInt16()$
+      rename('longitude_sin')
+  
   ## cosine
-  lon_cos <- geo_coordinates$select('longitude')$multiply(pi)$divide(180)$
-    cos()$multiply(-1)$multiply(10000)$toInt16()$rename('longitude_cos')
+  lon_cos <- geo_coordinates$select('longitude')$
+      multiply(pi)$
+      divide(180)$
+      cos()$
+      multiply(-1)$
+      multiply(10000)$
+      toInt16()$
+      rename('longitude_cos')
   
   ## get height above nearest drainage
-  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$mosaic()$toInt16()$
-    rename('hand')
+  hand <- ee$ImageCollection("users/gena/global-hand/hand-100")$
+      mosaic()$
+      toInt16()$
+      rename('hand')
   
   ## get the Landsat mosaic for the current year 
   mosaic_i <- mosaic$filterMetadata('year', 'equals', years[j])$
@@ -70,10 +90,12 @@ for (j in 1:length(years)) {
   ## if the year is greater than 1986, get the 3yr NDVI amplitude
   if (years[j] > 1986) {
     print('Computing NDVI Amplitude (3yr)')
+   
     ## get previous year mosaic 
     mosaic_i1 <- mosaic$filterMetadata('year', 'equals', years[j] - 1)$
       filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past1)$
       mosaic()$select(c('ndvi_median_dry','ndvi_median_wet'))
+    
     ## get previous 2yr mosaic 
     mosaic_i2 <- mosaic$filterMetadata('year', 'equals', years[j] - 2)$
       filterMetadata('satellite', 'equals', subset(rules, year == years[j])$sensor_past2)$
