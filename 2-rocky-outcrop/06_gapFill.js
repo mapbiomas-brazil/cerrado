@@ -1,5 +1,5 @@
 // -- -- -- -- 05_gapFill
-// post-processing - fill gaps (nodata) with data from previous years
+// post-processing filter: fill gaps (nodata) with data from previous years
 // barbara.silva@ipam.org.br
 
 // set the rocky outcrop extent 
@@ -29,8 +29,8 @@ var geometry = ee.Geometry.Polygon (
 ]]);
 
 // set metadata 
-var input_version = '3';
-var output_version = '3';
+var input_version = '4';
+var output_version = '4';
 
 // set directories
 var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class/CERRADO_col9_rocky_v'+input_version;
