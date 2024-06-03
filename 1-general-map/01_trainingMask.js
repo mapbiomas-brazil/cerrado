@@ -1,8 +1,8 @@
 // -- -- -- -- 01_trainingMask
-// generate training mask based in stable pixels from mapbiomas collection 8, reference maps and GEDI
-//  dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
+// generate training mask based in stable pixels from mapbiomas collection 8.0, reference maps and GEDI data
+// dhemerson.costa@ipam.org.br and barbara.silva@ipam.org.br
 
-// set extent in which result will be exported 
+// set Cerrado extent in which result will be exported 
 var extent = ee.Geometry.Polygon(
   [[[-60.935545859442364, -1.734173093722467],
     [-60.935545859442364, -25.10422789569622],
@@ -18,7 +18,7 @@ var dirout = 'users/dh-conciani/collection9/masks/';
 // set string to identify the output version
 var version_out = '4';
 
-// read mapbiomas lulc 
+// read mapbiomas lulc -- collection 8.0
 var collection = ee.Image('projects/mapbiomas-workspace/public/collection8/mapbiomas_collection80_integration_v1');
 
 // set function to reclassify collection by ipam-workflow classes 
@@ -42,6 +42,7 @@ var years = [1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1
 
 // remap collection to ipam-workflow classes 
 var recipe = ee.Image([]);      // build empty recipe
+
 // for each year
 years.forEach(function(i) {
   // select classification for the year i
@@ -63,7 +64,7 @@ var vis = {
     'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
 };
 
-// Plot stable pixels
+// plot stable pixels
 Map.addLayer(stable, vis, '0. MB stable pixels', false);
 
 // * * * D E F O R E S T A T I O N      M A S K S
@@ -80,8 +81,7 @@ var prodes = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/produtos_desmata
 stable = stable.where(prodes.eq(1).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
 Map.addLayer(stable, vis, '1. Filtered by PRODES', false);
 
-
-// 2- Sistema de Alerta de Desmatamento do Cerrado (SAD Cerrado)
+// 2- Cerrado Deforestation Alert System (SAD Cerrado)
 var sad = ee.Image(1).clip(
   ee.FeatureCollection('projects/ee-sad-cerrado/assets/PUBLIC/SAD_CERRADO_ALERTAS')
     // add 2021 data, from another asset  
@@ -94,8 +94,7 @@ var sad = ee.Image(1).clip(
 stable = stable.where(sad.eq(1).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
 Map.addLayer(stable, vis, '2. Filtered by SAD', false);
 
-
-// 3 - MapBiomas Alerta (MB Alerta)
+// 3 - MapBiomas Alert (MB Alerta)
 var mb_alerta = ee.Image('projects/ee-sad-cerrado/assets/ANCILLARY/produtos_desmatamento/mb_alertas_up_to_2023_020524');
 
 // Erase stable pixels of native vegetation that were classified as deforestation by MB Alerta 
@@ -104,7 +103,7 @@ Map.addLayer(stable, vis, '3. Filtered by MB Alerta', false);
 
 
 // * * * R E F E R E N C E    M A P     M A S K S
-// 4- Inventário Florestal do Estado de SP
+// 4- Forest Inventory of the State of São Paulo
 var sema_sp = ee.Image('projects/mapbiomas-workspace/MAPA_REFERENCIA/MATA_ATLANTICA/SP_IF_2020_2')
   .remap({
     'from': [3, 4, 5, 9, 11, 12, 13, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 31, 32, 33],
@@ -114,8 +113,10 @@ var sema_sp = ee.Image('projects/mapbiomas-workspace/MAPA_REFERENCIA/MATA_ATLANT
 
 // Erase stable pixels of native vegetation that wasn't classifeid as in the SEMA SP map
 stable = stable.where(sema_sp.eq(0).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
+
 // Remove grasslands from São Paulo state
 stable = stable.where(stable.eq(12).and(assetStates.eq(35)), 27);
+
 // Apply rules for native vegetation
 stable = stable
   // Forest Formation
@@ -128,10 +129,10 @@ stable = stable
   .where(stable.gte(1).and(sema_sp.eq(12)), 12)
   // Wetland
   .where(stable.neq(11).and(sema_sp.eq(11)), 11);
+
 Map.addLayer(stable, vis, '4. Filtered by SEMA SP', false);
 
-
-// 5- Mapeamento Temático do CAR para o Estado do Tocantins
+// 5- CAR Thematic Mapping for the State of Tocantins
 var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
   .remap({
     'from': [11, 50, 128],
@@ -143,8 +144,7 @@ var sema_to = ee.Image('users/dh-conciani/basemaps/TO_Wetlands_CAR')
 stable = stable.where(sema_to.eq(11).and(stable.eq(4).or(stable.eq(12).or(stable.eq(27)))), 11);
 Map.addLayer(stable, vis, '5. Filtered by SEMA TO', false);
 
-
-// 6- Uso e cobertura da Terra no DF
+// 6- Land use and cover in the Federal District
 var sema_df = ee.Image('projects/barbaracosta-ipam/assets/base/DF_cobertura-do-solo_2019_img')
   // get only native vegetation
   .remap({
@@ -158,8 +158,7 @@ var sema_df = ee.Image('projects/barbaracosta-ipam/assets/base/DF_cobertura-do-s
 stable = stable.where(sema_df.eq(0).and(stable.eq(3).or(stable.eq(4).or(stable.eq(11).or(stable.eq(12))))), 27);
 Map.addLayer(stable, vis, '6. Filtered by SEMA DF', false);
 
-
-// 7- Mapeamento de Campos de Murumdum do Estado de Goías 
+// 7- Mapping 'Campos de Murundus' in the State of Goiás 
 var sema_go = ee.Image(11).clip(
   ee.FeatureCollection('users/dh-conciani/basemaps/SEMA_GO_Murundus')
 );
@@ -168,7 +167,7 @@ var sema_go = ee.Image(11).clip(
 stable = stable.where(sema_go.eq(11).and(stable.eq(4).or(stable.eq(12).or(stable.eq(27)))), 11);
 Map.addLayer(stable, vis, '7. Filtered by SEMA GO', false);
 
-// * * * G E D I    B A S E D      M A S K 
+// * * * G E D I    B A S E D    M A S K 
 // 8- Canopy heigth (in meters)
 // From Lang et al., 2023 (https://www.nature.com/articles/s41559-023-02206-6)
 var canopy_heigth = ee.Image('users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1');
@@ -186,8 +185,7 @@ stable = stable.where(stable.eq(3).and(canopy_heigth.lt(4)), 50)
 
 Map.addLayer(stable, vis, '8. Filtered by GEDI', false);
 
-
-// * * * E X P O R T 
+// Export as GEE asset
 Export.image.toAsset({
     "image": stable.toInt8(),
     "description": 'cerrado_trainingMask_1985_2022_v' + version_out,
