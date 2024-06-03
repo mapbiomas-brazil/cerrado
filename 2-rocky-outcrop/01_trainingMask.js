@@ -1,5 +1,5 @@
 // -- -- -- -- 01_trainingMask
-// generate training mask based in stable pixels from mapbiomas collection 8
+// generate training mask based in stable pixels from mapbiomas collection 8.0
 // barbara.silva@ipam.org.br
 
 // output version
