@@ -26,7 +26,7 @@ var regionsCollection = ee.FeatureCollection('users/dh-conciani/collection9/samp
 var vis = {
     'min': 0,
     'max': 62,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification7')
+    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification8')
 };
 
 // plot stable pixels
@@ -71,8 +71,9 @@ var getTrainingSamples = function (feature) {
   var n_non_vegetated = computeSize(ee.Number(non_vegetated));
   var n_water = computeSize(ee.Number(water));
 
-  // get the geometry of the regionclas
+  // get the geometry of the regionclass
   var region_i_geometry = ee.Feature(feature).geometry();
+  
   // clip stablePixels only to the region 
   var referenceMap =  trainingMask.clip(region_i_geometry);
                       
