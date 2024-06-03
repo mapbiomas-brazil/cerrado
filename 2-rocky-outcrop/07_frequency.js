@@ -1,10 +1,10 @@
 // --- --- --- 07_frequency
-// frequency filter 
+// post-processing filter: stabilize areas of rocky outcrop that have remained for at least 50% of the data time series
 // barbara.silva@ipam.org.br 
 
 // set metadata 
-var input_version = '3';
-var output_version = '3';
+var input_version = '4';
+var output_version = '4';
 
 // set directories
 var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/CERRADO_col9_rocky_gapfill_v' + input_version;
