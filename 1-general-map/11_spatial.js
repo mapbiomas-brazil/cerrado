@@ -116,7 +116,7 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
   });
 
 Map.addLayer(container2.select(['classification_2010']), vis, 'final filled');
-print('Output classification', container);
+print('Output classification', container2);
 
 // export as GEE asset
 Export.image.toAsset({
