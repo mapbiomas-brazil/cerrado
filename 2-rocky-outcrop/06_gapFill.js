@@ -2,7 +2,14 @@
 // post-processing filter: fill gaps (nodata) with data from previous years
 // barbara.silva@ipam.org.br
 
-// set the rocky outcrop extent 
+// Import mapbiomas color schema 
+var vis = {
+    min: 0,
+    max: 62,
+    palette:require('users/mapbiomas/modules:Palettes.js').get('classification8')
+};
+
+// Set the rocky outcrop extent 
 var geometry = ee.Geometry.Polygon (
 [[
 [-41.89424073899461,-3.5402242777700574],
@@ -28,40 +35,52 @@ var geometry = ee.Geometry.Polygon (
 [-41.89424073899461,-3.5402242777700574]
 ]]);
 
-// set metadata 
-var input_version = '4';
-var output_version = '4';
-
-// set directories
-var input = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class/CERRADO_col9_rocky_v'+input_version;
-var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/';
+// Set root directory
+var out = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/';
 var filename = 'CERRADO_col9_rocky_gapfill_v';
 
-// import classification 
-var image = ee.Image(input);
+// set metadata 
+var inputVersion = '4';
+var outputVersion = '4';
 
-// mask and discard values equal to zero
-image = image.mask(image.neq(0));
-print('input classification', image);
+var data = ee.ImageCollection('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-ROCKY-GENERAL-MAP-PROBABILITY');
 
-// get the mapbiomas color ramp
-var vis = {
-    'min': 0,
-    'max': 62,
-    'palette': require('users/mapbiomas/modules:Palettes.js').get('classification8')
+// Function to build collection as ee.Image
+var buildCollection = function(input, version, startYear, endYear) {
+  var years = ee.List.sequence({'start': startYear, 'end': endYear}).getInfo();
+  var collection = ee.Image([]);
+  years.forEach(function(year_i) {
+    var tempImage = input.filterMetadata('version', 'equals', version)
+                        .filterMetadata('year', 'equals', year_i)
+                        .map(function(image) {
+                          return image.select('classification');
+                        })
+                        .mosaic()
+                        .rename('classification_' + year_i); 
+    collection = collection.addBands(tempImage);
+    }
+  );
+  return collection;
 };
 
-Map.addLayer(image.select(['classification_2023']), vis, 'input');
+var collection = buildCollection(
+  data,             // input collection
+  inputVersion,     // version 
+  1985,             // startYear
+  2023);            // endyear
+
+// Discard zero pixels in the image
+var classificationInput = collection.mask(collection.neq(0));
+print('Input classification', classificationInput);
+Map.addLayer(classificationInput.select(['classification_2023']), vis, 'input');
 
 // set the list of years to be filtered
 var years = ee.List.sequence({'start': 1985, 'end': 2023, step: 1}).getInfo();
 
-/**
- * User defined functions
- */
+// User defined functions
 var applyGapFill = function (image) {
 
-    // apply the gap fill form t0 until tn
+    // apply the gapfill from t0 until tn
     var imageFilledt0tn = bandNames.slice(1)
         .iterate(
             function (bandName, previousImage) {
@@ -80,7 +99,7 @@ var applyGapFill = function (image) {
 
     imageFilledt0tn = ee.Image(imageFilledt0tn);
 
-    // apply the gap fill form tn until t0
+    // apply the gapfill from tn until t0
     var bandNamesReversed = bandNames.reverse();
 
     var imageFilledtnt0 = bandNamesReversed.slice(1)
@@ -104,7 +123,7 @@ var applyGapFill = function (image) {
     return imageFilledtnt0;
 };
 
-// get band names list 
+// Get band names list 
 var bandNames = ee.List(
     years.map(
         function (year) {
@@ -113,25 +132,25 @@ var bandNames = ee.List(
     )
 );
 
-// generate a histogram dictionary of [bandNames, image.bandNames()]
+// Generate a histogram dictionary of [bandNames, image.bandNames()]
 var bandsOccurrence = ee.Dictionary(
-    bandNames.cat(image.bandNames()).reduce(ee.Reducer.frequencyHistogram())
+    bandNames.cat(classificationInput.bandNames()).reduce(ee.Reducer.frequencyHistogram())
 );
 
-// insert a masked band 
+// Insert a masked band 
 var bandsDictionary = bandsOccurrence.map(
     function (key, value) {
         return ee.Image(
             ee.Algorithms.If(
                 ee.Number(value).eq(2),
-                image.select([key]).byte(),
-                ee.Image().rename([key]).byte().updateMask(image.select(0))
+                classificationInput.select([key]).byte(),
+                ee.Image().rename([key]).byte().updateMask(classificationInput.select(0))
             )
         );
     }
 );
 
-// convert dictionary to image
+// Convert dictionary to image
 var imageAllBands = ee.Image(
     bandNames.iterate(
         function (band, image) {
@@ -141,27 +160,27 @@ var imageAllBands = ee.Image(
     )
 );
 
-// generate image pixel years
+// Generate image pixel years
 var imagePixelYear = ee.Image.constant(years)
     .updateMask(imageAllBands)
     .rename(bandNames);
 
-// apply the gap fill
+// Apply the gapfill
 var imageFilledtnt0 = applyGapFill(imageAllBands);
 var imageFilledYear = applyGapFill(imagePixelYear);
 
-// check filtered image
+// Check filtered image
 print ('output classification', imageFilledtnt0);
 Map.addLayer(imageFilledtnt0.select('classification_2023'), vis, 'filtered');
 
-// write metadata
-imageFilledtnt0 = imageFilledtnt0.set('version', output_version);
+// Write metadata
+imageFilledtnt0 = imageFilledtnt0.set('version', outputVersion);
 
-// export as GEE asset
+// Export as GEE asset
 Export.image.toAsset({
     'image': imageFilledtnt0,
-    'description': filename + output_version,
-    'assetId': dirout + filename + output_version,
+    'description': filename + outputVersion,
+    'assetId': out + filename + outputVersion,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
