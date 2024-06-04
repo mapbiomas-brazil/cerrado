@@ -61,7 +61,7 @@ var years = ee.List.sequence({'start': 1985, 'end': 2023, step: 1}).getInfo();
 // User defined functions
 var applyGapFill = function (image) {
 
-    // apply the gap fill form t0 until tn
+    // apply the gapfill from t0 until tn
     var imageFilledt0tn = bandNames.slice(1)
         .iterate(
             function (bandName, previousImage) {
