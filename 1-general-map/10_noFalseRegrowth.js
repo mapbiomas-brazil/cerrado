@@ -59,7 +59,7 @@ function correctWetlands(currentYear, previousYear) {
 }
 
 // List of years to correct
-var years = ee.List.sequence({'start': 1985, 'end': 2023}).getInfo();
+var years = ee.List.sequence({'start': 2018, 'end': 2023}).getInfo();
 
 // Initialize the processed image with all bands of interest
 var correctedClassification = processedClassification; // from step 1
