@@ -18,7 +18,7 @@ print ("input", classification);
 var vis = {
       min: 0,
       max: 62,
-      palette:require('users/mapbiomas/modules:Palettes.js').get('classification7'),
+      palette:require('users/mapbiomas/modules:Palettes.js').get('classification8'),
     };
 
 // define the function to calc frequencies 
