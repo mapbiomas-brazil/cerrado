@@ -44,17 +44,17 @@ Perfoms the model using the Random Forest classifier (ee.Classifier.smileRandomF
 ## 06_gapFill.js
 No-data values (gaps) due to cloud and/or cloud shadow contaminated pixels in a given image were filled by the temporally nearest future valid classification. If no future valid classification was available, then the no-data value was replaced by its previous valid classification. Therefore, gaps should only remain in the final classified map when a given pixel was consistently classified as no-data throughout the entire temporal series. 
 
-## 7_incidence.js
+## 07_incidence.js
 An incident filter was applied to remove pixels that changed too many times over the 39 years. All pixels that changed more than 13 times (1/3 of the time series), and were connected to less than seven same-class pixels that also changed more than 10 times, were replaced by the pixel MODE value. This avoids spurious transitions at the border of the same-class pixel group. Note that this filter was not applied to the Forest (3) and Rocky Outcrop (29) classes.  
 
-## 8_temporal.js
+## 08_temporal.js
 This filter uses subsequent years to replace pixels that show invalid transitions in a given year, following the sequential steps detailed below:
 1. The filter evaluates all the pixels in a 5-year moving window (from 1986 to 2020) and a 4-year moving window (from 1986 to 2021). The objective is to correct pixel values that present a specific class in the previous year (year -1), change in the current year and return to the initial class in the last year of the window (year +2 or year +3). It is applied to each land use and cover class in the following order: Savanna Formation (4), Forest Formation (3), Grassland Formation (12), Wetland (11), Mosaic of Uses (21), River, Lake and Ocean (33), and Other Non-Vegetated Areas (25).
 2. This step is analogous to the initial step, employing a moving window of three years (1986-2022). The objective is to rectify the values of the intermediate years (-1 and +1) to address any inappropriate changes in the current year. The correction is executed in the same order of classes as in the initial step, ensuring temporal consistency over time.
 3. The filter identifies any class of native vegetation (forest, savanna, wetland, or grassland) that was not classified as such in 1985 but was correctly classified in 1986 and 1987. The year 1985 is then corrected to reflect the correct classification, ensuring the continuity of native vegetation over the years.
 4. The filter searches for pixel values that were not classified as Mosaic of Uses (21) in 2023, but were classified as such in 2022. The 2023 class is corrected to match the previous year, avoiding any regeneration that cannot be confirmed in the last year.
 
-## 9_frequency.js
+## 09_frequency.js
 The frequency filter was applied exclusively to pixels classified as native vegetation for a minimum of 90% of the time series. In the event that a pixel was classified as Forest Formation for a period exceeding 75% of the time, that class was assigned to the pixel for the entirety of the period. The same rule was applied to Wetlands (60%), Savanna Formation (50%) and Grassland Formation (50%). This frequency filter resulted in a more stable classification of native vegetation classes. Another noteworthy outcome was the removal of noise in the ﬁrst and last years of classification, which the temporal filter may not have adequately assessed.
 
 ## 10_noFalseRegrowth.js
