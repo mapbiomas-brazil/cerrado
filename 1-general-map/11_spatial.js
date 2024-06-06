@@ -121,8 +121,8 @@ print('Output classification', container2);
 // export as GEE asset
 Export.image.toAsset({
     'image': container2,
-    'description': inputFile+ '_spatial_v' + outputVersion,
-    'assetId': out + inputFile+ '_spatial_v' + outputVersion,
+    'description': inputFile + '_spatial_v' + outputVersion,
+    'assetId': out + inputFile + '_spatial_v' + outputVersion,
     'pyramidingPolicy': {
         '.default': 'mode'
     },
