@@ -10,8 +10,8 @@ var file_in = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection
 
 // ## Read area of interest
 var aoi_vec = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3').geometry();
-var aoi = ee.Image(1).clip(aoi_vec);
-Map.addLayer(aoi, {palette:['red']}, 'Area of Interest');
+var aoi_img = ee.Image(1).clip(aoi_vec);
+Map.addLayer(aoi_img, {palette:['red']}, 'Area of Interest');
 
 // Define output
 var output = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/points/';
@@ -72,7 +72,7 @@ var training = stablePixels.stratifiedSample(
                               {'scale': 30,
                                'classBand': 'class', 
                                'numPoints': 0,
-                               'region': aoi.geometry(),
+                               'region': aoi_img.geometry(),
                                'seed': 1,
                                'geometries': true,
                                'classValues': classes,
