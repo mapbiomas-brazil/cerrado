@@ -8,10 +8,8 @@ var version = '3';
 // Set directory for the output file
 var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/';
 
-// Set area of interest (AOI)
+// Read area of interest
 var aoi_vec = ee.FeatureCollection("projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3");
-
-// Transform AOI into image
 var aoi_img = ee.Image(1).clip(aoi_vec);
 Map.addLayer(aoi_vec, {palette:['red']}, 'Area of Interest');
 
