@@ -1,5 +1,5 @@
 // -- -- -- -- 10_noFalseRegrowth
-// post-processing filter: avoid the regrowth of native forests in silviculture areas and the false regeneration of wetlands in the last year
+// post-processing filter: avoid the regrowth of native forests in silviculture areas and the false regeneration of wetlands in the last years
 // barbara.silva@ipam.org.br and dhemerson.costa@ipam.org.br
 
 // Set root directory
