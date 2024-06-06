@@ -26,7 +26,7 @@ rules <- read.csv('./_aux/mosaic_rules.csv')
 years <- unique(mosaic$aggregate_array('year')$getInfo())
 
 ## Read area of interest
-aoi_vec <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v4')$geometry()
+aoi_vec <- ee$FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3')$geometry()
 aoi_img <- ee$Image(1)$clip(aoi_vec)
 
 ## Get bandnames to be extracted
