@@ -8,7 +8,7 @@ var version = '3';  // label string
 // Reference proportion
 var file_in = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/area/stable_v3');
 
-// ## Read area of interest
+// Read area of interest
 var aoi_vec = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3').geometry();
 var aoi_img = ee.Image(1).clip(aoi_vec);
 Map.addLayer(aoi_img, {palette:['red']}, 'Area of Interest');
