@@ -1,6 +1,6 @@
 ## --- --- --- 04_getSignatures
 ## Exported data is composed by spatialPoints with spectral signature values grouped by column
-## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND)
+## Auxiliary bands were computed (Lat, Long, NDVI amplitude and HAND) and imported SRTM geomorphometric features
 ## barbara.silva@ipam.org.br
 
 ## Read libraries
