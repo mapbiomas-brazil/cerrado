@@ -151,7 +151,7 @@ for(m in 1:length(missing)) {
     fire_age_i <- fire_age$select(paste0('classification_', year_i))$rename('fire_age')$clip(region_i)
   }
   
-  ## If the year[j] is lower than 1987, get null image as amp
+  ## If the year[j] is lower than 1987, get null image as amplitude
   if (year_i < 1987){
     amp_ndvi <- ee$Image(0)$rename('amp_ndvi_3yr')$clip(region_i)
     fire_age_i <- ee$Image(5)$rename('fire_age')$clip(region_i)
