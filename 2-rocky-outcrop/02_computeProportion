@@ -12,10 +12,10 @@ var classes = [1, 2, 29];
 // Output directory
 var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/area/';
 
-// Area of interest for rocky outcrop
+// Read area of interest
 var aoi_vec = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3').geometry();
-var aoi = ee.Image(1).clip(aoi_vec);
-Map.addLayer (aoi, {palette: ['red']}, "Area of Interest");
+var aoi_img = ee.Image(1).clip(aoi_vec);
+Map.addLayer(aoi_img, {palette:['red']}, 'Area of Interest');
 
 // Stable pixels from collection 8
 var stable = ee.Image('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/cerrado_rockyTrainingMask_1985_2022_v'+input_version);
