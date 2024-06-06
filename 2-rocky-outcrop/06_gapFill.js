@@ -39,10 +39,11 @@ var geometry = ee.Geometry.Polygon (
 var out = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/general-class-post/';
 var filename = 'CERRADO_col9_rocky_gapfill_v';
 
-// set metadata 
+// Set metadata 
 var inputVersion = '4';
 var outputVersion = '4';
 
+// Set input classification
 var data = ee.ImageCollection('projects/mapbiomas-workspace/COLECAO_DEV/COLECAO9_DEV/CERRADO/C9-ROCKY-GENERAL-MAP-PROBABILITY');
 
 // Function to build collection as ee.Image
@@ -74,7 +75,7 @@ var classificationInput = collection.mask(collection.neq(0));
 print('Input classification', classificationInput);
 Map.addLayer(classificationInput.select(['classification_2023']), vis, 'input');
 
-// set the list of years to be filtered
+// Set the list of years to be filtered
 var years = ee.List.sequence({'start': 1985, 'end': 2023, step: 1}).getInfo();
 
 // User defined functions
@@ -160,17 +161,11 @@ var imageAllBands = ee.Image(
     )
 );
 
-// Generate image pixel years
-var imagePixelYear = ee.Image.constant(years)
-    .updateMask(imageAllBands)
-    .rename(bandNames);
-
 // Apply the gapfill
 var imageFilledtnt0 = applyGapFill(imageAllBands);
-var imageFilledYear = applyGapFill(imagePixelYear);
 
 // Check filtered image
-print ('output classification', imageFilledtnt0);
+print ('Output classification', imageFilledtnt0);
 Map.addLayer(imageFilledtnt0.select('classification_2023'), vis, 'filtered');
 
 // Write metadata
