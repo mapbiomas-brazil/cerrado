@@ -13,8 +13,6 @@ var dirout = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/gener
 // Load input classification
 var classification = ee.Image(input);
 print ("input", classification);
-
-// Plot input version
 Map.addLayer(classification.select(['classification_2010']), vis, 'input 2010');
 
 // Import MapBiomas color schema
@@ -56,10 +54,10 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
         }
       );
 
-// print first sequence of the spatial filter
+// Plot first sequence of the spatial filter
 Map.addLayer(filtered.select(['classification_2010']), vis, 'filtered 2010 - round 1');
 
-// set container 
+// Set container 
 var container2 = ee.Image([]);
 
 // Apply second sequence of the spatial filter
@@ -83,15 +81,16 @@ ee.List.sequence({'start': 1985, 'end': 2023}).getInfo()
                 .blend(to_mask)
                 .reproject('EPSG:4326', null, 30);
 
-        // stack into container
+        // Stack into container
         container2 = container2.addBands(classification_i.updateMask(classification_i.neq(0)));
         }
       );
 
+// Plot second sequence of the spatial filter
 Map.addLayer(container2.select(['classification_2010']), vis, 'filtered 2010 - round 2');
 print('Output classification', container2);
 
-// export as GEE asset
+// Export as GEE asset
 Export.image.toAsset({
     'image': container2,
     'description': 'CERRADO_col9_rocky_gapfill_frequency_spatial_v' + output_version,
