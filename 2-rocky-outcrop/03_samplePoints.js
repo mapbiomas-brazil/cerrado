@@ -2,45 +2,45 @@
 // sort stratified spatialPoints by region using stable pixels
 // barbara.silva@ipam.org.br
 
-// reference proportion
+// Define string to use as metadata
+var version = '3';  // label string
+
+// Reference proportion
 var file_in = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/area/stable_v3');
 
-// area of interest for AOIS
+// Area of interest (aoi)
 var aoi_vec = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/aoi_v3').geometry();
 
-// transform into image
+// Transform into image
 var aoi = ee.Image(1).clip(aoi_vec);
 Map.addLayer(aoi, {palette:['red']}, 'Area of Interest');
 
-// define string to use as metadata
-var version = '3';  // label string
-
-// define output
+// Define output
 var output = 'projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/points/';
 
-// define classes to generate samples
+// Define classes to generate samples
 var classes = [1, 2, 29];
 
-// rocky outcrop samples
+// Rocky outcrop samples
 var rocky_samples = ee.FeatureCollection('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/sample/rocky-outcrop-collected_v2')
-        // insert reference class [29] following the mapbiomas schema
+        // Insert reference class [29] following the mapbiomas schema
         .map(function(feature) {
           return feature.set({'class': '29'}).select(['class']);
         });
         
-// define sample size
+// Define sample size
 var sampleSize = 13000;    
 var nSamplesMin = rocky_samples.size().round(); 
 
-// stable pixels from collection 8
+// Stable pixels from collection 8
 var stablePixels = ee.Image('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/cerrado_rockyTrainingMask_1985_2022_v3')
                   .rename('class');
-                  
+     
 // Cerrado biome 
 var regionsCollection =  ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019')
                               .filterMetadata('Bioma', 'equals', 'Cerrado');
 
-// import the color ramp module from mapbiomas 
+// Random color schema  
 var vis = {
     'min': 1,
     'max': 29,
@@ -49,27 +49,27 @@ var vis = {
 
 Map.addLayer(stablePixels, vis, 'stable pixels');
 
-// read the area for each class (from previous step)
+// Read the area for each class (from previous step)
 var vegetation = ee.Number(file_in.first().get('1'));
 var nonvegetation = ee.Number(file_in.first().get('2'));
 var rocky = ee.Number(file_in.first().get('29'));
 
-// compute the total area 
+// Compute the total area 
 var total = vegetation
           .add(nonvegetation)
           .add(rocky);
 
-// define the equation to compute the n of samples
+// Define the equation to compute the n of samples
 var computeSize = function (number) {
   return number.divide(total).multiply(sampleSize).round().int16().max(nSamplesMin);
 };
   
-// apply the equation to compute the number of samples
+// Apply the equation to compute the number of samples
 var n_vegetation = computeSize(ee.Number(vegetation));
 var n_nonvegetation = computeSize(ee.Number(nonvegetation));
 var n_rocky = computeSize(ee.Number(rocky));
 
-// generate the sample points
+// Generate the sample points
 var training = stablePixels.stratifiedSample(
                               {'scale': 30,
                                'classBand': 'class', 
@@ -82,28 +82,28 @@ var training = stablePixels.stratifiedSample(
                                 }
                               );
 
-// plot points
+// Plot points
 Map.addLayer(training, {}, 'samplePoints');
 
-// print diagnosis
+// Print diagnosis for each class
 print('vegetation', training.filterMetadata('class', 'equals', 1).size());
 print('nonvegetation', training.filterMetadata('class', 'equals', 2).size());
 print('rocky', training.filterMetadata('class', 'equals', 29).size());
 
-// merge with rocky samples
+// Merge with rocky samples
 training = ee.FeatureCollection(training).merge(rocky_samples);
 print ("training samples", training.first());
 
-// convert the 'class' column to integers
+// Convert the 'class' column to integers
 var trainingSamplesFixed = training.map(function(feature) {
   var classValue = ee.Number.parse(feature.get('class'));
   return feature.set('class', classValue);
 });
 
-// check if the conversion was done correctly
+// Check if the conversion was done correctly
 print("trainingSamplesFixed", trainingSamplesFixed.first());
 
-// export as GEE asset
+// Export as GEE asset
 Export.table.toAsset({'collection': trainingSamplesFixed,
                       'description': 'samplePoints_v' + version,
                       'assetId':  output + 'samplePoints_v' + version
