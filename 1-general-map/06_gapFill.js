@@ -9,7 +9,7 @@ var vis = {
     palette:require('users/mapbiomas/modules:Palettes.js').get('classification8')
 };
 
-// Set the cerrado biome extent 
+// Set the Cerrado biome extent 
 var geometry = ee.Geometry.Polygon(
       [[[-61.23436115564828, -1.2109638051779688],
         [-61.23436115564828, -26.098552002927054],
