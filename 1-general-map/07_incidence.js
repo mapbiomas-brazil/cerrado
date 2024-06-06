@@ -30,26 +30,26 @@ Map.addLayer(classificationInput.select(['classification_2023']), vis, 'Input cl
 var originalClasses = [
     3, 4,    // Forest, Savanna
     11, 12,  // Wetlands, Grasslands
-    15, // Pasture
-    18, // Agriculture
-    25, // Non-vegetated areas
-    33, // Water
-    27  // Non-observed
+    15,      // Pasture
+    18,      // Agriculture
+    25,      // Non-vegetated areas
+    33,      // Water
+    27       // Non-observed
 ];
 
 var aggregatedClasses = [
     2, 2,    // Forest, Savanna
-    2, 2,  // Wetlands, Grasslands
-    1, // Pasture
-    1, // Agriculture
-    1, // Non-vegetated areas
-    7, // Water
-    7  // Non-observed
+    2, 2,    // Wetlands, Grasslands
+    1,       // Pasture
+    1,       // Agriculture
+    1,       // Non-vegetated areas
+    7,       // Water
+    7        // Non-observed
 ];
 
 var classificationAggregated = ee.Image([]);
 
-// remove forest class from incidents filter
+// Remove 'forest' class from incidents filter (avoid over-estimation)
 var classification_remap = classificationInput.updateMask(classificationInput.neq(3));
 
 // Set the list of years to be filtered
