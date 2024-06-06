@@ -71,7 +71,7 @@ ee.List.sequence({start: 1985, end: 2023}).getInfo().forEach(function(year) {
     container = container.addBands(integratedYear);
 });
 
-// Plot maps
+// Plot native and integrated maps
 Map.addLayer(native.select(['classification_2010']), vis, 'Native');
 Map.addLayer(container.select(['classification_2010']), vis, 'Integrated');
 print('Output integrated classification', container);
