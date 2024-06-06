@@ -112,7 +112,7 @@ var run_4yr = function(image, class_id) {
         container = container.addBands(rule_4yr(class_id, year_i, image));
       }
     );
-  // iInsert last years (without suitable next year to apply filter)
+  // Insert last years (without suitable next year to apply filter)
   container = container.addBands(image.select(['classification_2022']))
                        .addBands(image.select(['classification_2023']));
   
