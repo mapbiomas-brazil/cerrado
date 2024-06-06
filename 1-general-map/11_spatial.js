@@ -13,7 +13,7 @@ var outputVersion = '4';
 // Define input file
 var inputFile = 'CERRADO_col9_gapfill_v8_incidence_v8_temporal_v8_frequency_v9_noFalseRegrowth_v'+inputVersion;
 
-// Import MapBiomas color ramp
+// Import MapBiomas color schema
 var vis = {
     'min': 0,
     'max': 62,
