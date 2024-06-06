@@ -39,7 +39,7 @@ var filterFreq = function(image) {
   var wetland = image.eq(11).expression(exp);
   var grassland = image.eq(12).expression(exp);
 
-  // Delect pixels that were native vegetation at least 90% of the time series
+  // Select pixels that were native vegetation in at least 90% of the time series
   var stable_native = ee.Image(0).where(forest
                                  .add(savanna)
                                  .add(wetland)
