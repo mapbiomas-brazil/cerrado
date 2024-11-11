@@ -18,7 +18,7 @@ var aoi_img = ee.Image(1).clip(aoi_vec);
 Map.addLayer(aoi_img, {palette:['red']}, 'Area of Interest');
 
 // Stable pixels from collection 8
-var stable = ee.Image('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/cerrado_rockyTrainingMask_2016_2022_v'+input_version);
+var stable = ee.Image('projects/barbaracosta-ipam/assets/collection-9_rocky-outcrop/masks/cerrado_rockyTrainingMask_1985_2022_v'+input_version);
 
 // Random color schema  
 var vis = {
